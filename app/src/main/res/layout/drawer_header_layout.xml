@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:src="@drawable/example_image"
+        android:scaleType="centerCrop"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/transparentBlack"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Jose Luis Rodriguez Zapatero"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        android:layout_gravity="bottom"
+        />
+
+</FrameLayout>

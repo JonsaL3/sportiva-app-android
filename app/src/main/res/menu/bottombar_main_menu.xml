@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/sesiones_menu"
+        android:icon="@drawable/moyas"
+        android:title="@string/sesiones"
+        />
+
+    <item
+        android:id="@+id/trainers_menu"
+        android:icon="@drawable/trainers"
+        android:title="@string/trainers"
+        />
+
+</menu>

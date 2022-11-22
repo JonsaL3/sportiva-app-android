@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+            <import type="android.view.View" />
+
+            <variable
+                name="entrenador"
+                type="es.dao.sportiva.models.entrenador.Entrenador" />
+    </data>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="5dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="match_parent"
+                    android:src="@drawable/default_circle_shape"
+                    android:layout_height="match_parent"
+                    />
+
+                <TextView
+                    android:id="@+id/tvInicial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@{entrenador.nombre.substring(0,1)}"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    tools:text="D"
+                    android:visibility="@{entrenador.imagen == null ? View.VISIBLE : View.GONE}"
+                    />
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_marginStart="15dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="David Lozano Neira"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:text="@{entrenador.nombre + ' ' + entrenador.apellido1 + ' ' + entrenador.apellido2}"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/tvEntrenadorEmpresa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Entrenador asignado a Microsoft"
+                    android:textColor="@color/textos"
+                    android:textSize="15sp"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
