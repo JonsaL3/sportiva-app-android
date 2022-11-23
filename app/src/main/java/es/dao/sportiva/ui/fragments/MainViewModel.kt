@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import es.dao.sportiva.models.Usuario
 import es.dao.sportiva.utils.runOnUiThread
 import es.dao.sportiva.webservice.usuario.IniciarSesionRequest
@@ -29,7 +30,7 @@ class MainViewModel : ViewModel() {
             contrasena = contrasena
         )
 
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
 
             val job = CoroutineScope(Dispatchers.IO).launch {
                 val usuario = UsuarioRepo.iniciarSesion(

@@ -1,14 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragments.flujo_entrenador.EntrenadorMainFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/crear_sesion"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_height="180dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="5dp"
+                    >
+
+                    <LinearLayout
+                        android:clickable="false"
+                        android:paddingHorizontal="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_weight="1.3"
+                            android:textSize="30sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/crear_sesi_n"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="-70dp"
+                            />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_weight=".9"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/undraw_bookmarks_re_mq1u_1"
+                            />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/comenzar_sesion"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_height="180dp"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginTop="20dp"
+                    app:cardElevation="5dp"
+                    >
+
+                    <LinearLayout
+                        android:clickable="false"
+                        android:paddingHorizontal="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:textColor="@color/white"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:textSize="30sp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Comenzar sesión"
+                            android:textStyle="bold"
+                            />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_weight="1.5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/undraw_home_run_re_pogc_1"
+                            />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

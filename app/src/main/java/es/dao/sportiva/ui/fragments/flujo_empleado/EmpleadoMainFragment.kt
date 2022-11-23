@@ -35,35 +35,16 @@ class EmpleadoMainFragment : Fragment() {
 
     private fun setupView() {
         cargarDatos()
-        setupAppbarFlujoEmpleado()
         setupBottomBar()
         setupViewPager()
-        setupDrawer()
     }
 
     private fun cargarDatos() {
 
-        viewModel.findEntrenadoresByIdEmpresa(
+        viewModel.obtenerDatos(
             idEmpresa = (mainViewModel.usuario.value as Empleado).empresa.id
         )
 
-        viewModel.findSesionesDisponibles(
-            (mainViewModel.usuario.value as Empleado).empresa.id
-        )
-
-    }
-
-    private fun setupDrawer() {
-        val drawer = binding.drawerLayout
-        val toggle = ActionBarDrawerToggle(
-            activity,
-            drawer,
-            binding.appbarFlujoEmpleado,
-            R.string.abierto,
-            R.string.cerrado
-        )
-        drawer.addDrawerListener(toggle)
-        toggle.syncState()
     }
 
     private fun setupBottomBar() = with(binding) {

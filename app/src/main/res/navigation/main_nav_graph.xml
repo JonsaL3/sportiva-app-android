@@ -15,5 +15,30 @@
         <action
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_entrenadorMainFragment"
+            app:destination="@id/entrenadorMainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/entrenadorMainFragment"
+        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.EntrenadorMainFragment"
+        android:label="fragment_entrenador_main"
+        tools:layout="@layout/fragment_entrenador_main" >
+        <action
+            android:id="@+id/action_entrenadorMainFragment_to_crearSesionFragment"
+            app:destination="@id/crearSesionFragment" />
+        <action
+            android:id="@+id/action_entrenadorMainFragment_to_comenzarSesionFragment"
+            app:destination="@id/comenzarSesionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/comenzarSesionFragment"
+        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.ComenzarSesionFragment"
+        android:label="fragment_comenzar_sesion"
+        tools:layout="@layout/fragment_comenzar_sesion" />
+    <fragment
+        android:id="@+id/crearSesionFragment"
+        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.CrearSesionFragment"
+        android:label="fragment_crear_sesion"
+        tools:layout="@layout/fragment_crear_sesion" />
 </navigation>

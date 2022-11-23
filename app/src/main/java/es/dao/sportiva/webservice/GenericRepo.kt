@@ -1,6 +1,7 @@
 package es.dao.sportiva.webservice
 
 import android.content.Context
+import android.util.Log
 import es.dao.sportiva.R
 import es.dao.sportiva.utils.DxImplementation
 import kotlinx.coroutines.ExperimentalCoroutinesApi

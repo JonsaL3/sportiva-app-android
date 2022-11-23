@@ -43,7 +43,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun setupDebugMode() {
-        binding.etCorreoElectronico.setText("gonzalo@gonzalo.es")
+        binding.etCorreoElectronico.setText("david@david.es")
         binding.etContrasena.setText("1234")
     }
 
@@ -63,7 +63,8 @@ class LoginFragment : Fragment() {
                 val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
                 findNavController().navigate(action)
             } else if (usuario is Entrenador) {
-                // TODO: Cambiar esto por el fragment de entrenador
+                val action = LoginFragmentDirections.actionLoginFragmentToEntrenadorMainFragment()
+                findNavController().navigate(action)
             }
 
         }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.models.sesion.SesionWrapper
 import es.dao.sportiva.webservice.entrenador.EntrenadorRepo
@@ -20,36 +21,54 @@ class EmpleadoViewModel : ViewModel() {
     private var _entrenadores: MutableLiveData<EntrenadorWrapper?> = MutableLiveData(null)
     val entrenadores: LiveData<EntrenadorWrapper?> = _entrenadores
 
-    // Manejo de las sesiones disponibles ##########################################
-    fun findSesionesDisponibles(
+    fun obtenerDatos(
         idEmpresa: Int,
         context: Context? = null
     ) {
 
-        CoroutineScope(Dispatchers.IO).launch {
-            val sesionesDisponibles = SesionRepo.findSesionesDisponibles(
-                idEmpresa = idEmpresa,
-                context = context
-            )
-            _sesionesDisponibles.postValue(sesionesDisponibles)
+        viewModelScope.launch {
+
+            // TODO AQUI COMENZAR ANIMACION DE CARGA
+
+            val job = CoroutineScope(Dispatchers.IO).launch {
+
+                val sesiones = SesionRepo.findSesionesDisponibles(
+                    idEmpresa = idEmpresa,
+                    context = context
+                )
+                _sesionesDisponibles.postValue(sesiones)
+
+                val entrenadores = EntrenadorRepo.findEntrenadoresByIdEmpresa(
+                    idEmpresa = idEmpresa,
+                    context = context
+                )
+                _entrenadores.postValue(entrenadores)
+            }
+
+            job.join()
+
+            // TODO AQUI TERMINAR ANIMACION DE CARGA
+
         }
 
     }
+
+    // Manejo de las sesiones disponibles ##########################################
+    private suspend fun findSesionesDisponibles(
+        idEmpresa: Int,
+        context: Context? = null
+    ): SesionWrapper? = SesionRepo.findSesionesDisponibles(
+        idEmpresa = idEmpresa,
+        context = context
+    )
 
     // Manejo de los entrenadores asignados a la empresa ##################################################
-    fun findEntrenadoresByIdEmpresa(
+    private suspend fun findEntrenadoresByIdEmpresa(
         idEmpresa: Int,
         context: Context? = null
-    ) {
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val entrenadores = EntrenadorRepo.findEntrenadoresByIdEmpresa(
-                idEmpresa = idEmpresa,
-                context = context
-            )
-            _entrenadores.postValue(entrenadores)
-        }
-
-    }
+    ): EntrenadorWrapper? = EntrenadorRepo.findEntrenadoresByIdEmpresa(
+        idEmpresa = idEmpresa,
+        context = context
+    )
 
 }

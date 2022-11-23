@@ -5,16 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentEntrenadorMainBinding
 
-class EntrenadorMainFragment : Fragment() {
+class CrearSesionFragment : Fragment() {
 
     private lateinit var binding: FragmentEntrenadorMainBinding
-    private val viewModel: EntrenadorViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,18 +26,6 @@ class EntrenadorMainFragment : Fragment() {
     }
 
     private fun setupView() {
-        setupListeners()
-    }
-    private fun setupListeners() {
-        binding.crearSesion.setOnClickListener { loadFragmentCrearSesion() }
-        binding.comenzarSesion.setOnClickListener { loadFragmentComenzarSesion() }
-    }
-
-    private fun loadFragmentCrearSesion() {
-        // todo gonzalo estas con la movida de que no puedes navegar a estos fragmentos
-    }
-
-    private fun loadFragmentComenzarSesion() {
 
     }
 

@@ -24,4 +24,5 @@
     <string name="abierto">Abierto</string>
     <string name="cerrado">Cerrado</string>
     <string name="sportiva">Sportiva</string>
+    <string name="crear_sesi_n">Crear\nsesión</string>
 </resources>
