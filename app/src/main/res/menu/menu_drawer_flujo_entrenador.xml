@@ -5,6 +5,7 @@
     <group>
 
         <item
+            android:id="@+id/nav_modificar_perfil_entrenador"
             android:title="@string/perfil"
             android:icon="@drawable/ic_baseline_settings_24"
             />

@@ -4,41 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph.xml"
     app:startDestination="@id/loginFragment">
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="es.dao.sportiva.ui.fragments.flujo_empleado.EmpleadoMainFragment"
-        android:label="MainFragment" />
+
     <fragment
         android:id="@+id/loginFragment"
         android:name="es.dao.sportiva.ui.fragments.LoginFragment"
         android:label="LoginFragment" >
         <action
-            android:id="@+id/action_loginFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            android:id="@+id/action_loginFragment_to_empleadoMainFragment"
+            app:destination="@id/empleadoMainFragment" />
         <action
-            android:id="@+id/action_loginFragment_to_entrenadorMainFragment"
+            android:id="@+id/action_loginFragment_to_entrenadorMainFragment3"
             app:destination="@id/entrenadorMainFragment" />
     </fragment>
     <fragment
+        android:id="@+id/empleadoMainFragment"
+        android:name="es.dao.sportiva.ui.fragments.flujo_empleado.EmpleadoMainFragment"
+        android:label="EmpleadoMainFragment" />
+    <fragment
         android:id="@+id/entrenadorMainFragment"
         android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.EntrenadorMainFragment"
-        android:label="fragment_entrenador_main"
-        tools:layout="@layout/fragment_entrenador_main" >
+        android:label="EntrenadorMainFragment" >
         <action
-            android:id="@+id/action_entrenadorMainFragment_to_crearSesionFragment"
+            android:id="@+id/action_entrenadorMainFragment_to_crearSesionFragment3"
             app:destination="@id/crearSesionFragment" />
         <action
-            android:id="@+id/action_entrenadorMainFragment_to_comenzarSesionFragment"
+            android:id="@+id/action_entrenadorMainFragment_to_comenzarSesionFragment3"
             app:destination="@id/comenzarSesionFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/comenzarSesionFragment"
-        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.ComenzarSesionFragment"
-        android:label="fragment_comenzar_sesion"
-        tools:layout="@layout/fragment_comenzar_sesion" />
     <fragment
         android:id="@+id/crearSesionFragment"
         android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.CrearSesionFragment"
         android:label="fragment_crear_sesion"
         tools:layout="@layout/fragment_crear_sesion" />
+    <fragment
+        android:id="@+id/comenzarSesionFragment"
+        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.ComenzarSesionFragment"
+        android:label="fragment_comenzar_sesion"
+        tools:layout="@layout/fragment_comenzar_sesion" />
 </navigation>

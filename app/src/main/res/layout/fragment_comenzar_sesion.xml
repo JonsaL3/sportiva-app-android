@@ -1,14 +1,281 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragments.flujo_entrenador.ComenzarSesionFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="entrenador_view_model"
+            type="es.dao.sportiva.ui.fragments.flujo_entrenador.EntrenadorViewModel"
+            />
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        tools:context=".ui.fragments.flujo_entrenador.ComenzarSesionFragment">
 
-</FrameLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="1dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginBottom="10dp"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- No se ha seleccionado sesion -->
+                <LinearLayout
+                    tools:visibility="gone"
+                    android:layout_gravity="center"
+                    android:paddingVertical="100dp"
+                    android:gravity="center"
+                    android:visibility="@{entrenador_view_model.sesion == null ? View.VISIBLE : View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/watch_animation"
+                        android:layout_width="300dp"
+                        android:layout_height="300dp"
+                        app:lottie_autoPlay="true"
+                        app:lottie_rawRes="@raw/lupa_no_encontrado"
+                        app:lottie_loop="true"
+                        />
+
+                    <TextView
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="@color/textos"
+                        android:layout_marginVertical="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/a_n_no_se_ha_seleccionado_ninguna_sesi_n_por_favor_seleccionela"
+                        android:textSize="15sp"
+                        android:layout_marginHorizontal="20dp"
+                        />
+
+                </LinearLayout>
+
+                <!-- Sesion seleccionada -->
+                <LinearLayout
+                    tools:visibility="visible"
+                    android:visibility="@{entrenador_view_model.sesion == null ? View.GONE : View.VISIBLE}"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:textColor="@color/textos"
+                            android:layout_marginVertical="5dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Número total de asistentes (12)"
+                            android:text="@{`Número total de inscripciones: (` + String.valueOf(entrenador_view_model.inscripcionesSesion.size()) + `)`}"
+                            />
+
+                        <LinearLayout
+                            android:paddingBottom="5dp"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:paddingHorizontal="10dp"
+                                android:gravity="center"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_baseline_cancel_24"
+                                    android:tint="@color/colorPrimary"
+                                    />
+
+                                <TextView
+                                    android:gravity="center"
+                                    android:textColor="@color/textos"
+                                    android:layout_marginVertical="5dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="Pendientes por confirmar: 2"
+                                    android:textSize="12sp"
+                                    android:text="@{`Pendientes por confirmar: ` + String.valueOf(entrenador_view_model.pendientesPorConfirmar)}"
+                                    />
+
+                            </LinearLayout>
+
+                            <FrameLayout
+                                android:layout_weight="1.2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_baseline_arrow_right_alt_24"
+                                    android:tint="@color/colorPrimary"
+                                    android:layout_gravity="center"
+                                    />
+
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:paddingHorizontal="10dp"
+                                android:gravity="center"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:src="@drawable/ic_baseline_done_24"
+                                    android:tint="@color/colorPrimary"
+                                    />
+
+                                <TextView
+                                    android:textColor="@color/textos"
+                                    android:layout_marginVertical="5dp"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    tools:text="Confirmados: 10"
+                                    android:textSize="12sp"
+                                    android:text="@{`Confirmados: ` + String.valueOf(entrenador_view_model.confirmados)}"
+                                    />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_inscripciones"
+                        tools:visibility="visible"
+                        android:visibility="@{entrenador_view_model.inscripcionesSesion.size() > 0 ? View.VISIBLE : View.GONE}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        tools:listitem="@layout/item_inscripcion"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        />
+
+                    <LinearLayout
+                        android:visibility="@{entrenador_view_model.inscripcionesSesion.size() > 0 ? View.GONE : View.VISIBLE}"
+                        tools:visibility="gone"
+                        android:layout_gravity="center"
+                        android:paddingVertical="100dp"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:layout_width="200dp"
+                            android:layout_height="200dp"
+                            app:lottie_autoPlay="true"
+                            app:lottie_rawRes="@raw/lupa_no_encontrado"
+                            app:lottie_loop="true"
+                            />
+
+                        <TextView
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/textos"
+                            android:layout_marginVertical="5dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no_hay_inscripciones_sesion"
+                            android:textSize="15sp"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            tools:visibility="visible"
+            android:visibility="@{entrenador_view_model.sesion == null ? View.VISIBLE : View.GONE}"
+            android:id="@+id/bottom_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_weight="1"
+                android:id="@+id/btn_seleccionar_sesion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/seleccionar_sesi_n_a_comenzar"
+                app:icon="@drawable/moyas"
+                app:iconSize="25dp"
+                style="?attr/materialButtonOutlinedStyle"
+                app:strokeColor="@color/colorPrimary"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="@{entrenador_view_model.sesion == null ? View.GONE : View.VISIBLE}"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_escanear_qr"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/escanear_qr"
+                app:icon="@drawable/ic_baseline_qr_code_scanner_24"
+                style="?attr/materialButtonOutlinedStyle"
+                app:strokeColor="@color/colorPrimary"
+                android:layout_marginEnd="5dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@string/comenzar" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

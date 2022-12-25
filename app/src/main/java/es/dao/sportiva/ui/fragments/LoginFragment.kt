@@ -60,10 +60,10 @@ class LoginFragment : Fragment() {
         viewModel.doLogin(correo, contrasena, requireContext()) { usuario ->
 
             if (usuario is Empleado) {
-                val action = LoginFragmentDirections.actionLoginFragmentToMainFragment()
+                val action = LoginFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
                 findNavController().navigate(action)
             } else if (usuario is Entrenador) {
-                val action = LoginFragmentDirections.actionLoginFragmentToEntrenadorMainFragment()
+                val action = LoginFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
                 findNavController().navigate(action)
             }
 

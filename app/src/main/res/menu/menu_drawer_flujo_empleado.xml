@@ -5,11 +5,13 @@
     <group>
 
         <item
+            android:id="@+id/nav_modificar_perfil_empleado"
             android:title="@string/perfil"
             android:icon="@drawable/ic_baseline_settings_24"
             />
 
         <item
+            android:id="@+id/nav_ver_codigo_qr_empleado"
             android:title="@string/ver_c_digo_qr"
             android:icon="@drawable/ic_baseline_qr_code_scanner_24"
             />

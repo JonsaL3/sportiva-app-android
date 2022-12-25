@@ -11,7 +11,11 @@ data class Entrenador(
     var estudios: String = "",
     var sueldo: Float = -1.0f,
     var fechaAlta: LocalDateTime = Constantes.DEFAULT_DATE,
-    var empresaAsignada: Empresa = Empresa()
+    var empresaAsignada: Empresa = Empresa(),
+
+    // No me vienen, solo los uso internamente.
+    var isCurrentSesion: Boolean = false
+
 ) : Usuario() {
 
     override fun toString(): String {

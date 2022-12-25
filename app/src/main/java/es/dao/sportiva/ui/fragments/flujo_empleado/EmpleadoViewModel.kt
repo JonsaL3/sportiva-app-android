@@ -28,8 +28,6 @@ class EmpleadoViewModel : ViewModel() {
 
         viewModelScope.launch {
 
-            // TODO AQUI COMENZAR ANIMACION DE CARGA
-
             val job = CoroutineScope(Dispatchers.IO).launch {
 
                 val sesiones = SesionRepo.findSesionesDisponibles(

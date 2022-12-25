@@ -7,14 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentEntrenadorMainBinding
+import es.dao.sportiva.ui.fragments.MainViewModel
+import es.dao.sportiva.utils.DxImplementation
 
 class EntrenadorMainFragment : Fragment() {
 
     private lateinit var binding: FragmentEntrenadorMainBinding
     private val viewModel: EntrenadorViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,19 +34,46 @@ class EntrenadorMainFragment : Fragment() {
     }
 
     private fun setupView() {
+        inicializarDatos()
         setupListeners()
     }
+
+    private fun inicializarDatos() {
+
+        val usuario = mainViewModel.usuario.value
+
+        // TODO MOSTRAR LOADER
+
+        usuario?.let { mUsuario ->
+
+            viewModel.obtenerDatos(mUsuario.id, requireContext()) {
+                // TODO OCULTAR LOADER
+            }
+
+        } ?: run {
+
+            DxImplementation.mostrarDxError(
+                context = requireContext(),
+                mensaje = getString(R.string.sesion_caducada)
+            )
+
+        }
+
+    }
+
     private fun setupListeners() {
         binding.crearSesion.setOnClickListener { loadFragmentCrearSesion() }
         binding.comenzarSesion.setOnClickListener { loadFragmentComenzarSesion() }
     }
 
     private fun loadFragmentCrearSesion() {
-        // todo gonzalo estas con la movida de que no puedes navegar a estos fragmentos
+        val action = EntrenadorMainFragmentDirections.actionEntrenadorMainFragmentToCrearSesionFragment3()
+        findNavController().navigate(action)
     }
 
     private fun loadFragmentComenzarSesion() {
-
+        val action = EntrenadorMainFragmentDirections.actionEntrenadorMainFragmentToComenzarSesionFragment3()
+        findNavController().navigate(action)
     }
 
 }

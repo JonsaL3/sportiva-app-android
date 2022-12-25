@@ -12,4 +12,7 @@ interface SesionService {
     @GET("sesion/findSesionesDisponibles/{idEmpresa}")
     fun findSesionesDisponibles(@Path("idEmpresa") idEmpresa: Int): Call<SesionWrapper>
 
+    @GET("sesion/findSesionesDisponiblesByEntrenador/{idEntrenador}")
+    fun findSesionesDisponiblesByEntrenador(@Path("idEntrenador") idEntrenador: Int): Call<SesionWrapper>
+
 }

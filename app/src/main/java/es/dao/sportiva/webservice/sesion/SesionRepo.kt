@@ -40,7 +40,39 @@ object SesionRepo {
         }
 
         return sesionesDisponibles
-
     }
+
+    suspend fun findSesionesDisponiblesByEntrenador(
+        idEntrenador: Int,
+        context: Context? = null
+    ): SesionWrapper? {
+
+        val request = RetrofitSingleton.getRetrofitInstance()?.create(SesionService::class.java)?.findSesionesDisponiblesByEntrenador(idEntrenador)
+        val response = GenericRepo.genericRequest(request, context)
+        var sesionesDisponiblesDelEntrenador: SesionWrapper? = null
+
+        response?.let { mResponse ->
+
+            if (mResponse is SesionWrapper) {
+                sesionesDisponiblesDelEntrenador = mResponse
+            } else {
+
+                when (mResponse) {
+                    404 -> context?.let {
+                        DxImplementation.mostrarDxWarning(
+                            context = it,
+                            mensaje = "No se han encontrado sesiones disponibles activas para "
+                        )
+                    }
+                    else -> Log.e(":::FIND SESIONES DISPONIBLES SESION REPO", "Se ha producido un error desconocido")
+                }
+
+            }
+
+        }
+
+        return sesionesDisponiblesDelEntrenador
+    }
+
 
 }
