@@ -3,21 +3,29 @@ package es.dao.sportiva.ui
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ActivityMainBinding
-import es.dao.sportiva.databinding.DrawerHeaderLayoutBinding
 import es.dao.sportiva.models.Empleado
-import es.dao.sportiva.ui.fragments.MainViewModel
 import es.dao.sportiva.utils.DxImplementation
+import es.dao.sportiva.utils.UiState
 import java.time.LocalDate
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+
+    // Inyecto el singleton que maneja los estados de la UI, por lo que desde aqui puedo observar cambios
+    // que realize desde cualquier repo / viewmodel / servicio / etc en el cual inyecte esta misma clase
+    @Inject lateinit var uiState: UiState // TODO ojalá poder observar este singleton... tiene que haber una manera
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +43,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         observeUsuario()
+        setupUiStates()
+    }
+
+
+    private fun setupUiStates() {
+        uiState.uiState.observe(this) { state ->
+            when (state) {
+                UiState.State.LOADING -> {
+                    // TODO POR EJEMPLO binding.progressBar.visibility = android.view.View.VISIBLE
+                }
+                UiState.State.SUCCESS -> {
+                    // TODO POR EJEMPLO binding.progressBar.visibility = android.view.View.GONE
+                }
+                UiState.State.ERROR -> {
+                    Log.e("UISTATE:::", "ERROR QUE CONFIRMA QUE LOS SINGLETON DE DAGGER HILT FUNCIONAN")
+                    // TODO POR EJEMPLO binding.progressBar.visibility = android.view.View.GONE
+                }
+                null -> {}
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")

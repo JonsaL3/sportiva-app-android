@@ -1,21 +1,23 @@
-package es.dao.sportiva.webservice.sesion
+package es.dao.sportiva.network.sesion
 
 import android.content.Context
 import android.util.Log
 import es.dao.sportiva.R
 import es.dao.sportiva.models.sesion.SesionWrapper
+import es.dao.sportiva.repository.GenericRepo
 import es.dao.sportiva.utils.DxImplementation
-import es.dao.sportiva.webservice.GenericRepo
-import es.dao.sportiva.webservice.RetrofitSingleton
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object SesionRepo {
+@Singleton
+class SesionService @Inject constructor(private val api: SesionApiClient) {
 
     suspend fun findSesionesDisponibles(
         idEmpresa: Int,
         context: Context? = null
     ): SesionWrapper? {
 
-        val request = RetrofitSingleton.getRetrofitInstance()?.create(SesionService::class.java)?.findSesionesDisponibles(idEmpresa)
+        val request = api.findSesionesDisponibles(idEmpresa)
         val response = GenericRepo.genericRequest(request, context)
         var sesionesDisponibles: SesionWrapper? = null
 
@@ -27,12 +29,9 @@ object SesionRepo {
 
                 when (mResponse) {
                     404 -> context?.let {
-                        DxImplementation.mostrarDxWarning(
-                            context = it,
-                            mensaje = context.getString(R.string.no_se_han_encontrado_sesiones)
-                        )
+                        // TODO USAR LA CLASE UI STATE INYECTADA EN FORMA DE SINGLETON (seguramente delegue al repo el tratamiento de estos errores)
                     }
-                    else -> Log.e(":::FIND SESIONES DISPONIBLES SESION REPO", "Se ha producido un error desconocido")
+                    else -> {}// TODO USAR LA CLASE UI STATE INYECTADA EN FORMA DE SINGLETON (seguramente delegue al repo el tratamiento de estos errores)
                 }
 
             }
@@ -47,7 +46,7 @@ object SesionRepo {
         context: Context? = null
     ): SesionWrapper? {
 
-        val request = RetrofitSingleton.getRetrofitInstance()?.create(SesionService::class.java)?.findSesionesDisponiblesByEntrenador(idEntrenador)
+        val request = api.findSesionesDisponiblesByEntrenador(idEntrenador)
         val response = GenericRepo.genericRequest(request, context)
         var sesionesDisponiblesDelEntrenador: SesionWrapper? = null
 
@@ -59,12 +58,9 @@ object SesionRepo {
 
                 when (mResponse) {
                     404 -> context?.let {
-                        DxImplementation.mostrarDxWarning(
-                            context = it,
-                            mensaje = "No se han encontrado sesiones disponibles activas para "
-                        )
+                        // TODO USAR LA CLASE UI STATE INYECTADA EN FORMA DE SINGLETON (seguramente delegue al repo el tratamiento de estos errores)
                     }
-                    else -> Log.e(":::FIND SESIONES DISPONIBLES SESION REPO", "Se ha producido un error desconocido")
+                    else -> {}// TODO USAR LA CLASE UI STATE INYECTADA EN FORMA DE SINGLETON (seguramente delegue al repo el tratamiento de estos errores)
                 }
 
             }
@@ -73,6 +69,5 @@ object SesionRepo {
 
         return sesionesDisponiblesDelEntrenador
     }
-
 
 }

@@ -7,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.datepicker.MaterialDatePicker
-import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentCrearSesionBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesRecyclerViewAdapter
-import es.dao.sportiva.ui.fragments.MainViewModel
+import es.dao.sportiva.ui.MainViewModel
 
 class CrearSesionFragment : Fragment() {
 

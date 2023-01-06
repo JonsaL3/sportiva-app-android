@@ -1,4 +1,4 @@
-package es.dao.sportiva.models
+package es.dao.sportiva.models.usuario
 
 import es.dao.sportiva.utils.Constantes
 import java.io.Serializable

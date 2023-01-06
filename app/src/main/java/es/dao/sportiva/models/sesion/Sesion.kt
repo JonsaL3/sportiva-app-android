@@ -6,7 +6,7 @@ import es.dao.sportiva.utils.Constantes
 import java.io.Serializable
 import java.time.LocalDateTime
 
-class Sesion(
+data class Sesion(
 
     var id: Int = -1,
 

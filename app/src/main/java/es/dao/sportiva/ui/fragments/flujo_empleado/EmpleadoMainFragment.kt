@@ -2,7 +2,6 @@ package es.dao.sportiva.ui.fragments.flujo_empleado
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import es.dao.sportiva.R
@@ -10,7 +9,7 @@ import es.dao.sportiva.databinding.FragmentMainBinding
 import es.dao.sportiva.models.Empleado
 import es.dao.sportiva.ui.MainActivity
 import es.dao.sportiva.ui.adapters.EmpleadoPrincipalViewPagerAdapter
-import es.dao.sportiva.ui.fragments.MainViewModel
+import es.dao.sportiva.ui.MainViewModel
 
 class EmpleadoMainFragment : Fragment() {
 

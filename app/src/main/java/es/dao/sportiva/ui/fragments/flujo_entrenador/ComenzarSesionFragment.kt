@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentComenzarSesionBinding
 import es.dao.sportiva.ui.adapters.InscripcionesRecyclerViewAdapter
-import es.dao.sportiva.ui.fragments.MainViewModel
 import es.dao.sportiva.utils.DxImplementation
 
 class ComenzarSesionFragment : Fragment() {

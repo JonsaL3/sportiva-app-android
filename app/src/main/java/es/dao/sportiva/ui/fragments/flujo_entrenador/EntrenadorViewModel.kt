@@ -1,22 +1,27 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import es.dao.sportiva.models.empleado_inscribe_sesion.EmpleadoInscribeSesionWrapper
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.sesion.Sesion
 import es.dao.sportiva.models.sesion.SesionWrapper
-import es.dao.sportiva.webservice.empleado_inscribe_sesion.EmpleadoInscribeSesionRepo
-import es.dao.sportiva.webservice.sesion.SesionRepo
+import es.dao.sportiva.repository.EmpleadoInscribeSesionRepo
+import es.dao.sportiva.repository.SesionRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class EntrenadorViewModel : ViewModel() {
+@HiltViewModel
+class EntrenadorViewModel @Inject constructor(
+    private val empleadoInscribeSesionRepo: EmpleadoInscribeSesionRepo,
+    private val sesionRepo: SesionRepo
+) : ViewModel() {
 
     // Datos generales del entrenador
     private var _sesionesCreadasPorElEntrenador: MutableLiveData<List<Sesion>?> = MutableLiveData(null)
@@ -53,21 +58,15 @@ class EntrenadorViewModel : ViewModel() {
 
     fun obtenerDatos(
         idEntrenador: Int,
-        context: Context? = null,
         onLoadedAction: () -> Unit
-    ) {
+    ) = viewModelScope.launch(Dispatchers.IO) {
 
-        viewModelScope.launch {
-
-            val job = CoroutineScope(Dispatchers.IO).launch {
-                val sesionesCreadasActivas = findSesionesDisponiblesByEntrenador(idEntrenador, context)
-                _sesionesCreadasPorElEntrenador.postValue(sesionesCreadasActivas)
-            }
-
-            job.join()
-
-            onLoadedAction.invoke()
+        val job = CoroutineScope(Dispatchers.IO).launch {
+            _sesionesCreadasPorElEntrenador.postValue(findSesionesDisponiblesByEntrenador(idEntrenador))
         }
+        job.join()
+
+        onLoadedAction.invoke()
 
     }
 
@@ -92,38 +91,20 @@ class EntrenadorViewModel : ViewModel() {
     }
 
     // Manejo de las sesiones que ha creado el deportista
-    private suspend fun findSesionesDisponiblesByEntrenador(
-        idEntrenador: Int,
-        context: Context? = null
-    ): SesionWrapper? = SesionRepo.findSesionesDisponiblesByEntrenador(
-        idEntrenador = idEntrenador,
-        context = context
-    )
+    private suspend fun findSesionesDisponiblesByEntrenador(idEntrenador: Int): SesionWrapper? =
+        sesionRepo.findSesionesDisponiblesByEntrenador(idEntrenador)
 
     fun setSesion(sesion: Sesion) {
         _sesion.value = sesion
     }
 
     // Manejo de las inscripciones de una sesión en concreto
-    fun obtenerInscripcionesSesion(
-        context: Context? = null,
-    ) {
+    fun obtenerInscripcionesSesion() = viewModelScope.launch(Dispatchers.IO) {
         _sesion.value?.let { sesion ->
-            viewModelScope.launch {
-                val inscripciones = findInscripcionesByIdSesion(
-                    context = context,
-                    idSesion = sesion.id
-                )
-                _inscripcionesSesion.postValue(inscripciones)
-            }
+            _inscripcionesSesion.postValue(findInscripcionesByIdSesion(sesion.id))
         }
     }
 
-    private suspend fun findInscripcionesByIdSesion(
-        context: Context? = null,
-        idSesion: Int
-    ): EmpleadoInscribeSesionWrapper? = EmpleadoInscribeSesionRepo.findInscripcionesByIdSesion(
-        idSesion = idSesion,
-        context = context
-    )
+    private suspend fun findInscripcionesByIdSesion(idSesion: Int): EmpleadoInscribeSesionWrapper? =
+        empleadoInscribeSesionRepo.findInscripcionesByIdSesion(idSesion)
 }

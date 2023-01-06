@@ -1,4 +1,4 @@
-package es.dao.sportiva.webservice.usuario
+package es.dao.sportiva.models.usuario
 
 import java.io.Serializable
 

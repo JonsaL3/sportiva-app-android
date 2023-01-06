@@ -5,13 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentEntrenadorMainBinding
-import es.dao.sportiva.ui.fragments.MainViewModel
+import es.dao.sportiva.ui.MainViewModel
 import es.dao.sportiva.utils.DxImplementation
 
 class EntrenadorMainFragment : Fragment() {
@@ -46,7 +44,7 @@ class EntrenadorMainFragment : Fragment() {
 
         usuario?.let { mUsuario ->
 
-            viewModel.obtenerDatos(mUsuario.id, requireContext()) {
+            viewModel.obtenerDatos(mUsuario.id) {
                 // TODO OCULTAR LOADER
             }
 

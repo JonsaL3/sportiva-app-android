@@ -1,4 +1,4 @@
-package es.dao.sportiva.webservice.serialization_utils
+package es.dao.sportiva.utils
 
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader

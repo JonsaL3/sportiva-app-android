@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -35,6 +37,10 @@ android {
         viewBinding true
         dataBinding true
     }
+    kapt {
+        correctErrorTypes true
+    }
+
 }
 
 dependencies {
@@ -63,4 +69,7 @@ dependencies {
     // Lector de QR
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 
+    //dagger hilt inyeccion de dependencias
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
 }

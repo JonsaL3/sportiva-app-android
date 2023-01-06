@@ -2,9 +2,9 @@ package es.dao.sportiva.models.entrenador
 
 import com.google.gson.GsonBuilder
 import es.dao.sportiva.models.Empresa
-import es.dao.sportiva.models.Usuario
+import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.utils.Constantes
-import es.dao.sportiva.webservice.serialization_utils.LocalDateTimeTypeAdapter
+import es.dao.sportiva.utils.LocalDateTimeTypeAdapter
 import java.time.LocalDateTime
 
 data class Entrenador(

@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import es.dao.sportiva.databinding.FragmentLoginBinding
 import es.dao.sportiva.models.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
+import es.dao.sportiva.ui.MainViewModel
 
 class LoginFragment : Fragment() {
 
