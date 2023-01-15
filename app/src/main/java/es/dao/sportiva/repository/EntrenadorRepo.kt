@@ -1,13 +1,18 @@
 package es.dao.sportiva.repository
 
-import es.dao.sportiva.network.entrenador.EntrenadorService
+import es.dao.sportiva.models.entrenador.EntrenadorWrapper
+import es.dao.sportiva.network.EntrenadorApiClient
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class EntrenadorRepo @Inject constructor(private val service: EntrenadorService) {
+class EntrenadorRepo @Inject constructor(
+    private val entrenadorApiClient: EntrenadorApiClient
+) : GenericRepo() {
 
-    suspend fun findEntrenadoresByIdEmpresa(idEmpresa: Int) =
-        service.findEntrenadoresByIdEmpresa(idEmpresa)
+    suspend fun findEntrenadoresByIdEmpresa(idEmpresa: Int): EntrenadorWrapper? {
+        val request = entrenadorApiClient.findEntrenadoresByIdEmpresa(idEmpresa)
+        return genericRequest(request)
+    }
 
 }

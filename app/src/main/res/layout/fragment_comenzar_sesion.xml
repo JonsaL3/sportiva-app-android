@@ -9,7 +9,7 @@
 
         <variable
             name="entrenador_view_model"
-            type="es.dao.sportiva.ui.fragments.flujo_entrenador.EntrenadorViewModel"
+            type="es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion.ComenzarSesionEntrenadorViewModel"
             />
 
     </data>
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="10dp"
-        tools:context=".ui.fragments.flujo_entrenador.ComenzarSesionFragment">
+        tools:context=".ui.fragments.flujo_entrenador.comenzar_sesion.ComenzarSesionFragment">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_weight="1"
@@ -42,7 +42,7 @@
                     android:layout_gravity="center"
                     android:paddingVertical="100dp"
                     android:gravity="center"
-                    android:visibility="@{entrenador_view_model.sesion == null ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{entrenador_view_model.sesionLaCualSeDeseaComenzar == null ? View.VISIBLE : View.GONE}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -73,7 +73,7 @@
                 <!-- Sesion seleccionada -->
                 <LinearLayout
                     tools:visibility="visible"
-                    android:visibility="@{entrenador_view_model.sesion == null ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{entrenador_view_model.sesionLaCualSeDeseaComenzar == null ? View.GONE : View.VISIBLE}"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -231,7 +231,7 @@
 
         <LinearLayout
             tools:visibility="visible"
-            android:visibility="@{entrenador_view_model.sesion == null ? View.VISIBLE : View.GONE}"
+            android:visibility="@{entrenador_view_model.sesionLaCualSeDeseaComenzar == null ? View.VISIBLE : View.GONE}"
             android:id="@+id/bottom_button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -251,7 +251,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="@{entrenador_view_model.sesion == null ? View.GONE : View.VISIBLE}"
+            android:visibility="@{entrenador_view_model.sesionLaCualSeDeseaComenzar == null ? View.GONE : View.VISIBLE}"
             tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

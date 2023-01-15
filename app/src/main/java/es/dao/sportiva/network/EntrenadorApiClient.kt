@@ -1,4 +1,4 @@
-package es.dao.sportiva.network.entrenador
+package es.dao.sportiva.network
 
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import retrofit2.Call

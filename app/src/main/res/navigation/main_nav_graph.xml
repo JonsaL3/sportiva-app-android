@@ -33,12 +33,12 @@
     </fragment>
     <fragment
         android:id="@+id/crearSesionFragment"
-        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.CrearSesionFragment"
+        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.CrearSesionFragment"
         android:label="fragment_crear_sesion"
         tools:layout="@layout/fragment_crear_sesion" />
     <fragment
         android:id="@+id/comenzarSesionFragment"
-        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.ComenzarSesionFragment"
+        android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion.ComenzarSesionFragment"
         android:label="fragment_comenzar_sesion"
         tools:layout="@layout/fragment_comenzar_sesion" />
 </navigation>

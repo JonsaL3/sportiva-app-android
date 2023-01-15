@@ -86,7 +86,7 @@
                             android:textSize="30sp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:text="Comenzar sesión"
+                            android:text="@string/comenzar_sesi_n"
                             android:textStyle="bold"
                             />
 

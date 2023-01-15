@@ -15,7 +15,6 @@ import es.dao.sportiva.utils.DxImplementation
 class EntrenadorMainFragment : Fragment() {
 
     private lateinit var binding: FragmentEntrenadorMainBinding
-    private val viewModel: EntrenadorViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -32,31 +31,7 @@ class EntrenadorMainFragment : Fragment() {
     }
 
     private fun setupView() {
-        inicializarDatos()
         setupListeners()
-    }
-
-    private fun inicializarDatos() {
-
-        val usuario = mainViewModel.usuario.value
-
-        // TODO MOSTRAR LOADER
-
-        usuario?.let { mUsuario ->
-
-            viewModel.obtenerDatos(mUsuario.id) {
-                // TODO OCULTAR LOADER
-            }
-
-        } ?: run {
-
-            DxImplementation.mostrarDxError(
-                context = requireContext(),
-                mensaje = getString(R.string.sesion_caducada)
-            )
-
-        }
-
     }
 
     private fun setupListeners() {

@@ -1,4 +1,4 @@
-package es.dao.sportiva.network.usuario
+package es.dao.sportiva.network
 
 import es.dao.sportiva.models.usuario.IniciarSesionRequest
 import es.dao.sportiva.models.usuario.IniciarSesionResponse

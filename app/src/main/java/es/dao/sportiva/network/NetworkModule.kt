@@ -6,11 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import es.dao.sportiva.utils.Constantes
-import es.dao.sportiva.network.empleado_inscribe_sesion.EmpleadoInscribeSesionApiClient
-import es.dao.sportiva.network.entrenador.EntrenadorApiClient
 import es.dao.sportiva.utils.LocalDateTimeTypeAdapter
-import es.dao.sportiva.network.sesion.SesionApiClient
-import es.dao.sportiva.network.usuario.UsuarioApiClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDateTime

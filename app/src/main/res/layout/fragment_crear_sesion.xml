@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.flujo_entrenador.CrearSesionFragment"
+    tools:context=".ui.fragments.flujo_entrenador.crear_sesion.CrearSesionFragment"
     android:layout_margin="10dp"
     android:orientation="vertical"
     >
@@ -255,7 +255,7 @@
 
                 <LinearLayout
                     android:gravity="center"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="200dp">
 
@@ -263,6 +263,39 @@
                         android:id="@+id/cv_seleccione_imagen"
                         app:cardElevation="0dp"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:background="@drawable/ic_dotted_shape"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:layout_width="120dp"
+                            android:layout_height="160dp">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/ic_baseline_attach_file_24"
+                                android:tint="@color/colorPrimary"/>
+
+                            <TextView
+                                android:textColor="@color/textos"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/seleccione_imagen"
+                                />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cv_realizar_imagen"
+                        app:cardElevation="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="30dp"
                         android:layout_height="wrap_content">
 
                         <LinearLayout
@@ -284,7 +317,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/seleccione_imagen"
+                                android:text="Realizar imagen"
                                 />
 
                         </LinearLayout>

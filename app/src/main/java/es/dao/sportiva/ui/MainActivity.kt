@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     // Inyecto el singleton que maneja los estados de la UI, por lo que desde aqui puedo observar cambios
     // que realize desde cualquier repo / viewmodel / servicio / etc en el cual inyecte esta misma clase
-    @Inject lateinit var uiState: UiState // TODO ojalá poder observar este singleton... tiene que haber una manera
+    @Inject lateinit var uiState: UiState
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,17 +47,21 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setupUiStates() {
-        uiState.uiState.observe(this) { state ->
+        uiState.observableState.observe(this) { state ->
             when (state) {
                 UiState.State.LOADING -> {
-                    // TODO POR EJEMPLO binding.progressBar.visibility = android.view.View.VISIBLE
+                    binding.piMainActivity.show()
                 }
                 UiState.State.SUCCESS -> {
-                    // TODO POR EJEMPLO binding.progressBar.visibility = android.view.View.GONE
+                    binding.piMainActivity.hide()
                 }
                 UiState.State.ERROR -> {
-                    Log.e("UISTATE:::", "ERROR QUE CONFIRMA QUE LOS SINGLETON DE DAGGER HILT FUNCIONAN")
-                    // TODO POR EJEMPLO binding.progressBar.visibility = android.view.View.GONE
+                    binding.piMainActivity.hide()
+                    if (uiState.errorMessage.isNotEmpty()) {
+                        DxImplementation.mostrarDxWarning(this, uiState.errorMessage)
+                    } else {
+                        DxImplementation.mostrarDxError(this, "Error desconocido")
+                    }
                 }
                 null -> {}
             }

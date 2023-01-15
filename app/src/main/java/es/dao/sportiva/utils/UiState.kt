@@ -13,19 +13,20 @@ import javax.inject.Singleton
 @Singleton
 class UiState @Inject constructor() {
 
-    var uiState: MutableLiveData<State> = MutableLiveData(State.SUCCESS)
-    // VAR MENSAJE =??¿?¿?¿? todo mandar mensaje de error desde la API
+    var observableState: MutableLiveData<State> = MutableLiveData(State.SUCCESS)
+    var errorMessage = ""
 
     fun setSuccess() {
-        uiState.postValue(State.SUCCESS)
+        observableState.postValue(State.SUCCESS)
     }
 
     fun setLoading() {
-        uiState.postValue(State.LOADING)
+        observableState.postValue(State.LOADING)
     }
 
-    fun setError() {
-        uiState.postValue(State.ERROR)
+    fun setError(errorMessage: String) {
+        this.errorMessage = errorMessage
+        observableState.postValue(State.ERROR)
     }
 
     enum class State {

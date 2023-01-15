@@ -55,4 +55,6 @@
     <string name="paso_5_aforo_m_ximo">Paso 5: Aforo máximo</string>
     <string name="aforo_ilimitado">Aforo ilimitado</string>
     <string name="numero_m_ximo_de_asistentes">Numero máximo de asistentes</string>
+    <string name="comenzar_sesi_n">Comenzar sesión</string>
+    <string name="error_current_usuario">Error con el usuario que inició sesión en la aplicación.</string>
 </resources>

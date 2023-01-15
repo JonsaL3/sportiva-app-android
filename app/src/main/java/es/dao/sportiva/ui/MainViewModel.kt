@@ -10,6 +10,7 @@ import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.utils.runOnUiThread
 import es.dao.sportiva.models.usuario.IniciarSesionRequest
 import es.dao.sportiva.repository.UsuarioRepo
+import es.dao.sportiva.utils.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val usuarioRepo: UsuarioRepo // Inyectado usando el patron singleton directamente
+    private val usuarioRepo: UsuarioRepo,
+    private val uiState: UiState
 ) : ViewModel() {
 
     private var _usuario: MutableLiveData<Usuario?> = MutableLiveData(null)
@@ -31,21 +33,16 @@ class MainViewModel @Inject constructor(
         onSuccess: (usuario: Usuario) -> Unit,
     ) = viewModelScope.launch(Dispatchers.IO) {
 
-        // TODO MONTAR ESTA REQUEST EN EL REPO
-        val iniciarSesionRequest = IniciarSesionRequest(
-            correo = correo,
-            contrasena = contrasena
-        )
+        uiState.setLoading()
 
-        val job = CoroutineScope(Dispatchers.IO).launch {
-            _usuario.postValue(usuarioRepo.iniciarSesion(iniciarSesionRequest))
-        }
-
-        job.join()
-
-        _usuario.value?.let { usuario ->
-            runOnUiThread {
-                onSuccess.invoke(usuario)
+        CoroutineScope(Dispatchers.IO).launch {
+            _usuario.postValue(usuarioRepo.iniciarSesion(correo, contrasena))
+        }.invokeOnCompletion {
+            _usuario.value?.let { usuario ->
+                runOnUiThread {
+                    uiState.setSuccess()
+                    onSuccess.invoke(usuario)
+                }
             }
         }
 

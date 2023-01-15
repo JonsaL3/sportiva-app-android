@@ -1,4 +1,4 @@
-package es.dao.sportiva.ui.fragments.flujo_entrenador
+package es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,18 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
+import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.databinding.FragmentCrearSesionBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesRecyclerViewAdapter
 import es.dao.sportiva.ui.MainViewModel
 
+@AndroidEntryPoint
 class CrearSesionFragment : Fragment() {
 
     private lateinit var binding: FragmentCrearSesionBinding
 
+    private val viewModel: CrearSesionEntrenadorViewModel by viewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val entrenadorViewModel: EntrenadorViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,11 +57,11 @@ class CrearSesionFragment : Fragment() {
 
     private fun setupRecyclerEntrenadores() {
         val adapter = EntrenadoresParticipantesRecyclerViewAdapter()
-        entrenadorViewModel.entrenadoresParticipantes.observe(viewLifecycleOwner) { entrenadores ->
+        /*entrenadorViewModel.entrenadoresParticipantes.observe(viewLifecycleOwner) { entrenadores ->
             entrenadores?.let {
                 adapter.submitList(it)
             }
-        }
+        }*/
         binding.rvEntrenadoresParticipantes.adapter = adapter
 
         // añado a eso a mi mismo
@@ -66,7 +69,7 @@ class CrearSesionFragment : Fragment() {
         entrenador?.let {
             if (it is Entrenador) {
                 it.isCurrentSesion = true
-                entrenadorViewModel.addEntrenadorParticipante(it)
+                //entrenadorViewModel.addEntrenadorParticipante(it)
             }
         }
 

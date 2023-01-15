@@ -1,4 +1,4 @@
-package es.dao.sportiva.ui.fragments.flujo_entrenador
+package es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,16 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentComenzarSesionBinding
+import es.dao.sportiva.ui.MainViewModel
 import es.dao.sportiva.ui.adapters.InscripcionesRecyclerViewAdapter
 import es.dao.sportiva.utils.DxImplementation
+import es.dao.sportiva.utils.UiState
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ComenzarSesionFragment : Fragment() {
 
     private lateinit var binding: FragmentComenzarSesionBinding
-    private val viewModel: EntrenadorViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private val viewModel: ComenzarSesionEntrenadorViewModel by viewModels()
+
+    @Inject lateinit var uiState: UiState
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +43,18 @@ class ComenzarSesionFragment : Fragment() {
     }
 
     private fun setupView() {
+        setupDatosIniciales()
         setupListeners()
         setupObservers()
         setupOnBackPressed()
+    }
+
+    private fun setupDatosIniciales() {
+        mainViewModel.usuario.value?.let {
+            viewModel.cargarDatosGenerales(it.id)
+        } ?: kotlin.run {
+            uiState.setError(getString(R.string.error_current_usuario))
+        }
     }
 
     private fun setupObservers() {
@@ -61,7 +79,6 @@ class ComenzarSesionFragment : Fragment() {
                 titulo = getString(R.string.deshacer_cambios),
                 mensaje = getString(R.string.seguro_volver_atras)
             ) {
-                viewModel.clearComienzoSesion()
                 findNavController().popBackStack()
             }
 
@@ -92,7 +109,6 @@ class ComenzarSesionFragment : Fragment() {
             viewModel.sesionesCreadasPorElEntrenador.value
         ) { sesion ->
             viewModel.setSesion(sesion)
-            viewModel.obtenerInscripcionesSesion()
         }
 
     }

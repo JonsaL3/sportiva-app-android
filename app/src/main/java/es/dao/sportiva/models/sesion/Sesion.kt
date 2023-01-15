@@ -23,4 +23,30 @@ data class Sesion(
     var creador: Entrenador = Entrenador(),
     var entrenadores: MutableList<Entrenador> = mutableListOf()
 
-) : Serializable
+) : Serializable {
+
+    constructor(
+        titulo: String,
+        subtitulo: String,
+        descripcion: String,
+        fechaInserccion: LocalDateTime,
+        fechaSesion: LocalDateTime,
+        aforoMaximo: Int,
+        imagen: String?,
+        empresa: Empresa?,
+        creador: Entrenador
+    ) : this(
+        -1,
+        titulo,
+        subtitulo,
+        descripcion,
+        fechaInserccion,
+        fechaSesion,
+        aforoMaximo,
+        imagen,
+        empresa,
+        creador,
+        mutableListOf()
+    )
+
+}
