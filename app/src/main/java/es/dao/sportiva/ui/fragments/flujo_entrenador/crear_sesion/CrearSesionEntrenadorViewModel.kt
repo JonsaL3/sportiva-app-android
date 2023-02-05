@@ -1,5 +1,6 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import es.dao.sportiva.repository.SesionRepo
 import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.UiState
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,7 +24,6 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
     /**
      * Datos que recojo del formulario, la imagen la guardo como un base64 en forma de string
      */
-
     // Datos recogidos del paso 1 del formulario
     private val _entrenadoresParticipantes = MutableLiveData<EntrenadorWrapper>()
     val entrenadoresParticipantes = _entrenadoresParticipantes
@@ -38,7 +39,7 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
     val descripcionSesion = _descripcionSesion
 
     // Datos recogidos del paso 3 del formulario
-    private val _fechaSesion = MutableLiveData(Constantes.DEFAULT_DATE)
+    private val _fechaSesion = MutableLiveData<LocalDateTime>()
     val fechaSesion = _fechaSesion
 
     // Datos recogidos del paso 4 del formulario
@@ -46,7 +47,7 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
     val imagenSesion = _imagenSesion
 
     // Datos recogidos del paso 5 del formulario
-    private val _aforoSesion = MutableLiveData(0)
+    private val _aforoSesion = MutableLiveData(0) // Constantes.AFORO_ILIMITADO
     val aforoSesion = _aforoSesion
 
     /**
@@ -72,6 +73,25 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
                 uiState.setSuccess()
             }
         }
+    }
+
+    /**
+     * Seteo desde fuera los datos de los entrenadores participantes
+     */
+    fun setTituloSession(titulo: String) {
+        _tituloSesion.value = titulo
+    }
+
+    fun setSubtituloSession(subtitulo: String) {
+        _subtituloSesion.value = subtitulo
+    }
+
+    fun setDescripcionSession(descripcion: String) {
+        _descripcionSesion.value = descripcion
+    }
+
+    fun setFechaSession(fecha: LocalDateTime) {
+        _fechaSesion.value = fecha
     }
 
     /**

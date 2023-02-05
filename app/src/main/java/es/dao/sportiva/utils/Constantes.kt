@@ -11,7 +11,7 @@ object Constantes {
 
     // Llamadas a la api
     private const val IS_DEBUG = true
-    private const val BASE_URL_DEBUG = "http://192.168.1.131:8080/api/"
+    private const val BASE_URL_DEBUG = "http://192.168.1.137:8080/api/"
     private const val BASE_URL_RELEASE = "http://indytek.es/api/"
     val BASE_URL = if (IS_DEBUG) BASE_URL_DEBUG else BASE_URL_RELEASE
 
