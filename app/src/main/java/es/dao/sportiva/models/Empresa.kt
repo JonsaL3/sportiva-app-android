@@ -6,4 +6,6 @@ data class Empresa(
     var id: Int = -1,
     var nombre: String = "",
     var isActivo: Boolean = false,
-) : Serializable
+) : Serializable{
+    //Hola mundo
+}
