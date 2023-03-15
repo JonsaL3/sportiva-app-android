@@ -12,6 +12,7 @@ import es.dao.sportiva.R
 import es.dao.sportiva.databinding.DxLectorQrBinding
 import es.dao.sportiva.databinding.DxListaSesionesBinding
 import es.dao.sportiva.databinding.DxMostrarQrBinding
+import es.dao.sportiva.databinding.LoginLayoutBinding
 import es.dao.sportiva.models.sesion.Sesion
 import es.dao.sportiva.ui.adapters.SeleccionarSesionRecyclerViewAdapter
 
@@ -182,6 +183,32 @@ object DxImplementation {
             context = context,
             mensaje = context.getString(R.string.error_generico_conexion),
         )
+    }
+
+    fun mostrarDxLogin(context: Context, actionOnAccept: (correo: String, contrasena: String) -> Unit) {
+
+        val binding = LoginLayoutBinding.inflate(LayoutInflater.from(context))
+
+        binding.etCorreoElectronico.setText("david@david.es")
+        binding.etContrasena.setText("1234")
+
+        DxCustom(context)
+            .createDialog(fullScreen = true)
+            .setTitulo(context.getString(R.string.iniciar_sesi_n))
+            .setMensaje(context.getString(R.string.nos_alegramos_de_verte))
+            .setIcono(ContextCompat.getDrawable(context, R.drawable.confetti_svgrepo_com), ContextCompat.getColor(context, R.color.red_sportiva))
+            .noPermitirSalirSinBotones()
+            .addCustomView(binding.root)
+            .showAceptarButton(
+                color = ContextCompat.getColor(context, R.color.red_sportiva),
+            ) {
+                actionOnAccept.invoke(binding.etCorreoElectronico.text.toString(),binding.etContrasena.text.toString())
+            }
+            .showCancelarButton(
+                texto = context.getString(R.string.volver_atras),
+                strokecolor = ContextCompat.getColor(context, R.color.red_sportiva)
+            ) {  }
+            .showDialogReturnDialog()
     }
 
 }
