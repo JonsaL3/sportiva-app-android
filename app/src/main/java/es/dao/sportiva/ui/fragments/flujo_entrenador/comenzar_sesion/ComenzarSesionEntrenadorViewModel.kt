@@ -1,7 +1,9 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion
 
+import android.database.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,16 +54,23 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
     private var _confirmados: MutableLiveData<Int> = MutableLiveData(0)
     val confirmados: LiveData<Int> = _confirmados
 
+    private var observeInscripciones = Observer<EmpleadoInscribeSesionWrapper?> { wrapper ->
+        wrapper?.let { inscripciones ->
+            _pendientesPorConfirmar.value = inscripciones.count { !it.isConfirmado }
+            _confirmados.value = inscripciones.count { it.isConfirmado }
+        }
+    }
+
     /**
      * A lo largo de la vida del viewmodel, observaré siempre el numero de inscripciones
      */
     init {
-        _inscripcionesSesion.observeForever { wrapper ->
-            wrapper?.let { inscripciones ->
-                _pendientesPorConfirmar.value = inscripciones.count { !it.isConfirmado }
-                _confirmados.value = inscripciones.count { it.isConfirmado }
-            }
-        }
+        _inscripcionesSesion.observeForever(observeInscripciones)
+    }
+
+    override fun onCleared() {
+        _inscripcionesSesion.removeObserver(observeInscripciones)
+        super.onCleared()
     }
 
     /**
@@ -70,8 +79,8 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
     fun cargarDatosGenerales(idEntrenador: Int) = viewModelScope.launch {
         uiState.setLoading()
         sesionRepo.findSesionesDisponiblesByEntrenador(idEntrenador)?.let {
-            uiState.setSuccess()
             _sesionesCreadasPorElEntrenador.postValue(it)
+            uiState.setSuccess()
         }
     }
 

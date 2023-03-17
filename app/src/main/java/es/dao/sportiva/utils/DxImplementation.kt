@@ -10,9 +10,15 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.DxLectorQrBinding
+import es.dao.sportiva.databinding.DxListaEntrenadoresParticipantesBinding
 import es.dao.sportiva.databinding.DxListaSesionesBinding
 import es.dao.sportiva.databinding.DxMostrarQrBinding
+import es.dao.sportiva.models.entrenador.Entrenador
+import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.models.sesion.Sesion
+import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesRecyclerViewAdapter
+import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesViewHolder
+import es.dao.sportiva.ui.adapters.SeleccionarEntrenadoresRecyclerViewAdapter
 import es.dao.sportiva.ui.adapters.SeleccionarSesionRecyclerViewAdapter
 
 object DxImplementation {
@@ -176,12 +182,42 @@ object DxImplementation {
 
     }
 
-    // Implementaciones secundarias
-    fun mostrarDxErrorConexion(context: Context) {
-        mostrarDxError(
-            context = context,
-            mensaje = context.getString(R.string.error_generico_conexion),
-        )
+    fun mostrarDxSeleccionarEntrenador(
+        context: Context,
+        entrenadores: ArrayList<Entrenador>?,
+        idCreador: Int,
+        onEntrenadoresSelected: (EntrenadorWrapper) -> Unit
+    ) = runOnUiThread {
+
+        entrenadores?.let { entrenadores ->
+
+            val customLayoutBinding = DxListaEntrenadoresParticipantesBinding.inflate(LayoutInflater.from(context))
+
+            val dx = DxCustom(context)
+                .createDialog(fullScreen = true)
+                .addCustomView(customLayoutBinding.root)
+                .setTitulo("Seleccionar entrenadores.")
+                .setMensaje("Seleccione los entrenadores disponibles asignados a la misma empresa que tu que participarán en la sesión.")
+                .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
+                .noPermitirSalirSinBotones()
+                .showAceptarButton { onEntrenadoresSelected.invoke(EntrenadorWrapper(entrenadores.filter { !it.isSeleccionadoParaSerParticipante })) }
+                .showCancelarButton { }
+                .showDialogReturnDxCustom()
+
+            val adapter = SeleccionarEntrenadoresRecyclerViewAdapter()
+            customLayoutBinding.rvEntrenadoresParticipantes.adapter = adapter
+            entrenadores.removeIf { it.id == idCreador || it.isSeleccionadoParaSerParticipante }
+            adapter.submitList(entrenadores)
+
+        } ?: run {
+
+            mostrarDxError(
+                context = context,
+                mensaje = "No hay mas entrenadores asignados a la misma empresa que tu."
+            )
+
+        }
+
     }
 
 }

@@ -57,4 +57,6 @@
     <string name="numero_m_ximo_de_asistentes">Numero máximo de asistentes</string>
     <string name="comenzar_sesi_n">Comenzar sesión</string>
     <string name="error_current_usuario">Error con el usuario que inició sesión en la aplicación.</string>
+    <string name="volver_atr_s">Volver atrás</string>
+    <string name="tomar_imagen">Tomar imagen</string>
 </resources>
