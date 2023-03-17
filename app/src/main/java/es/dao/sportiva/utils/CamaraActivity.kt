@@ -1,5 +1,6 @@
 package es.dao.sportiva.utils
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -9,9 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.common.util.concurrent.ListenableFuture
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ActivityCamaraBinding
+import java.io.File
+import java.time.LocalDateTime
 
 
 class CamaraActivity : AppCompatActivity() {
@@ -19,13 +23,17 @@ class CamaraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCamaraBinding
     private lateinit var cameraProviderFuture : ListenableFuture<ProcessCameraProvider>
 
+    private lateinit var camera: Camera
+    private lateinit var imageCapture: ImageCapture
+
+
     private val requestCameraPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 startCamera()
             } else {
                 Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show()
-                // TODO VOLVER A SPORTIVA
+                finish()
             }
         }
 
@@ -36,6 +44,17 @@ class CamaraActivity : AppCompatActivity() {
 
         // Arranco la cámara nada mas entrar
         startCamera()
+        
+        // El listener para tomar la imagen.
+        binding.btnTomarImagen.setOnClickListener {
+            takePhoto()
+        }
+        
+        // el listener para cerrar la camara
+        binding.btnVolverAtras.setOnClickListener {
+            finish()
+        }
+        
     }
 
     // ############################################################################################
@@ -56,18 +75,27 @@ class CamaraActivity : AppCompatActivity() {
             .Builder()
             .build()
 
+        imageCapture = ImageCapture.Builder()
+            .setTargetRotation(binding.root.display.rotation)
+            .build()
+
         preview.setSurfaceProvider(binding.previewView.surfaceProvider)
 
         binding.previewView.viewPort?.let {
+
             val useCaseGroup = UseCaseGroup.Builder()
                 .addUseCase(preview)
+                .addUseCase(imageCapture)
                 .setViewPort(it)
                 .build()
 
             cameraProvider.unbindAll()
-            val camera: Camera = cameraProvider.bindToLifecycle(this, cameraSelector, useCaseGroup)
-            val cameraControl: CameraControl = camera.cameraControl
-            cameraControl.setLinearZoom(0.3.toFloat())
+
+            // Instancia de camera
+            camera = cameraProvider.bindToLifecycle(this, cameraSelector, useCaseGroup)
+
+            // Instancia del control de la camara
+            camera.cameraControl.setLinearZoom(0.3.toFloat())
         }
     }
 
@@ -95,6 +123,31 @@ class CamaraActivity : AppCompatActivity() {
         } else {
             solicitarPermisos()
         }
+    }
+
+    /**
+     * Realizo una fotografía, obtengo la uri y la devuelvo como activity result
+     */
+    private fun takePhoto() {
+        val outputFileOptions = ImageCapture.OutputFileOptions
+            .Builder(File("${this.externalCacheDir}${File.separator}${System.currentTimeMillis()}.png"))
+            .build()
+
+        imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(this),
+
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onError(error: ImageCaptureException) {
+                    error.printStackTrace()
+                }
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    val data = Intent()
+                    data.data = outputFileResults.savedUri
+                    setResult(RESULT_OK, data)
+                    finish()
+                }
+            }
+
+        )
     }
 
     // ############################################################################################

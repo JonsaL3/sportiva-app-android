@@ -42,15 +42,41 @@ class CrearSesionFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             val image = result.data?.data
             val bitmap = image!!.getBitmap(requireContext())
-            binding.sivImagenSeleccionada.visibility = View.VISIBLE
-            binding.sivSeleccioneImagen.visibility = View.GONE
-            binding.sivImagenSeleccionada.setImageBitmap(bitmap)
-            binding.tvFoto.visibility = View.GONE
+
+            with(binding) {
+                // Muestro la imagen que acabo de seleccionar
+                sivImagenSeleccionada.visibility = View.VISIBLE
+                sivSeleccioneImagen.visibility = View.GONE
+                sivImagenSeleccionada.setImageBitmap(bitmap)
+                tvFoto.visibility = View.GONE
+
+                // Establezco los valores por defecto del otro campo, ya que solo podré realizar / seleccionaruna imagen
+                sivFotoRealizada.visibility = View.GONE
+                sivCamara.visibility = View.VISIBLE
+                tvHacerFoto.visibility = View.VISIBLE
+            }
+
         }
     }
 
     private val realizarFotografiaResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
+            val image = result.data?.data
+            val bitmap = image!!.getBitmap(requireContext())
+
+            with(binding) {
+                // Muestro la imagen que acabo de realizar
+                sivFotoRealizada.visibility = View.VISIBLE
+                sivCamara.visibility = View.GONE
+                sivFotoRealizada.setImageBitmap(bitmap)
+                tvHacerFoto.visibility = View.GONE
+
+                // Establezco los valores por defecto del otro campo, ya que solo podré realizar / seleccionaruna imagen
+                sivImagenSeleccionada.visibility = View.GONE
+                sivSeleccioneImagen.visibility = View.VISIBLE
+                tvFoto.visibility = View.VISIBLE
+            }
+
         }
     }
 
@@ -64,6 +90,10 @@ class CrearSesionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mainViewModel.usuario.value?.let {
+            it as Entrenador
+            viewModel.cargarDatosIniciales(it.empresaAsignada.id)
+        }
         setupView()
     }
 
@@ -83,6 +113,7 @@ class CrearSesionFragment : Fragment() {
         btnSeleccionarFecha.setOnClickListener { seleccionarFechaYHoraSesion() }
         cvSeleccioneImagen.setOnClickListener { seleccionarArchivo() }
         cvRealizarImagen.setOnClickListener { realizarImagen() }
+        btnAnadirEntrenador.setOnClickListener { agregarEntrenadores() }
     }
 
     private fun realizarImagen() {
@@ -137,8 +168,8 @@ class CrearSesionFragment : Fragment() {
 
         val adapter = EntrenadoresParticipantesRecyclerViewAdapter()
         viewModel.entrenadoresParticipantes.observe(viewLifecycleOwner) { entrenadores ->
-            entrenadores?.let {
-                adapter.submitList(it)
+            entrenadores?.let { entrenadorWrapper ->
+                adapter.submitList(entrenadorWrapper.filter { it.isSeleccionadoParaSerParticipante }.map { it.copy() })
             }
         }
         binding.rvEntrenadoresParticipantes.adapter = adapter
@@ -148,10 +179,26 @@ class CrearSesionFragment : Fragment() {
         entrenador?.let {
             if (it is Entrenador) {
                 it.isCurrentSesion = true
+                it.isSeleccionadoParaSerParticipante = true
                 viewModel.entrenadoresParticipantes.value = EntrenadorWrapper()
                 viewModel.entrenadoresParticipantes.value?.add(it)
             }
         }
+
+    }
+
+    private fun agregarEntrenadores() {
+
+        val onEntrenadoresSelected = { entrenadores: EntrenadorWrapper ->
+            viewModel.addEntrenadoresParticipantes(entrenadores)
+        }
+
+        DxImplementation.mostrarDxSeleccionarEntrenador(
+            context = requireContext(),
+            entrenadores = viewModel.entrenadoresDisponibles.value,
+            idCreador = mainViewModel.usuario.value?.id ?: -1,
+            onEntrenadoresSelected = onEntrenadoresSelected
+        )
 
     }
 

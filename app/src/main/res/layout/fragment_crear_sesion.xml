@@ -312,12 +312,25 @@
                                 android:layout_height="160dp">
 
                                 <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/siv_foto_realizada"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:scaleType="center"
+                                    android:src="@drawable/example_image"
+                                    app:shapeAppearance="@style/CornerCut"
+                                    tools:visibility="visible"
+                                    android:visibility="gone"
+                                    />
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/siv_camara"
                                     android:layout_width="50dp"
                                     android:layout_height="50dp"
                                     android:src="@drawable/ic_outline_camera_alt_24"
                                     android:tint="@color/colorPrimary" />
 
                                 <TextView
+                                    android:id="@+id/tv_hacer_foto"
                                     android:textColor="@color/textos"
                                     android:gravity="center"
                                     android:layout_width="wrap_content"
@@ -403,6 +416,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_anadir_entrenador"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

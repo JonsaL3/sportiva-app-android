@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import es.dao.sportiva.databinding.ItemEntrenadorParticipanteBinding
+import es.dao.sportiva.databinding.ItemSeleccionarEntrenadorBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 
-class EntrenadoresParticipantesRecyclerViewAdapter : RecyclerView.Adapter<EntrenadoresParticipantesViewHolder>() {
+class SeleccionarEntrenadoresRecyclerViewAdapter : RecyclerView.Adapter<SeleccionarEntrenadoresViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<Entrenador>() {
         override fun areItemsTheSame(oldItem: Entrenador, newItem: Entrenador): Boolean {
@@ -35,41 +35,36 @@ class EntrenadoresParticipantesRecyclerViewAdapter : RecyclerView.Adapter<Entren
         return differ.currentList
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntrenadoresParticipantesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeleccionarEntrenadoresViewHolder {
         val binding =
-            ItemEntrenadorParticipanteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EntrenadoresParticipantesViewHolder(binding, this)
+            ItemSeleccionarEntrenadorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SeleccionarEntrenadoresViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: EntrenadoresParticipantesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SeleccionarEntrenadoresViewHolder, position: Int) {
         val inscripcion = differ.currentList[position]
         holder.bind(inscripcion)
     }
 
 }
 
-class EntrenadoresParticipantesViewHolder(
-    private val binding: ItemEntrenadorParticipanteBinding,
-    private val adapter: EntrenadoresParticipantesRecyclerViewAdapter
+class SeleccionarEntrenadoresViewHolder(
+    private val binding: ItemSeleccionarEntrenadorBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private lateinit var mEntrenador: Entrenador
-
     fun bind(entrenador: Entrenador) {
-        mEntrenador = entrenador
         binding.entrenador = entrenador
-        setupListeners()
-    }
 
-    private fun setupListeners() {
-        binding.sivDelete.setOnClickListener { borrarRow() }
-    }
+        // si no toco la checkbox que esta cambie igual
+        binding.mcvEntrenador.setOnClickListener {
+            binding.chckBox.isChecked = !binding.chckBox.isChecked
+        }
 
-    private fun borrarRow() {
-        mEntrenador.isSeleccionadoParaSerParticipante = false
-        val aux = adapter.getList().map { it.copy() } as MutableList
-        aux.removeIf { it.id == mEntrenador.id }
-        adapter.submitList(aux)
+        // Cuando presiono la checkbox
+        binding.chckBox.addOnCheckedStateChangedListener { checkBox, state ->
+            entrenador.isSeleccionadoParaSerParticipante = checkBox.isSelected
+        }
+
     }
 
 }

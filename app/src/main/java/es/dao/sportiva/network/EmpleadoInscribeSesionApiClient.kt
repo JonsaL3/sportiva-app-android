@@ -6,8 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface EmpleadoInscribeSesionApiClient {
-
     @GET("empleadoInscribeSesion/findInscripcionesByIdSesion/{idSesion}")
     fun findInscripcionesByIdSesion(@Path("idSesion") idSesion: Int): Call<EmpleadoInscribeSesionWrapper>
-
 }
