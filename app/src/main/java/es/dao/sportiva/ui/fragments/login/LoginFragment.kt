@@ -1,4 +1,4 @@
-package es.dao.sportiva.ui.fragments
+package es.dao.sportiva.ui.fragments.login
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -61,11 +61,11 @@ class LoginFragment : Fragment() {
         viewModel.doLogin(correo, contrasena, requireContext()) { usuario ->
 
             if (usuario is Empleado) {
-                val action = LoginFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
-                findNavController().navigate(action)
+//                val action = LoginFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
+//                findNavController().navigate(action)
             } else if (usuario is Entrenador) {
-                val action = LoginFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
-                findNavController().navigate(action)
+//                val action = LoginFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
+//                findNavController().navigate(action)
             }
 
         }
