@@ -1,3 +1,11 @@
 package es.dao.sportiva.models.entrenador
 
-class EntrenadorWrapper : ArrayList<Entrenador>()
+class EntrenadorWrapper(entrenadores: List<Entrenador>) : ArrayList<Entrenador>() {
+    init {
+        clear()
+        addAll(entrenadores)
+    }
+
+    constructor() : this(listOf())
+
+}

@@ -1,6 +1,7 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.models.sesion.Sesion
+import es.dao.sportiva.repository.EntrenadorRepo
 import es.dao.sportiva.repository.SesionRepo
 import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.UiState
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CrearSesionEntrenadorViewModel @Inject constructor(
     private var uiState: UiState,
-    private val sesionRepo: SesionRepo
+    private val sesionRepo: SesionRepo,
+    private val entrenadorRepo: EntrenadorRepo
 ) : ViewModel() {
 
     /**
@@ -51,6 +54,23 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
     val aforoSesion = _aforoSesion
 
     /**
+     * Datos que necesito en el flujo de crear sesión
+     */
+    private val _entrenadoresDisponibles = MutableLiveData(EntrenadorWrapper())
+    val entrenadoresDisponibles: LiveData<EntrenadorWrapper> = _entrenadoresDisponibles
+
+    /**
+     * Cargo los datos que necesito para poder mostrar el formulario de crear sesion
+     */
+    fun cargarDatosIniciales(idEmpresa: Int) = viewModelScope.launch {
+        uiState.setLoading()
+        entrenadorRepo.findEntrenadoresByIdEmpresa(idEmpresa)?.apply {
+            _entrenadoresDisponibles.postValue(this)
+            uiState.setSuccess()
+        }
+    }
+
+    /**
      * Obtengo los datos del formulario y del creador de la sesión y creo la sesion para
      * enviarsela al servidor
      */
@@ -73,6 +93,16 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
                 uiState.setSuccess()
             }
         }
+    }
+
+    /**
+     * Añado a la lista de entrenadores seleccionados los entrenadores
+     * proporcionados por una lista
+     */
+    fun addEntrenadoresParticipantes(entrenadores: EntrenadorWrapper) {
+        entrenadores.forEach { it.isSeleccionadoParaSerParticipante =  true }
+        _entrenadoresParticipantes.value!!.addAll(entrenadores)
+        _entrenadoresParticipantes.value = _entrenadoresParticipantes.value
     }
 
     /**

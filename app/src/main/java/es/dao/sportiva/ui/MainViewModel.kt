@@ -1,6 +1,7 @@
 package es.dao.sportiva.ui
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,8 +37,9 @@ class MainViewModel @Inject constructor(
         uiState.setLoading()
 
         CoroutineScope(Dispatchers.IO).launch {
-            _usuario.postValue(usuarioRepo.iniciarSesion(correo, contrasena))
-        }.invokeOnCompletion {
+            launch {
+                _usuario.postValue(usuarioRepo.iniciarSesion(correo, contrasena))
+            }.join()
             _usuario.value?.let { usuario ->
                 runOnUiThread {
                     uiState.setSuccess()

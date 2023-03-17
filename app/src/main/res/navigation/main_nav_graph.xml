@@ -3,27 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph.xml"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/welcomeFragment">
 
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="es.dao.sportiva.ui.fragments.LoginFragment"
-        android:label="LoginFragment" >
-        <action
-            android:id="@+id/action_loginFragment_to_empleadoMainFragment"
-            app:destination="@id/empleadoMainFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_entrenadorMainFragment3"
-            app:destination="@id/entrenadorMainFragment" />
-    </fragment>
     <fragment
         android:id="@+id/empleadoMainFragment"
         android:name="es.dao.sportiva.ui.fragments.flujo_empleado.EmpleadoMainFragment"
-        android:label="EmpleadoMainFragment" />
+        android:label="EmpleadoMainFragment"
+        tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/entrenadorMainFragment"
         android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.EntrenadorMainFragment"
-        android:label="EntrenadorMainFragment" >
+        android:label="EntrenadorMainFragment"
+        tools:layout="@layout/fragment_entrenador_main">
         <action
             android:id="@+id/action_entrenadorMainFragment_to_crearSesionFragment3"
             app:destination="@id/crearSesionFragment" />
@@ -41,4 +32,16 @@
         android:name="es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion.ComenzarSesionFragment"
         android:label="fragment_comenzar_sesion"
         tools:layout="@layout/fragment_comenzar_sesion" />
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="es.dao.sportiva.ui.fragments.login.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome">
+        <action
+            android:id="@+id/action_loginFragment_to_empleadoMainFragment"
+            app:destination="@id/empleadoMainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_entrenadorMainFragment3"
+            app:destination="@id/entrenadorMainFragment" />
+    </fragment>
 </navigation>

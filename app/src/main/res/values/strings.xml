@@ -4,6 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="por_favor_inicie_sesi_n">Por favor, inicie sesión…</string>
     <string name="bienvenido">¡Bienvenido!</string>
+    <string name="bienvenido_msg">Para empezar tu aventura, inicia sesión o registrate.</string>
     <string name="correo_electr_nico">Correo electrónico</string>
     <string name="contrase_a">Contraseña</string>
     <string name="sesiones">Sesiones</string>
@@ -57,4 +58,14 @@
     <string name="numero_m_ximo_de_asistentes">Numero máximo de asistentes</string>
     <string name="comenzar_sesi_n">Comenzar sesión</string>
     <string name="error_current_usuario">Error con el usuario que inició sesión en la aplicación.</string>
+    <string name="welcome_wallpaper">fondo de bienvenida</string>
+    <string name="nos_alegramos_de_verte">¡Nos alegramos de volver a verte!</string>
+    <string name="volver_atras">Volver atrás</string>
+    <string name="logo_sportiva">logo sportiva</string>
+    <string name="palma_mano">¡Y todo desde la palma de tu mano!</string>
+    <string name="consigue_tus_objectivos">¡Consigue tus objetivos sin que te des cuenta de ello! \n Nosotros nos encargamos de gestionar tu tiempo de ejercicio.</string>
+    <string name="lleva_control_de_las_sesiones">Lleva un control de tus sesiones de ejercicio de una manera muy fácil.</string>
+    <string name="imagen_de_ejemplo">Imagen de ejemplo</string>
+    <string name="volver_atr_s">Volver atrás</string>
+    <string name="tomar_imagen">Tomar imagen</string>
 </resources>

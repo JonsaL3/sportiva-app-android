@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.fragments.LoginFragment"
+        tools:context=".ui.fragments.login.LoginFragment"
         android:background="@drawable/login_background"
         >
 
