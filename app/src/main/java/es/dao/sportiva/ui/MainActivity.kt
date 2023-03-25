@@ -1,21 +1,24 @@
 package es.dao.sportiva.ui
 
-import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ActivityMainBinding
-import es.dao.sportiva.models.Empleado
 import es.dao.sportiva.utils.DxImplementation
 import es.dao.sportiva.utils.UiState
 import java.time.LocalDate
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -34,12 +37,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
-        setContentView(binding.root)
         setupView()
 
         //registar a onbackpressed callback
@@ -53,67 +55,60 @@ class MainActivity : AppCompatActivity() {
     private fun setupView() {
         setupObservers()
         setupDrawer()
+        setupNavigationListener()
     }
 
     private fun setupObservers() {
-        observeUsuario()
         setupUiStates()
     }
 
+    private fun setupNavigationListener() {
+
+        val navController = navHostFragment.findNavController()
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            when (destination.id) {
+
+                R.id.welcomeFragment -> { // TODO al ponerlo en gone se oculta el loader porque está dentro.
+                    binding.appBarLayout.visibility = View.GONE
+                }
+
+                R.id.entrenadorMainFragment -> {
+                    // set label
+                    binding.topAppBar.title = getString(R.string.seleccionar_accion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.appBarLayout.visibility = View.VISIBLE
+                }
+
+            }
+
+        }
+
+    }
 
     private fun setupUiStates() {
-//        uiState.observableState.observe(this) { state ->
-//            when (state) {
-//                UiState.State.LOADING -> {
+
+        uiState.observableState.observe(this) { state ->
+
+            when (state) {
+                UiState.State.LOADING -> {
 //                    binding.piMainActivity.show()
-//                }
-//                UiState.State.SUCCESS -> {
+                }
+                UiState.State.SUCCESS -> {
 //                    binding.piMainActivity.hide()
-//                }
-//                UiState.State.ERROR -> {
-//                    binding.piMainActivity.hide()
-//                    if (uiState.errorMessage.isNotEmpty()) {
-//                        DxImplementation.mostrarDxWarning(this, uiState.errorMessage)
-//                    } else {
-//                        DxImplementation.mostrarDxError(this, "Error desconocido")
-//                    }
-//                }
-//                null -> {}
-//            }
-//        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun observeUsuario() {
-
-//        viewModel.usuario.observe(this) { usuario ->
+                }
+                UiState.State.ERROR -> {
 //
-//            usuario?.let {
-//
-//                val campoNombre = binding.navView.getHeaderView(0).findViewById<TextView>(R.id.tv_nombre_usuario)
-//                campoNombre.text = "${usuario.nombre} ${usuario.apellido1} ${usuario.apellido2}"
-//
-//                when (it) {
-//                    is Empleado -> {
-//                        binding.navView.menu.clear()
-//                        binding.navView.inflateMenu(R.menu.menu_drawer_flujo_empleado)
-//                        setupActionsNavViewEmpleado()
-//                    }
-//                    else -> {
-//                        binding.navView.menu.clear()
-//                        binding.navView.inflateMenu(R.menu.menu_drawer_flujo_entrenador)
-//                        setupActionsNavViewEntrenador()
-//                    }
-//                }
-//
-//            } ?: run {
-//
-//            }
-//
-//        }
+                    if (uiState.errorMessage.isNotEmpty()) {
+                        DxImplementation.mostrarDxWarning(this, uiState.errorMessage)
+                    } else {
+                        DxImplementation.mostrarDxError(this, getString(R.string.error_desconocido))
+                    }
+                }
+                else -> { binding.piMainActivity.hide() }
+            }
+        }
 
     }
-
     private fun setupActionsNavViewEmpleado() {
 //        binding.navView.setNavigationItemSelectedListener { menuItem ->
 //            when(menuItem.itemId) {
@@ -141,7 +136,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun mostrarCodigoQr() {
-
         DxImplementation.mostarDxGeneararBarcode(
             context = this,
             barcode =  viewModel.usuario.value?.id.toString() + " ; " + LocalDate.now() + " ; " + viewModel.usuario.value?.javaClass?.simpleName,
@@ -150,17 +144,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupDrawer() {
 
-//        // Apertura y cierre del drawer con la appbar
-//        val drawer = binding.drawerLayout
-//        val toggle = ActionBarDrawerToggle(
-//            this,
-//            drawer,
-//            binding.appbar,
-//            R.string.abierto,
-//            R.string.cerrado
-//        )
-//        drawer.addDrawerListener(toggle)
-//        toggle.syncState()
+        // Apertura y cierre del drawer con la appbar
+        val drawer = binding.drawerLayout
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawer,
+            binding.topAppBar,
+            R.string.abierto,
+            R.string.cerrado
+        )
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
 
     }
 

@@ -19,8 +19,23 @@ abstract class Usuario(
 
 ) : Serializable {
 
+
+
     override fun toString(): String {
         return "Usuario(id=$id, correo='$correo', contrasena='$contrasena', nombre='$nombre', apellido1='$apellido1', apellido2='$apellido2', fechaNacimiento=$fechaNacimiento, fechaInserccion=$fechaInserccion, isActivo=$isActivo, imagen=$imagen)"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Usuario) return false
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id
     }
 
 }

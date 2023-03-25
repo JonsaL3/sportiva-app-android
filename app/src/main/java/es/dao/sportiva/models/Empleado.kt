@@ -18,6 +18,14 @@ data class Empleado(
         return super.toString() + "Empleado(cargo='$cargo', peso=$peso, altura=$altura, isDeporteFrecuente=$isDeporteFrecuente, isFumador=$isFumador, empresa=$empresa)"
     }
 
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+
     companion object {
 
         fun fromJson(json: String): Empleado {
