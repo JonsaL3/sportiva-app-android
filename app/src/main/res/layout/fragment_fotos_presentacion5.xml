@@ -1,22 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/transparent"
-    tools:background="@color/black"
-    tools:context=".ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.FotosPresentacion5Fragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <data>
+        <variable
+            name="viewModel"
+            type="es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.CrearSesionEntrenadorViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/foto_de_presentaci_n"
-        android:lines="1"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:layout_marginVertical="20dp"
-        android:textStyle="bold"
-        />
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        tools:background="@color/black"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        tools:context=".ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.FotosPresentacion5Fragment">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:gravity="center"
+            android:lines="1"
+            android:text="@string/foto_de_presentaci_n"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:gravity="center"
+            android:text="@string/realiza_o_selecciona_una_imagen_de_tu_dispositivo_para_la_sesi_n_esta_imagen_ser_la_que_el_empleado_vea_en_la_lista_de_sesi_nes_en_las_que_puede_inscribirse"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcv_fotos_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintVertical_bias="0.45"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_seleccione_imagen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/transparent"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="160dp"
+                        android:background="@drawable/ic_dotted_shape"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/siv_imagen_seleccionada"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="center"
+                            android:src="@drawable/example_image"
+                            android:visibility="@{viewModel.uriFromDispositivo.empty ? View.GONE : View.VISIBLE}"
+                            app:shapeAppearance="@style/CornerCut"
+                            tools:visibility="gone" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/siv_seleccione_imagen"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_baseline_attach_file_24"
+                            android:tint="@color/colorPrimary"
+                            android:visibility="@{viewModel.uriFromDispositivo.empty ? View.VISIBLE : View.GONE}"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_foto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="@string/seleccione_imagen"
+                            android:textColor="@color/white"
+                            android:visibility="@{viewModel.uriFromDispositivo.empty ? View.VISIBLE : View.GONE}"
+                            />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cv_realizar_imagen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:backgroundTint="@color/transparent"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="120dp"
+                        android:layout_height="160dp"
+                        android:background="@drawable/ic_dotted_shape"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/siv_foto_realizada"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="center"
+                            android:src="@drawable/example_image"
+                            app:shapeAppearance="@style/CornerCut"
+                            tools:visibility="gone"
+                            android:visibility="@{viewModel.uriRecienRealizada.empty ? View.GONE : View.VISIBLE}"
+                            />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/siv_camara"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/ic_outline_camera_alt_24"
+                            android:tint="@color/colorPrimary"
+                            android:visibility="@{viewModel.uriRecienRealizada.empty ? View.VISIBLE : View.GONE}"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_hacer_foto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="@string/realizar_imagen"
+                            android:textColor="@color/white"
+                            android:visibility="@{viewModel.uriRecienRealizada.empty ? View.VISIBLE : View.GONE}"
+                            />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

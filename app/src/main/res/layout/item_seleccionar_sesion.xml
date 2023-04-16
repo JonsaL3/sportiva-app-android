@@ -20,53 +20,110 @@
         app:cardElevation="0dp"
         android:padding="10dp"
         app:strokeWidth="1dp"
+        android:backgroundTint="@color/transparent"
+        tools:backgroundTint="@color/black"
         app:strokeColor="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:gravity="center_vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="1H de aerobic en ICP"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:text="@{sesion.titulo}"
-                    android:textStyle="bold"
-                    />
+                <LinearLayout
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Una leve sesión fitness con los del departamento de marketing."
-                    android:textColor="@color/textos"
-                    android:textSize="15sp"
-                    android:maxLines="2"
-                    android:text="@{sesion.subtitulo}"
-                    />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="1H de aerobic en ICP"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:text="@{sesion.titulo}"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Una leve sesióarketing."
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:minLines="3"
+                        android:text="@{sesion.subtitulo}"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:layout_width="130dp"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/example_image"
-                />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    app:layout_constraintBottom_toTopOf="@+id/ll_enterprise_container"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0"
+                    tools:text="11/11/2023 a las 4:55" />
+
+                <LinearLayout
+                    android:id="@+id/ll_enterprise_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="end"
+                        android:layout_marginVertical="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/enterprise_svgrepo_com"
+                        app:tint="@color/red_sportiva" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textColor="@color/red_sportiva"
+                        android:textSize="10sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Camioneros Paco S.L." />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 

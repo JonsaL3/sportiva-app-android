@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
+import java.io.ByteArrayOutputStream
 import java.io.FileDescriptor
 import java.io.IOException
 import java.time.Instant
@@ -43,4 +44,16 @@ fun Uri.getBitmap(context: Context): Bitmap? {
         }
     }
     return null
+}
+
+fun Bitmap.toBase64(): String {
+    val baos = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+    val b = baos.toByteArray()
+    return Base64.getEncoder().encodeToString(b)
+}
+
+fun Uri.toBase64(context: Context): String? {
+    val bitmap = this.getBitmap(context)
+    return bitmap?.toBase64()
 }

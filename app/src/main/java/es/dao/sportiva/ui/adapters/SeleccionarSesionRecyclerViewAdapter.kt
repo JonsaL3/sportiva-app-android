@@ -42,7 +42,7 @@ class SeleccionarSesionRecyclerViewAdapter(
     }
 
     fun submitList(list: List<Sesion>) {
-        differ.submitList(list)
+        differ.submitList(list.map { it.copy() })
     }
 
 }

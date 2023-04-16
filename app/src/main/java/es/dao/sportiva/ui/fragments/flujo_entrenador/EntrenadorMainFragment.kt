@@ -48,8 +48,7 @@ class EntrenadorMainFragment : Fragment() {
             loadFragmentCrearSesion()
         }
 
-        binding.llComenzarSesion.setOnClickListener {
-            loadFragmentComenzarSesion()
+        binding.llComenzarSesion.setOnClickListener { loadFragmentComenzarSesion()
         }
 
     }

@@ -84,7 +84,7 @@
                 android:lines="1"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:layout_marginVertical="20dp"
                 android:textStyle="bold"
                 />

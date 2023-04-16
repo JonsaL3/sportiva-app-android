@@ -4,16 +4,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.LayoutInflater
+import androidx.annotation.RawRes
 import androidx.core.content.ContextCompat
 import com.example.dxcustomlibrary.DxCustom
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import es.dao.sportiva.R
-import es.dao.sportiva.databinding.DxLectorQrBinding
-import es.dao.sportiva.databinding.DxListaEntrenadoresParticipantesBinding
-import es.dao.sportiva.databinding.DxListaSesionesBinding
-import es.dao.sportiva.databinding.DxMostrarQrBinding
-import es.dao.sportiva.databinding.LoginLayoutBinding
+import es.dao.sportiva.databinding.*
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.models.sesion.Sesion
@@ -21,6 +18,8 @@ import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesRecyclerViewAdapter
 import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesViewHolder
 import es.dao.sportiva.ui.adapters.SeleccionarEntrenadoresRecyclerViewAdapter
 import es.dao.sportiva.ui.adapters.SeleccionarSesionRecyclerViewAdapter
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object DxImplementation {
 
@@ -74,22 +73,6 @@ object DxImplementation {
             .showAceptarButton { onAccept?.invoke() }
             .showCancelarButton {  }
             .showDialogReturnDialog()
-    }
-
-    fun mostrarDxDescartarCambios(
-        context: Context,
-        mensaje: String
-    ) = runOnUiThread {
-
-        DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo(context.getString(R.string.atencion))
-            .setMensaje(mensaje)
-            .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
-            .noPermitirSalirSinBotones()
-            .showAceptarButton { }
-            .showDialogReturnDialog()
-
     }
 
     fun mostrarDxListaSesionesSeleccionar(
@@ -185,37 +168,42 @@ object DxImplementation {
 
     fun mostrarDxSeleccionarEntrenador(
         context: Context,
-        entrenadores: ArrayList<Entrenador>?,
-        idCreador: Int,
+        entrenadoresEnMiMismaEmpresa: EntrenadorWrapper,
+        entrenadoresYaEnLaLista: EntrenadorWrapper,
         onEntrenadoresSelected: (EntrenadorWrapper) -> Unit
     ) = runOnUiThread {
 
-        entrenadores?.let { entrenadores ->
+        val entrenadoresSeleccionables = entrenadoresEnMiMismaEmpresa.filter { entrenador ->
+            !entrenadoresYaEnLaLista.any { it.id == entrenador.id }
+        }
+
+        if (entrenadoresSeleccionables.isEmpty()) {
+            mostrarDxError(
+                context = context,
+                mensaje = "No hay mas entrenadores disponibles para seleccionar asignados a la misma empresa que tu."
+            )
+        } else {
 
             val customLayoutBinding = DxListaEntrenadoresParticipantesBinding.inflate(LayoutInflater.from(context))
 
-            val dx = DxCustom(context)
+            DxCustom(context)
                 .createDialog(fullScreen = true)
                 .addCustomView(customLayoutBinding.root)
                 .setTitulo("Seleccionar entrenadores.")
                 .setMensaje("Seleccione los entrenadores disponibles asignados a la misma empresa que tu que participarán en la sesión.")
-                .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
+                .setIcono(ContextCompat.getDrawable(context, R.drawable.baseline_edit_24))
                 .noPermitirSalirSinBotones()
-                .showAceptarButton { onEntrenadoresSelected.invoke(EntrenadorWrapper(entrenadores.filter { !it.isSeleccionadoParaSerParticipante })) }
+                .showAceptarButton {
+                    val wrapper = EntrenadorWrapper()
+                    wrapper.addAll(entrenadoresSeleccionables.filter { !it.isSeleccionadoParaSerParticipante })
+                    onEntrenadoresSelected(wrapper)
+                }
                 .showCancelarButton { }
                 .showDialogReturnDxCustom()
 
             val adapter = SeleccionarEntrenadoresRecyclerViewAdapter()
             customLayoutBinding.rvEntrenadoresParticipantes.adapter = adapter
-            entrenadores.removeIf { it.id == idCreador || it.isSeleccionadoParaSerParticipante }
-            adapter.submitList(entrenadores)
-
-        } ?: run {
-
-            mostrarDxError(
-                context = context,
-                mensaje = "No hay mas entrenadores asignados a la misma empresa que tu."
-            )
+            adapter.submitList(entrenadoresSeleccionables)
 
         }
 
@@ -245,6 +233,64 @@ object DxImplementation {
                 strokecolor = ContextCompat.getColor(context, R.color.red_sportiva)
             ) {  }
             .showDialogReturnDialog()
+    }
+
+    fun mostrarDxConfirmarCrearSesion(
+        context: Context,
+        entrenadoresParticipantes: EntrenadorWrapper,
+        titulo: String,
+        fechaYHora: LocalDateTime,
+        aforo: Int,
+        onAccept: () -> Unit
+    ) = runOnUiThread {
+
+        val nombresEntrenadores = entrenadoresParticipantes.joinToString(", ") { it.nombre }
+        val mAforo = if (aforo == Constantes.AFORO_ILIMITADO) "Ilimitado" else aforo.toString()
+        val resumenSesionACrear = "Estas a punto de crear una sesión con los siguientes datos:<br><br>" +
+                "Título: $titulo<br>" +
+                "Fecha y hora: ${fechaYHora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}<br>" +
+                "Aforo: $mAforo<br>" +
+                "Entrenadores participantes: $nombresEntrenadores<br><br>" +
+                "¿Estás seguro de que quieres crear la sesión?"
+
+        DxCustom(context)
+            .createDialog(fullScreen = true)
+            .setTitulo("Crear sesión")
+            .setMensaje(resumenSesionACrear)
+            .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
+            .noPermitirSalirSinBotones()
+            .showAceptarButton {
+                onAccept.invoke()
+            }
+            .showCancelarButton { }
+            .showDialogReturnDialog()
+
+    }
+
+    fun mostrarDxLottie(
+        context: Context,
+        titulo: String,
+        mensaje: String,
+        lottie: Int,
+        onAccept: () -> Unit
+    ) = runOnUiThread {
+
+        val binding = DxMostrarLottieBinding.inflate(LayoutInflater.from(context))
+
+        binding.lottieAnimationView.setAnimation(lottie)
+
+        DxCustom(context)
+            .createDialog(fullScreen = true)
+            .setTitulo(titulo)
+            .setMensaje(mensaje)
+            .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
+            .noPermitirSalirSinBotones()
+            .addCustomView(binding.root)
+            .showAceptarButton {
+                onAccept.invoke()
+            }
+            .showDialogReturnDialog()
+
     }
 
 }

@@ -86,25 +86,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupUiStates() {
-
+        // TODO LE HACES VISIVILITY HIDE Y SE VE ROJO NO TIENE PUTO SENTIDO
         uiState.observableState.observe(this) { state ->
 
             when (state) {
                 UiState.State.LOADING -> {
-//                    binding.piMainActivity.show()
+                    binding.piMainActivity.visibility = View.VISIBLE
                 }
                 UiState.State.SUCCESS -> {
-//                    binding.piMainActivity.hide()
+                    binding.piMainActivity.visibility = View.GONE
                 }
                 UiState.State.ERROR -> {
 //
+                    binding.piMainActivity.visibility = View.GONE
+
                     if (uiState.errorMessage.isNotEmpty()) {
                         DxImplementation.mostrarDxWarning(this, uiState.errorMessage)
                     } else {
                         DxImplementation.mostrarDxError(this, getString(R.string.error_desconocido))
                     }
                 }
-                else -> { binding.piMainActivity.hide() }
+                else -> {}
             }
         }
 

@@ -7,12 +7,12 @@
     android:background="@color/transparent"
     tools:background="@color/black"
     android:orientation="vertical"
-    tools:context=".ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.AnadirEntrenadores1Fragment">
+    tools:context=".ui.fragments.flujo_entrenador.comenzar_sesion.pasos_formulario.SeleccionarSesion1Fragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/a_adir_entrenadores"
+        android:text="@string/seleccionar_sesi_n"
         android:lines="1"
         android:gravity="center"
         android:textColor="@color/white"
@@ -25,14 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/selecciona_los_entrenadores_que_te_ayudar_n_a_crear_la_sesi_n_s_lo_podr_s_a_adir_entrenadores_que_est_n_destinados_a_la_misma_empresa_que_t"
+        android:text="@string/selecciona_en_la_lista_de_sesiones_que_has_programado_para_el_d_a_de_hoy_a_cual_de_ellas_deseas_dar_comienzo"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_marginBottom="20dp"
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_entrenadores"
+        android:id="@+id/rv_sesiones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

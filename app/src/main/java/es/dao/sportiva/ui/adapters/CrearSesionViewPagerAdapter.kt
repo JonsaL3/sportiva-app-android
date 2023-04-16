@@ -8,10 +8,7 @@ import es.dao.sportiva.R
 import es.dao.sportiva.ui.MainActivity
 import es.dao.sportiva.ui.fragments.flujo_empleado.EntrenadoresFragment
 import es.dao.sportiva.ui.fragments.flujo_empleado.SesionesFragment
-import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.Aforo4Fragment
-import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.AnadirEntrenadores1Fragment
-import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.FechaYHora3Fragment
-import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.InformacionGeneral2Fragment
+import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.*
 import es.dao.sportiva.ui.fragments.login.InformationRegisterFragment
 
 class CrearSesionViewPagerAdapter(
@@ -22,7 +19,7 @@ class CrearSesionViewPagerAdapter(
     lifecycle
 ) {
     override fun getItemCount(): Int {
-        return 4
+        return 5
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -30,7 +27,8 @@ class CrearSesionViewPagerAdapter(
             0 -> AnadirEntrenadores1Fragment()
             1 -> InformacionGeneral2Fragment()
             2 -> FechaYHora3Fragment()
-            else -> Aforo4Fragment()
+            3 -> Aforo4Fragment()
+            else -> FotosPresentacion5Fragment()
         }
     }
 

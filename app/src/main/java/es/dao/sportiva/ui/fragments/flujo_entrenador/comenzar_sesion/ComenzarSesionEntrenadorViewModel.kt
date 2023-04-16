@@ -7,13 +7,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import es.dao.sportiva.enum.PasoFormularioComenzarSesion
 import es.dao.sportiva.models.empleado_inscribe_sesion.EmpleadoInscribeSesionWrapper
+import es.dao.sportiva.models.empleado_participa_sesion.EmpleadoParticipaSesion
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.sesion.Sesion
 import es.dao.sportiva.models.sesion.SesionWrapper
 import es.dao.sportiva.repository.EmpleadoInscribeSesionRepo
 import es.dao.sportiva.repository.SesionRepo
+import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.CrearSesionEntrenadorState
 import es.dao.sportiva.utils.UiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,82 +30,86 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
 ) : ViewModel() {
 
     /**
-     * Todas las sesiones que ha creado el entrenador
+     * Estados
      */
-    private val _sesionesCreadasPorElEntrenador: MutableLiveData<List<Sesion>> = MutableLiveData()
-    val sesionesCreadasPorElEntrenador: LiveData<List<Sesion>> = _sesionesCreadasPorElEntrenador
+    private var _state: MutableStateFlow<ComenzarSesionEntrenadorViewModelState> = MutableStateFlow(ComenzarSesionEntrenadorViewModelState.Neutral)
+    val state = _state.asStateFlow()
 
     /**
-     * De todas las sesiones, se seleccionará una, la cual será almacenada aqui
+     * Elementos del paso 1 del formulario
      */
-    private val _sesionLaCualSeDeseaComenzar: MutableLiveData<Sesion?> = MutableLiveData(null)
-    val sesionLaCualSeDeseaComenzar: LiveData<Sesion?> = _sesionLaCualSeDeseaComenzar
+    private val _listaDeSesionesDisponibles: MutableLiveData<SesionWrapper> = MutableLiveData(SesionWrapper())
+    val listaDeSesionesDisponibles: LiveData<SesionWrapper>
+        get() = _listaDeSesionesDisponibles
+
+    private var _sesionSeleccionada: MutableLiveData<Sesion?> = MutableLiveData(null)
+    val sesionSeleccionada: LiveData<Sesion?>
+        get() = _sesionSeleccionada
 
     /**
-     * Todas las inscripciones a esa sesión
+     * Elementos del paso 2 del formulario
      */
-    private val _inscripcionesSesion: MutableLiveData<EmpleadoInscribeSesionWrapper?> = MutableLiveData(null)
-    val inscripcionesSesion: LiveData<EmpleadoInscribeSesionWrapper?> = _inscripcionesSesion
+    private var _asistenciasConfirmadas: MutableLiveData<MutableList<EmpleadoParticipaSesion>> = MutableLiveData(mutableListOf())
+    val asistenciasConfirmadas: LiveData<MutableList<EmpleadoParticipaSesion>>
+        get() = _asistenciasConfirmadas
 
     /**
-     * Numero de personas que aún no han confirmado su asistencia a esa sesión
+     * Debo poder modificar el estado de mi ui desde donde sea
      */
-    private var _pendientesPorConfirmar: MutableLiveData<Int> = MutableLiveData(0)
-    val pendientesPorConfirmar: LiveData<Int> = _pendientesPorConfirmar
-
-    /**
-     * numero de personas que ya han confirmado su asistencia a esa sesión
-     */
-    private var _confirmados: MutableLiveData<Int> = MutableLiveData(0)
-    val confirmados: LiveData<Int> = _confirmados
-
-    private var observeInscripciones = Observer<EmpleadoInscribeSesionWrapper?> { wrapper ->
-        wrapper?.let { inscripciones ->
-            _pendientesPorConfirmar.value = inscripciones.count { !it.isConfirmado }
-            _confirmados.value = inscripciones.count { it.isConfirmado }
-        }
+    fun setState(state: ComenzarSesionEntrenadorViewModelState) = viewModelScope.launch {
+        launch {
+            _state.emit(state)
+        }.invokeOnCompletion { launch { _state.emit(ComenzarSesionEntrenadorViewModelState.Neutral) } }
     }
 
     /**
-     * A lo largo de la vida del viewmodel, observaré siempre el numero de inscripciones
+     * Reseteo el viewmodel
      */
-    init {
-        _inscripcionesSesion.observeForever(observeInscripciones)
-    }
-
-    override fun onCleared() {
-        _inscripcionesSesion.removeObserver(observeInscripciones)
-        super.onCleared()
+    fun resetViewModel() {
+        _sesionSeleccionada.value = null
+        _asistenciasConfirmadas.value = mutableListOf()
     }
 
     /**
-     * Lo primero que necesito es descargarme todas las sesiones que creó ese entrenador
+     * Métodos del paso 1 del formulario
      */
-    fun cargarDatosGenerales(idEntrenador: Int) = viewModelScope.launch {
+    fun obtenerSesionesDisponibles(idEntrenador: Int) = viewModelScope.launch {
         uiState.setLoading()
-        sesionRepo.findSesionesDisponiblesByEntrenador(idEntrenador)?.let {
-            _sesionesCreadasPorElEntrenador.postValue(it)
+        sesionRepo.findSesionesDisponiblesByEntrenador(idEntrenador)?.apply {
+            _listaDeSesionesDisponibles.value = this
             uiState.setSuccess()
         }
     }
 
-    /**
-     * Desde la ui me vendrá la sesión que se desea comenzar
-     */
-    fun setSesion(sesion: Sesion) {
-        _sesionLaCualSeDeseaComenzar.postValue(sesion)
-        cargarInscripcionesSesion(sesion.id)
+    fun setSesionSeleccionada(sesion: Sesion) {
+        _sesionSeleccionada.value = sesion
+        setState(
+            state = ComenzarSesionEntrenadorViewModelState.IrAPasoEspecifico(
+                paso = PasoFormularioComenzarSesion.CONFIRMAR_ASISTENCIA
+            )
+        )
     }
 
     /**
-     * Cuando se haya seleccionado la sesión, se descargará automáticamente las inscripciones a esa sesión
+     * Métodos del paso 2 del formulario
      */
-    private fun cargarInscripcionesSesion(idSesion: Int) = viewModelScope.launch {
-        uiState.setLoading()
-        empleadoInscribeSesionRepo.findInscripcionesByIdSesion(idSesion)?.let {
-            uiState.setSuccess()
-            _inscripcionesSesion.postValue(it)
-        }
+    fun anadirAsistencia(empleado: EmpleadoParticipaSesion) {
+        _asistenciasConfirmadas.value!!.add(empleado)
+        _asistenciasConfirmadas.value = _asistenciasConfirmadas.value
     }
+
+    /**
+     * Finalmente, damos comienzo a la sesión
+     */
+    fun comenzarSesion() {
+        // TODO
+    }
+
+}
+
+sealed class ComenzarSesionEntrenadorViewModelState {
+    // Estados genéricos.
+    object Neutral : ComenzarSesionEntrenadorViewModelState()
+    data class IrAPasoEspecifico(val paso: PasoFormularioComenzarSesion) : ComenzarSesionEntrenadorViewModelState()
 
 }

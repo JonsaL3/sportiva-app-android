@@ -21,5 +21,6 @@ object Constantes {
     const val SERVER_HEADERS_ERROR_MESSAGE = "errorMessage"
     const val GENERIC_TAG = ":::GenericRepo"
     const val AFORO_ILIMITADO = -1
+    const val AFORO_NO_DEFINIDO = -2
 
 }

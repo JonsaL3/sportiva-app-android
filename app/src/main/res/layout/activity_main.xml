@@ -38,7 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/black"
-                    tools:title="Pues aqui va el titulo de lo que estás haciendo" />
+                    tools:title="Pues aqui va el titulo de lo que estás haciendo"
+                    />
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/pi_main_activity"
@@ -47,6 +48,8 @@
                     android:indeterminate="true"
                     tools:visibility="visible"
                     android:visibility="gone"
+                    app:indicatorColor="@color/red_sportiva"
+                    app:trackColor="@color/black"
                     />
 
             </com.google.android.material.appbar.AppBarLayout>
