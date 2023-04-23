@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentConfirmarAsistencia2Binding
 import es.dao.sportiva.ui.MainViewModel
+import es.dao.sportiva.ui.adapters.InscripcionesRecyclerViewAdapter
 import es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion.ComenzarSesionEntrenadorViewModel
 import es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion.ComenzarSesionEntrenadorViewModelState
 
@@ -28,9 +29,41 @@ class ConfirmarAsistencia2Fragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupView()
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.setState(ComenzarSesionEntrenadorViewModelState.Neutral)
+    }
+
+    private fun setupView() {
+        viewModel.obtenerInscripcionesSesion()
+        setupRecyclerInscripciones()
+    }
+
+    private fun setupRecyclerInscripciones() {
+
+        val adapter = InscripcionesRecyclerViewAdapter()
+
+        viewModel.inscripciones.observe(viewLifecycleOwner) { inscripciones ->
+
+            adapter.submitList(inscripciones)
+
+            if (inscripciones.isEmpty()) {
+                binding.rvInscripciones.visibility = View.GONE
+                // TODO MOSTRAR MENSAJE VACIO
+            } else {
+                binding.rvInscripciones.visibility = View.VISIBLE
+                // TODO OCULTAR MENSAJE VACIO
+            }
+
+        }
+
+        binding.rvInscripciones.adapter = adapter
+
     }
 
 }

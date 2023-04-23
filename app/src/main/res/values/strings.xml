@@ -97,4 +97,7 @@
     <string name="siguiente">Siguiente</string>
     <string name="selecciona_en_la_lista_de_sesiones_que_has_programado_para_el_d_a_de_hoy_a_cual_de_ellas_deseas_dar_comienzo">Selecciona en la lista de sesiones que has programado para el día de hoy a cual de ellas deseas dar comienzo.</string>
     <string name="seleccionar_sesi_n">Seleccionar sesión</string>
+    <string name="escanee_qr_tenga_en_cuenta">Escanee los códigos QR de los empleados que van a asistir a la sesión. Debes tener en cuenta que los empleados que no se hayan inscrito previamente no podrán formar parte de la sesión.</string>
+    <string name="confirmar_asistencia">Confirmar asistencia</string>
+    <string name="escanear_participante">Escanear participante</string>
 </resources>

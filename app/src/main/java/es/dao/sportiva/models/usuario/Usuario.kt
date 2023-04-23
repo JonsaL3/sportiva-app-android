@@ -36,4 +36,12 @@ abstract class Usuario(
         return id
     }
 
+    fun inicialOrGuion(): String {
+        return if (nombre.isNotEmpty()) {
+            nombre[0].toString()
+        } else {
+            "-"
+        }
+    }
+
 }

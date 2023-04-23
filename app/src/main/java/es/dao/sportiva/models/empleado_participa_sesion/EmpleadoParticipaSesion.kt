@@ -1,6 +1,6 @@
 package es.dao.sportiva.models.empleado_participa_sesion
 
-import es.dao.sportiva.models.Empleado
+import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.sesion.Sesion
 import es.dao.sportiva.utils.Constantes
 import java.io.Serializable

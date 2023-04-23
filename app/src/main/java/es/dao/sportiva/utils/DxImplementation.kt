@@ -4,20 +4,14 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.LayoutInflater
-import androidx.annotation.RawRes
 import androidx.core.content.ContextCompat
 import com.example.dxcustomlibrary.DxCustom
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.*
-import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
-import es.dao.sportiva.models.sesion.Sesion
-import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesRecyclerViewAdapter
-import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesViewHolder
 import es.dao.sportiva.ui.adapters.SeleccionarEntrenadoresRecyclerViewAdapter
-import es.dao.sportiva.ui.adapters.SeleccionarSesionRecyclerViewAdapter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -68,70 +62,16 @@ object DxImplementation {
             .createDialog(fullScreen = true)
             .setTitulo(titulo)
             .setMensaje(mensaje)
-            .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24)) // TODO QUIZAS CAMBIAR ICONO
+            .setIcono(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ic_baseline_warning_amber_24
+                )
+            ) // TODO QUIZAS CAMBIAR ICONO
             .noPermitirSalirSinBotones()
             .showAceptarButton { onAccept?.invoke() }
-            .showCancelarButton {  }
-            .showDialogReturnDialog()
-    }
-
-    fun mostrarDxListaSesionesSeleccionar(
-        context: Context,
-        sesiones: List<Sesion>?,
-        onSessionSelected: (Sesion) -> Unit
-    ) = runOnUiThread {
-
-        sesiones?.let { listaSesiones ->
-
-            val customLayoutBinding = DxListaSesionesBinding.inflate(LayoutInflater.from(context))
-
-            val dx = DxCustom(context)
-                .createDialog(fullScreen = true)
-                .addCustomView(customLayoutBinding.root)
-                .setTitulo(context.getString(R.string.seleccione_sesion))
-                .setMensaje(context.getString(R.string.seleccione_sesion_a_comenzar))
-                .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
-                .noPermitirSalirSinBotones()
-                .showCancelarButton { }
-                .showDialogReturnDxCustom()
-
-            val onSessionSelectedRecycler = { sesion: Sesion ->
-                onSessionSelected.invoke(sesion)
-                dx.hideDialog()
-            }
-            val adapter = SeleccionarSesionRecyclerViewAdapter(onSessionSelectedRecycler)
-            customLayoutBinding.rvSesiones.adapter = adapter
-            adapter.submitList(listaSesiones)
-
-        } ?: run {
-
-            mostrarDxError(
-                context = context,
-                mensaje = context.getString(R.string.no_se_han_creado_sesiones)
-            )
-
-        }
-
-    }
-
-    fun mostrarDxLectorQr(
-        context: Context,
-        onQrScanned: (String) -> Unit
-    ) = runOnUiThread {
-
-        val binding = DxLectorQrBinding.inflate(LayoutInflater.from(context))
-
-        DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo(context.getString(R.string.atencion))
-            .setMensaje(context.getString(R.string.escanea_qr))
-            .addCustomView(binding.root)
-            .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
-            .noPermitirSalirSinBotones()
             .showCancelarButton { }
             .showDialogReturnDialog()
-
-        // TODO ESCANEAR EL BARCODE
     }
 
     fun mostarDxGeneararBarcode(
@@ -290,6 +230,37 @@ object DxImplementation {
                 onAccept.invoke()
             }
             .showDialogReturnDialog()
+
+    }
+
+    fun mostrarDxLectorQr(
+        context: Context,
+        onQrScanned: (String) -> Unit
+    ) = runOnUiThread {
+
+        val binding = DxLectorQrBinding.inflate(LayoutInflater.from(context))
+
+        val dx = DxCustom(context)
+            .createDialog(fullScreen = true)
+            .setTitulo(context.getString(R.string.atencion))
+            .setMensaje(context.getString(R.string.escanea_qr))
+            .addCustomView(binding.root)
+            .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
+            .noPermitirSalirSinBotones()
+            .showCancelarButton { }
+            .showDialogReturnDialog()
+
+        binding.bvBarcodeBarcodeview.apply {
+
+            decodeContinuous {
+                stopDecoding()
+                onQrScanned(it.text)
+                dx.hide()
+            }
+
+            resume()
+
+        }
 
     }
 

@@ -14,33 +14,31 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_sesion"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginVertical="5dp"
+        android:layout_marginBottom="15dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
-        android:padding="10dp"
         app:strokeWidth="1dp"
         android:backgroundTint="@color/transparent"
         tools:backgroundTint="@color/black"
         app:strokeColor="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp">
 
         <LinearLayout
+            android:paddingHorizontal="20dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 >
 
                 <LinearLayout
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="10dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
@@ -50,9 +48,10 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="1H de aerobic en ICP"
+                        tools:text="1H de aerobic en ICP 1H de aerobic en ICP 1H de aerobic en ICP "
                         android:layout_marginBottom="5dp"
                         android:textColor="@color/white"
+                        android:maxLines="1"
                         android:textSize="14sp"
                         android:text="@{sesion.titulo}"
                         />
@@ -60,22 +59,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="Una leve sesióarketing."
                         android:textColor="@color/white"
                         android:textSize="12sp"
-                        android:minLines="3"
+                        android:maxLines="3"
                         android:text="@{sesion.subtitulo}"
+                        tools:text="lorem loremloremloremloremloremloremloremloremloremloremloremloremsesionsesionsesionsesionsesionsesionsesionsesionsesionsesionsesion"
                         />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:gravity="center_vertical"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -83,22 +83,17 @@
                     android:maxLines="1"
                     android:textColor="@color/white"
                     android:textSize="10sp"
-                    app:layout_constraintBottom_toTopOf="@+id/ll_enterprise_container"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:text="11/11/2023 a las 4:55" />
+                    android:text="@{sesion.fechaHoraFancyString}"
+                    tools:text="11/11/2023 a las 4:55"
+                    tools:ignore="SmallSp"
+                    />
 
                 <LinearLayout
                     android:id="@+id/ll_enterprise_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    >
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:layout_width="20dp"
@@ -110,9 +105,11 @@
                         app:tint="@color/red_sportiva" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
+                        android:gravity="end"
+                        android:maxLines="2"
+                        android:text="@{sesion.empresa.nombre}"
                         android:textColor="@color/red_sportiva"
                         android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -123,7 +120,7 @@
 
                 </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
         </LinearLayout>
 

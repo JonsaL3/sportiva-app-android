@@ -14,5 +14,6 @@
     <color name="transparentBlack">#66000000</color>
     <color name="transparent">#00000000</color>
     <color name="red_sportiva">#D65656</color>
+    <color name="green_sportiva">#00FF00</color>
 
 </resources>

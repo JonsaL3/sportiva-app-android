@@ -1,5 +1,6 @@
 package es.dao.sportiva.repository
 
+import es.dao.sportiva.models.empleado_participa_sesion.EmpleadoParticipaSesion
 import es.dao.sportiva.models.sesion.Sesion
 import es.dao.sportiva.models.sesion.SesionWrapper
 import es.dao.sportiva.network.SesionApiClient

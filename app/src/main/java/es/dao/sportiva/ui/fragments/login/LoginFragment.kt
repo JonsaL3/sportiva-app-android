@@ -7,9 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import es.dao.sportiva.databinding.FragmentLoginBinding
-import es.dao.sportiva.models.Empleado
+import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.ui.MainViewModel
 

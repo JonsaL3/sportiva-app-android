@@ -1,9 +1,12 @@
-package es.dao.sportiva.models
+package es.dao.sportiva.models.empleado
 
 import com.google.gson.GsonBuilder
+import es.dao.sportiva.models.Empresa
 import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.utils.LocalDateTimeTypeAdapter
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 data class Empleado(
     var cargo: String = "",
@@ -24,6 +27,16 @@ data class Empleado(
 
     override fun hashCode(): Int {
         return super.hashCode()
+    }
+
+    fun getStringForQR(): String {
+        return super.id.toString() +
+                ";" + empresa.id.toString() +
+                ";" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    }
+
+    fun isScannedQrEqualsToThisUserToday(qr: String): Boolean {
+        return getStringForQR() == qr
     }
 
     companion object {
