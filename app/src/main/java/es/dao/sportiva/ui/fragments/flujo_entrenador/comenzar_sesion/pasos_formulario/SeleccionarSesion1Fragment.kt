@@ -53,14 +53,14 @@ class SeleccionarSesion1Fragment : Fragment() {
 
         viewModel.listaDeSesionesDisponibles.observe(viewLifecycleOwner) { sesionWrapper ->
 
-            adapter.submitList(sesionWrapper)
-
-            if (sesionWrapper.isNotEmpty()) {
-                binding.rvSesiones.visibility = View.VISIBLE
-                // TODO OCULTAR EL TEXTO DE QUE NO HAY SESIONES DISPONIBLES
-            } else {
+            if (sesionWrapper.isNullOrEmpty()) {
                 binding.rvSesiones.visibility = View.GONE
+                adapter.submitList(emptyList())
                 // TODO MOSTRAR EL TEXTO DE QUE NO HAY SESIONES DISPONIBLES
+            } else {
+                binding.rvSesiones.visibility = View.VISIBLE
+                adapter.submitList(sesionWrapper)
+                // TODO OCULTAR EL TEXTO DE QUE NO HAY SESIONES DISPONIBLES
             }
 
         }

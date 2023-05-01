@@ -18,13 +18,58 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        
         <LinearLayout
             android:id="@+id/ll_container_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:id="@+id/ll_comprobando_versiones"
+                android:background="@color/red"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:text="SE ESTÁN COMPROBANDO SI HAY NUEVAS VERSIONES, ESPERA UN MOMENTO..."
+                    android:layout_marginBottom="50dp"
+                    />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:text="LO SE ESTE CUADRADO ROJO ES FEO DE PELOTAS PERO ES TEMPORAL."
+                    />
+
+                
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_gravity="center"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:lottie_rawRes="@raw/loading_lottie_new_version"
+                    />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="ES OBLIGATIORIO ACTUALIZAR SI NO ESTA COSA NO SE TE VA A QUITAR"
+                    />
+                
+            </LinearLayout>
+            
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"

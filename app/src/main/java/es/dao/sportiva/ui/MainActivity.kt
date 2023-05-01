@@ -1,6 +1,7 @@
 package es.dao.sportiva.ui
 
 import android.os.Bundle
+import android.service.autofill.FillEventHistory
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
@@ -56,6 +57,9 @@ class MainActivity : AppCompatActivity() {
         setupObservers()
         setupDrawer()
         setupNavigationListener()
+        viewModel.downloadNewVersionIfAvaiable(this) {
+            binding.llComprobandoVersiones.visibility = View.GONE
+        }
     }
 
     private fun setupObservers() {
@@ -111,6 +115,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     private fun setupActionsNavViewEmpleado() {
 //        binding.navView.setNavigationItemSelectedListener { menuItem ->
 //            when(menuItem.itemId) {

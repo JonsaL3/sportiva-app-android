@@ -12,6 +12,7 @@ import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.ui.MainViewModel
 
+@Deprecated("This fragment is deprecated")
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding

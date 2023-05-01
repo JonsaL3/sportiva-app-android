@@ -66,6 +66,13 @@ class ComenzarSesionFragment : Fragment() {
             minActiveState = Lifecycle.State.CREATED
         ).collect { state ->
 
+            // TODO AL COMENZAR SESIÓN POPBACK DESCARTANDO SIEMPRE,  LIMPIAR EL VIEWMODEL SIEMPRE EN SELECCIONAR ACCIÓM
+            // TODO COMPRIMIR IMAGENES
+            // TODO DRAWER
+            // TODO PANTALLA NUEVA VERSIÓN BONITA
+            // TODO AFINAR FILTRO DE SESIONES DEL DÍA
+            // TODO BLOQUEAR BOTONES MIENTRAS SE ATACA AL SERVIDOR
+
             Log.d("ComenzarSesionFragment;;;", "State: ${state.javaClass.simpleName}")
 
             when(state) {
