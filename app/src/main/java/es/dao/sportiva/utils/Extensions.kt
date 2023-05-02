@@ -7,8 +7,9 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
-import java.io.FileDescriptor
-import java.io.IOException
+import android.util.Log
+import okhttp3.ResponseBody
+import java.io.*
 import java.time.Instant
 import java.time.LocalDateTime
 import java.util.*
@@ -43,4 +44,42 @@ fun Uri.getBitmap(context: Context): Bitmap? {
         }
     }
     return null
+}
+
+fun Bitmap.toBase64(): String {
+    val baos = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+    val b = baos.toByteArray()
+    return Base64.getEncoder().encodeToString(b)
+}
+
+fun Uri.toBase64(context: Context): String? {
+    val bitmap = this.getBitmap(context)
+    return bitmap?.toBase64()
+}
+
+fun saveFile(body: ResponseBody?, pathWhereYouWantToSaveFile: String):String{
+    if (body==null)
+        return ""
+    var input: InputStream? = null
+    try {
+        input = body.byteStream()
+        //val file = File(getCacheDir(), "cacheFileAppeal.srl")
+        val fos = FileOutputStream(pathWhereYouWantToSaveFile)
+        fos.use { output ->
+            val buffer = ByteArray(4 * 1024) // or other buffer size
+            var read: Int
+            while (input.read(buffer).also { read = it } != -1) {
+                output.write(buffer, 0, read)
+            }
+            output.flush()
+        }
+        return pathWhereYouWantToSaveFile
+    }catch (e:Exception){
+        Log.e("saveFile error",e.toString())
+    }
+    finally {
+        input?.close()
+    }
+    return ""
 }

@@ -2,8 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fitsSystemWindows="true"
-    >
+    android:fitsSystemWindows="true">
 
     <data>
 
@@ -15,13 +14,101 @@
 
     </data>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/main_nav_graph"
-        />
+        android:layout_height="wrap_content">
+        
+        <LinearLayout
+            android:id="@+id/ll_container_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:id="@+id/ll_comprobando_versiones"
+                android:background="@color/red"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:text="SE ESTÁN COMPROBANDO SI HAY NUEVAS VERSIONES, ESPERA UN MOMENTO..."
+                    android:layout_marginBottom="50dp"
+                    />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:text="LO SE ESTE CUADRADO ROJO ES FEO DE PELOTAS PERO ES TEMPORAL."
+                    />
+
+                
+                <com.airbnb.lottie.LottieAnimationView
+                    android:layout_gravity="center"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:lottie_rawRes="@raw/loading_lottie_new_version"
+                    />
+
+                <TextView
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="ES OBLIGATIORIO ACTUALIZAR SI NO ESTA COSA NO SE TE VA A QUITAR"
+                    />
+                
+            </LinearLayout>
+            
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible"
+                android:visibility="gone">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/black"
+                    tools:title="Pues aqui va el titulo de lo que estás haciendo"
+                    />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/pi_main_activity"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:indeterminate="true"
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    app:indicatorColor="@color/red_sportiva"
+                    app:trackColor="@color/black"
+                    />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/main_nav_graph" />
+
+        </LinearLayout>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

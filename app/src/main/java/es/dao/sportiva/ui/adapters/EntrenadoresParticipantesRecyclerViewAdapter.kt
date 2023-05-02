@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import es.dao.sportiva.databinding.ItemEntrenadorParticipanteBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 
-class EntrenadoresParticipantesRecyclerViewAdapter : RecyclerView.Adapter<EntrenadoresParticipantesViewHolder>() {
+class EntrenadoresParticipantesRecyclerViewAdapter(
+    private val onRemoveClicked: (Entrenador, ItemEntrenadorParticipanteBinding) -> Unit
+) : RecyclerView.Adapter<EntrenadoresParticipantesViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<Entrenador>() {
         override fun areItemsTheSame(oldItem: Entrenador, newItem: Entrenador): Boolean {
@@ -28,7 +30,8 @@ class EntrenadoresParticipantesRecyclerViewAdapter : RecyclerView.Adapter<Entren
     }
 
     fun submitList(list: List<Entrenador>) {
-        differ.submitList(list)
+        val copylist = list.map { it.copy() }
+        differ.submitList(copylist)
     }
 
     fun getList(): List<Entrenador> {
@@ -38,7 +41,7 @@ class EntrenadoresParticipantesRecyclerViewAdapter : RecyclerView.Adapter<Entren
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntrenadoresParticipantesViewHolder {
         val binding =
             ItemEntrenadorParticipanteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return EntrenadoresParticipantesViewHolder(binding, this)
+        return EntrenadoresParticipantesViewHolder(binding, onRemoveClicked)
     }
 
     override fun onBindViewHolder(holder: EntrenadoresParticipantesViewHolder, position: Int) {
@@ -50,7 +53,7 @@ class EntrenadoresParticipantesRecyclerViewAdapter : RecyclerView.Adapter<Entren
 
 class EntrenadoresParticipantesViewHolder(
     private val binding: ItemEntrenadorParticipanteBinding,
-    private val adapter: EntrenadoresParticipantesRecyclerViewAdapter
+    private val onRemoveClicked: (Entrenador, ItemEntrenadorParticipanteBinding) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private lateinit var mEntrenador: Entrenador
@@ -62,14 +65,7 @@ class EntrenadoresParticipantesViewHolder(
     }
 
     private fun setupListeners() {
-        binding.sivDelete.setOnClickListener { borrarRow() }
-    }
-
-    private fun borrarRow() {
-        mEntrenador.isSeleccionadoParaSerParticipante = false
-        val aux = adapter.getList().map { it.copy() } as MutableList
-        aux.removeIf { it.id == mEntrenador.id }
-        adapter.submitList(aux)
+        binding.sivDelete.setOnClickListener { onRemoveClicked(mEntrenador, binding) }
     }
 
 }

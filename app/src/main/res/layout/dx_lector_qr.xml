@@ -15,7 +15,7 @@
         >
 
         <com.journeyapps.barcodescanner.BarcodeView
-            android:id="@+id/bv_barcode"
+            android:id="@+id/bv_barcode_barcodeview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
@@ -25,7 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:lottie_autoPlay="true"
-            app:lottie_rawRes="@raw/animation_barcode"
+            app:lottie_rawRes="@raw/animated_barcode"
+            app:tint="@color/colorPrimary"
+            app:lottie_colorFilter="@color/colorPrimary"
             app:lottie_loop="true"
             />
 

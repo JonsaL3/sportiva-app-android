@@ -9,433 +9,104 @@
             type="es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.CrearSesionEntrenadorViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
+        android:background="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.fragments.flujo_entrenador.crear_sesion.CrearSesionFragment"
-        android:layout_margin="10dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        >
 
-        <ScrollView
-            android:layout_weight="1"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_marginTop="140dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/negraco_piernas_2"
+            android:scaleType="centerCrop"
+            />
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_crear_sesion"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dots_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                app:dotsColor="@color/red_sportiva"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="16dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:progressMode="true"
+                android:layout_marginVertical="10dp"
+                app:selectedDotColor="@color/red_sportiva"
+
+                />
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!-- Paso 1 entrenadores -->
-                <TextView
-                    android:textColor="@color/textos"
-                    android:textSize="20sp"
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_anadir_entrenador"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/paso_1_entrenadores"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="5dp" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:dividerColor="@color/textos" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:strokeColor="@color/colorPrimary"
                     app:strokeWidth="1dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginBottom="10dp"
-                    app:cardElevation="0dp">
+                    app:strokeColor="@color/red_sportiva"
+                    android:text="@string/a_adir_entrenador_participante"
+                    android:textAllCaps="false"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:lines="1"
+                    android:layout_weight="2"
+                    android:layout_marginEnd="10dp"
+                    tools:visibility="visible"
+                    />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_entrenadores_participantes"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_marginHorizontal="10dp"
-                            android:layout_marginVertical="5dp"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/item_entrenador_participante"
-                            tools:visibility="visible" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Paso 2 Informacion general -->
-                <TextView
-                    android:textColor="@color/textos"
-                    android:textSize="20sp"
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_continuar"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/paso_2_informaci_n_general"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="5dp" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:dividerColor="@color/textos" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:strokeColor="@color/colorPrimary"
                     app:strokeWidth="1dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginBottom="10dp"
-                    app:cardElevation="0dp">
+                    app:strokeColor="@color/red_sportiva"
+                    android:lines="1"
+                    android:text="@string/continuar"
+                    android:textAllCaps="false"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_weight="1"
+                    tools:visibility="gone"
+                    android:visibility="visible"
+                    />
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
-                            android:textColorHint="@color/textos"
-                            app:errorEnabled="true"
-                            android:layout_marginTop="10dp"
-                            android:hint="@string/nombre_de_la_sesi_n"
-                            app:boxBackgroundColor="@color/colorTransparent"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_nombre_sesion"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="text" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:hint="@string/subt_tulo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
-                            app:errorEnabled="true"
-                            android:textColorHint="@color/textos"
-                            android:layout_marginTop="10dp"
-                            app:boxBackgroundColor="@color/colorTransparent"
-
-                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_subtitulo_sesion"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="text" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:hint="@string/descripci_n"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="10dp"
-                            app:errorEnabled="true"
-                            android:textColorHint="@color/textos"
-                            android:layout_marginTop="10dp"
-                            app:boxBackgroundColor="@color/colorTransparent"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_descripcion_sesion"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textMultiLine" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Paso 3 fecha -->
-
-                <TextView
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_finalizar"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/paso_3_fecha_de_la_sesi_n"
-                    android:textColor="@color/textos"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:dividerColor="@color/textos" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:strokeColor="@color/colorPrimary"
                     app:strokeWidth="1dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginBottom="10dp"
-                    app:cardElevation="0dp">
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/tv_fecha_sesion"
-                            android:layout_marginStart="10dp"
-                            android:layout_weight="1"
-                            android:textColor="@color/textos"
-                            android:textSize="16sp"
-                            android:gravity="center_vertical"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="@string/no_se_ha_seleccionado_fecha_a_n" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_seleccionar_fecha"
-                            android:layout_weight="1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/seleccionar_fecha"
-                            app:icon="@drawable/ic_baseline_edit_calendar_24"
-                            style="?attr/materialButtonOutlinedStyle"
-                            app:strokeWidth="0dp"
-                            android:layout_marginEnd="5dp" />
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Paso 4 imagen -->
-                <TextView
-                    android:textColor="@color/textos"
-                    android:textSize="20sp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/paso_4_seleccionar_imagen"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="5dp" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:dividerColor="@color/textos" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:strokeColor="@color/colorPrimary"
-                    app:strokeWidth="1dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginBottom="10dp"
-                    app:cardElevation="0dp">
-
-                    <LinearLayout
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/cv_seleccione_imagen"
-                            app:cardElevation="0dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:background="@drawable/ic_dotted_shape"
-                                android:orientation="vertical"
-                                android:gravity="center"
-                                android:layout_width="120dp"
-                                android:layout_height="160dp">
-
-                                <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/siv_imagen_seleccionada"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="center"
-                                    android:src="@drawable/example_image"
-                                    app:shapeAppearance="@style/CornerCut"
-                                    tools:visibility="visible"
-                                    android:visibility="gone"
-                                    />
-
-                                <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/siv_seleccione_imagen"
-                                    tools:visibility="gone"
-                                    android:visibility="visible"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:src="@drawable/ic_baseline_attach_file_24"
-                                    android:tint="@color/colorPrimary"
-                                    />
-
-                                <TextView
-                                    android:id="@+id/tv_foto"
-                                    tools:visibility="gone"
-                                    android:textColor="@color/textos"
-                                    android:gravity="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="@string/seleccione_imagen" />
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/cv_realizar_imagen"
-                            app:cardElevation="0dp"
-                            android:layout_width="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:background="@drawable/ic_dotted_shape"
-                                android:orientation="vertical"
-                                android:gravity="center"
-                                android:layout_width="120dp"
-                                android:layout_height="160dp">
-
-                                <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/siv_foto_realizada"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="center"
-                                    android:src="@drawable/example_image"
-                                    app:shapeAppearance="@style/CornerCut"
-                                    tools:visibility="visible"
-                                    android:visibility="gone"
-                                    />
-
-                                <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/siv_camara"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:src="@drawable/ic_outline_camera_alt_24"
-                                    android:tint="@color/colorPrimary" />
-
-                                <TextView
-                                    android:id="@+id/tv_hacer_foto"
-                                    android:textColor="@color/textos"
-                                    android:gravity="center"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="Realizar imagen" />
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Paso 5: Aforo -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/paso_5_aforo_m_ximo"
-                    android:textColor="@color/textos"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    app:dividerColor="@color/textos" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:strokeColor="@color/colorPrimary"
-                    app:strokeWidth="1dp"
-                    app:cardCornerRadius="10dp"
-                    android:layout_marginBottom="10dp"
-                    app:cardElevation="0dp">
-
-                    <LinearLayout
-                        android:paddingVertical="10dp"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:text="@string/aforo_ilimitado"
-                            android:checked="true"
-                            android:buttonTint="@color/colorPrimary"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginStart="10dp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:hint="@string/numero_m_ximo_de_asistentes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/textos"
-                            app:boxBackgroundColor="@color/colorTransparent"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="number"
-                                android:layout_marginEnd="10dp" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
+                    app:strokeColor="@color/red_sportiva"
+                    android:lines="1"
+                    android:text="@string/finalizar"
+                    android:textAllCaps="false"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                    android:layout_weight="1"
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    />
 
             </LinearLayout>
 
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_anadir_entrenador"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/a_adir_entrenador"
-                app:icon="@drawable/trainers"
-                style="?attr/materialButtonOutlinedStyle"
-                app:strokeColor="@color/colorPrimary"
-                android:layout_marginEnd="5dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_weight="1"
-                app:icon="@drawable/ic_baseline_add_24"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:text="@string/crear" />
-
         </LinearLayout>
 
-    </LinearLayout>
+    </FrameLayout>
+
 </layout>
 

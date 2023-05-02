@@ -9,11 +9,11 @@
     <color name="white">#F4F4F8</color>
 
     <!-- custom colors -->
-    <color name="colorPrimary">#FF63A2</color>
-    <color name="colorPrimaryDark">#FE4B93</color>
+    <color name="colorPrimary">@color/red_sportiva</color>
     <color name="textos">#49454F</color>
     <color name="transparentBlack">#66000000</color>
-
+    <color name="transparent">#00000000</color>
     <color name="red_sportiva">#D65656</color>
+    <color name="green_sportiva">#00FF00</color>
 
 </resources>

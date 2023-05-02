@@ -14,6 +14,7 @@
 
     <com.google.android.material.card.MaterialCardView
         app:cardElevation="0dp"
+        android:backgroundTint="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,6 +22,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:dividerColor="@color/colorPrimary"
+                />
 
             <LinearLayout
                 android:paddingVertical="10dp"
@@ -43,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="@{inscripcion.empleadoInscrito.nombre.substring(0,1)}"
+                        android:text="@{inscripcion.empleadoInscrito.inicialOrGuion()}"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="D"
@@ -61,7 +68,7 @@
                     android:layout_height="match_parent"
                     tools:text="David Lozano Neira"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/textos"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     android:text="@{inscripcion.empleadoInscrito.nombre + ' ' + inscripcion.empleadoInscrito.apellido1 + ' ' + inscripcion.empleadoInscrito.apellido2}"
                     />
@@ -72,7 +79,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/textos"
+                    android:textColor="@{inscripcion.isConfirmado ? @color/green_sportiva : @color/white }"
                     android:textSize="15sp"
                     tools:text="Pendiente"
                     android:text="@{inscripcion.isConfirmado ? `Confirmado` : `Pendiente`}"
