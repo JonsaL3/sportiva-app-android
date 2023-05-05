@@ -34,6 +34,8 @@
                 android:id="@+id/vp_crear_sesion"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:clickable="false"
+                android:longClickable="false"
                 android:layout_weight="1"
                 />
 
@@ -54,6 +56,7 @@
                 />
 
             <LinearLayout
+                android:animateLayoutChanges="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

@@ -106,9 +106,7 @@
             app:layout_constraintTop_toBottomOf="@+id/view_pager"
             app:layout_constraintVertical_bias="0.227"
             app:progressMode="true"
-            app:selectedDotColor="@color/red_sportiva"
-            />
-
+            app:selectedDotColor="@color/red_sportiva" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
@@ -157,7 +155,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.205"
-        />
+        app:layout_constraintVertical_bias="0.205" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

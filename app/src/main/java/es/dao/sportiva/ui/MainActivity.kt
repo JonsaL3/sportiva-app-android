@@ -15,6 +15,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ActivityMainBinding
+import es.dao.sportiva.models.empleado.Empleado
+import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.utils.DxImplementation
 import es.dao.sportiva.utils.UiState
 import java.time.LocalDate
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupObservers() {
         setupUiStates()
+        observeUsuario()
     }
 
     private fun setupNavigationListener() {
@@ -89,8 +92,41 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun observeUsuario() {
+
+        viewModel.usuario.observe(this) { usuario ->
+
+            usuario?.let { mUsuario ->
+
+                binding.tvNombreUsuario.text = mUsuario.nombre + " " + mUsuario.apellido1 + " " + mUsuario.apellido2
+
+                mUsuario.imagen.takeIf { !it.isNullOrBlank() }?.let { imagen ->
+                    // TODO
+                } ?: run {
+                    binding.flNoHayFoto.visibility = View.VISIBLE
+                    binding.tvInicial.text = mUsuario.nombre.firstOrNull()?.toString() ?: "-"
+                }
+
+
+                try {
+                    mUsuario as Entrenador
+                    binding.tvDescripcionUsuario.text =
+                        "Entrenador en ${mUsuario.empresaAsignada.nombre}\n${mUsuario.estudios}"
+                } catch (e: ClassCastException) {
+                    mUsuario as Empleado
+                    binding.tvDescripcionUsuario.text =
+                        "Empleado en ${mUsuario.empresa.nombre}\n${mUsuario.cargo}"
+                    binding.mcvMostrarQrDrawer.visibility = View.VISIBLE
+                }
+
+            }
+
+        }
+
+    }
+
     private fun setupUiStates() {
-        // TODO LE HACES VISIVILITY HIDE Y SE VE ROJO NO TIENE PUTO SENTIDO
+
         uiState.observableState.observe(this) { state ->
 
             when (state) {
@@ -114,32 +150,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    }
-
-    private fun setupActionsNavViewEmpleado() {
-//        binding.navView.setNavigationItemSelectedListener { menuItem ->
-//            when(menuItem.itemId) {
-//                R.id.nav_modificar_perfil_empleado -> {
-//                    true
-//                }
-//                R.id.nav_ver_codigo_qr_empleado -> {
-//                    mostrarCodigoQr()
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-    }
-
-    private fun setupActionsNavViewEntrenador() {
-//        binding.navView.setNavigationItemSelectedListener { menuItem ->
-//            when(menuItem.itemId) {
-//                R.id.nav_modificar_perfil_entrenador -> {
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
     }
 
     private fun mostrarCodigoQr() {

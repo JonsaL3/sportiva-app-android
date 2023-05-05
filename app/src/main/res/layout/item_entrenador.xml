@@ -43,9 +43,8 @@
                     android:text="@{entrenador.nombre.substring(0,1)}"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    tools:text="D"
                     android:visibility="@{entrenador.imagen == null ? View.VISIBLE : View.GONE}"
-                    />
+                    tools:text="D" />
 
             </FrameLayout>
 

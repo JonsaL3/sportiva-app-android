@@ -100,4 +100,7 @@
     <string name="escanee_qr_tenga_en_cuenta">Escanee los códigos QR de los empleados que van a asistir a la sesión. Debes tener en cuenta que los empleados que no se hayan inscrito previamente no podrán formar parte de la sesión.</string>
     <string name="confirmar_asistencia">Confirmar asistencia</string>
     <string name="escanear_participante">Escanear participante</string>
+    <string name="mostrar_c_digo_qr">Mostrar código QR</string>
+    <string name="configuraci_n">Configuración</string>
+    <string name="salir">Salir</string>
 </resources>

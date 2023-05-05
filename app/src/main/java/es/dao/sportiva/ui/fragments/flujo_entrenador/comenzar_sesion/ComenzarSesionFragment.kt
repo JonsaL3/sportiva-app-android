@@ -72,6 +72,10 @@ class ComenzarSesionFragment : Fragment() {
             // TODO PANTALLA NUEVA VERSIÓN BONITA
             // TODO AFINAR FILTRO DE SESIONES DEL DÍA
             // TODO BLOQUEAR BOTONES MIENTRAS SE ATACA AL SERVIDOR
+            // TODO LA CÁMARA DEL ESCANER SE QUEDA EN SEGUNDO PLANO
+            // TODO ANIMACIONES
+            // TODO BUG EDIT TEXT
+            // TODO TOPBAR TITULO FRAGMENTOS.
 
             Log.d("ComenzarSesionFragment;;;", "State: ${state.javaClass.simpleName}")
 
