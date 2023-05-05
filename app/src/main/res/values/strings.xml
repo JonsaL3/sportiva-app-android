@@ -103,4 +103,5 @@
     <string name="mostrar_c_digo_qr">Mostrar código QR</string>
     <string name="configuraci_n">Configuración</string>
     <string name="salir">Salir</string>
+    <string name="no_hay_ninguna_sesi_n_programada_para_el_d_a_de_hoy">No hay ninguna sesión programada para el día de hoy.</string>
 </resources>

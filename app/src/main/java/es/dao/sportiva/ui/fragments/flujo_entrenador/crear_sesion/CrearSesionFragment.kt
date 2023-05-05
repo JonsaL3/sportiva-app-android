@@ -196,7 +196,27 @@ class CrearSesionFragment : Fragment() {
         setupPopBackStack()
         setupViewPager()
         setupListeners()
+        setupObservers()
     }
+
+    private fun setupObservers() { // Aqui me interesa añadir acciones al estado loading, solo en este fragmento
+
+        uiState.observableState.observe(viewLifecycleOwner) { uiState ->
+
+            if (uiState == UiState.State.LOADING) {
+                binding.btnContinuar.isEnabled = false
+                binding.btnAnadirEntrenador.isEnabled = false
+                binding.btnFinalizar.isEnabled = false
+            } else {
+                binding.btnContinuar.isEnabled = true
+                binding.btnAnadirEntrenador.isEnabled = true
+                binding.btnFinalizar.isEnabled = true
+            }
+
+        }
+
+    }
+
     private fun setupPopBackStack() {
 
         val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

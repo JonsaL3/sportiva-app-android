@@ -38,7 +38,6 @@ class ConfirmarAsistencia2Fragment : Fragment() {
     }
 
     private fun setupView() {
-        viewModel.obtenerInscripcionesSesion()
         setupRecyclerInscripciones()
     }
 

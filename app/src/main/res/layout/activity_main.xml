@@ -18,12 +18,14 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         tools:openDrawer="start"
+        android:background="@color/black"
         android:layout_height="wrap_content">
         
         <LinearLayout
             android:id="@+id/ll_container_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/black"
             android:orientation="vertical">
 
             <LinearLayout

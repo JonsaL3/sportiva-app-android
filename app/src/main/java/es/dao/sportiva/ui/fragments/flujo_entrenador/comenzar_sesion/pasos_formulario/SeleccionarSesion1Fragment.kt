@@ -47,6 +47,7 @@ class SeleccionarSesion1Fragment : Fragment() {
 
         val onSessionSelected = { sesion: Sesion ->
             viewModel.setSesionSeleccionada(sesion)
+            Unit
         }
 
         val adapter = SeleccionarSesionRecyclerViewAdapter(onSessionSelected)
@@ -54,13 +55,15 @@ class SeleccionarSesion1Fragment : Fragment() {
         viewModel.listaDeSesionesDisponibles.observe(viewLifecycleOwner) { sesionWrapper ->
 
             if (sesionWrapper.isNullOrEmpty()) {
-                binding.rvSesiones.visibility = View.GONE
                 adapter.submitList(emptyList())
-                // TODO MOSTRAR EL TEXTO DE QUE NO HAY SESIONES DISPONIBLES
+                binding.rvSesiones.visibility = View.GONE
+                binding.tvNoSesiones.visibility = View.VISIBLE
+                binding.lavNotSesiones.visibility = View.VISIBLE
             } else {
                 binding.rvSesiones.visibility = View.VISIBLE
                 adapter.submitList(sesionWrapper)
-                // TODO OCULTAR EL TEXTO DE QUE NO HAY SESIONES DISPONIBLES
+                binding.tvNoSesiones.visibility = View.GONE
+                binding.lavNotSesiones.visibility = View.GONE
             }
 
         }

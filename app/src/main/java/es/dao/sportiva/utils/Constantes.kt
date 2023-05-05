@@ -9,6 +9,9 @@ object Constantes { // ArrebolEnterprise1024
     // Default generic objects
     val DEFAULT_DATE: LocalDateTime = LocalDateTime.of(1900, 1, 1, 0, 0)
 
+    // Animaciones
+    const val ANIMACION_DURATION = 200L
+
     // Llamadas a la api
     private const val IS_DEBUG = true
     private const val BASE_URL_DEBUG = "http://192.168.1.138:8080/api/"
