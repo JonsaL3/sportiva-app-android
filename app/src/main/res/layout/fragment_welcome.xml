@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.login.WelcomeFragment"
     android:animateLayoutChanges="true"
     android:background="@color/red"
-    >
+    tools:context=".ui.fragments.login.WelcomeFragment">
 
     <ImageView
         android:id="@+id/imageView"
@@ -21,23 +20,93 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:id="@+id/view_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#BC000000"
+        android:alpha="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/logo_sportiva"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:alpha="0"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/logo_sportiva"
+            android:src="@drawable/sportiva_logo_v2" />
+
+        <LinearLayout
+            android:id="@+id/information_register_constraint_layout"
+            android:alpha="0"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="600dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.558" />
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dots_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                app:dotsColor="@color/red_sportiva"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="16dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_pager"
+                app:layout_constraintVertical_bias="0.227"
+                app:progressMode="true"
+                app:selectedDotColor="@color/red_sportiva" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
     <TextView
         android:id="@+id/txt_bienvenido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
+        android:alpha="0"
         android:fontFamily="@font/roboto"
         android:text="@string/bienvenido"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:translationX="-300dp"
         app:layout_constraintBottom_toTopOf="@+id/txt_bienvenido_msg"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.978"
-        android:alpha="0"
-        android:translationX="-300dp" />
+        app:layout_constraintVertical_bias="0.978" />
 
     <TextView
         android:id="@+id/txt_bienvenido_msg"
@@ -45,69 +114,16 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="28dp"
+        android:alpha="0"
         android:fontFamily="@font/roboto"
         android:text="@string/bienvenido_msg"
         android:textColor="@color/white"
         android:textSize="22sp"
+        android:translationX="-300dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_iniciar_sesion"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        android:alpha="0"
-        android:translationX="-300dp" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/information_register_constraint_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/imageView">
-
-        <View
-            android:id="@+id/view_color"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/black"
-            android:alpha="0.7"/>
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.558" />
-
-        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
-            android:id="@+id/dots_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            app:dotsColor="@color/red_sportiva"
-            app:dotsCornerRadius="8dp"
-            app:dotsSize="16dp"
-            app:dotsSpacing="4dp"
-            app:dotsWidthFactor="2.5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_pager"
-            app:layout_constraintVertical_bias="0.227"
-            app:progressMode="true"
-            app:selectedDotColor="@color/red_sportiva" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_iniciar_sesion"
@@ -115,16 +131,16 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:alpha="0"
         android:text="@string/iniciar_sesi_n"
         android:textSize="14sp"
+        android:translationX="-300dp"
         app:icon="@drawable/round_login_24"
         app:layout_constraintBottom_toTopOf="@+id/btn_registrarse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/red_sportiva"
-        android:alpha="0"
-        android:translationX="-300dp" />
+        app:strokeColor="@color/red_sportiva" />
 
     <Button
         android:id="@+id/btn_registrarse"
@@ -132,30 +148,15 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
+        android:alpha="0"
         android:text="@string/registrarse"
         android:textSize="14sp"
+        android:translationX="-300dp"
         app:icon="@drawable/baseline_person_add_alt_1_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
-        app:strokeColor="@color/red_sportiva"
-        android:alpha="0"
-        android:translationX="-300dp"/>
-
-    <ImageView
-        android:id="@+id/logo_sportiva"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:alpha="0"
-        android:contentDescription="@string/logo_sportiva"
-        android:src="@drawable/sportiva_logo_v2"
-        app:layout_constraintBottom_toTopOf="@+id/txt_bienvenido"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.205" />
-
+        app:strokeColor="@color/red_sportiva" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

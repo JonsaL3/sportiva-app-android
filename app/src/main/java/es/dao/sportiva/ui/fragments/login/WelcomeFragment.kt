@@ -71,6 +71,8 @@ class WelcomeFragment : Fragment() {
 
     private fun setupAnimations() = with(binding) {
 
+        viewPager.isUserInputEnabled = false
+
         logoSportiva.animate().alpha(1f).setDuration(500).start()
 
         txtBienvenido.animate().translationX(0f).setDuration(500).start()
@@ -88,7 +90,10 @@ class WelcomeFragment : Fragment() {
 
     private fun startRegistrationProcess() = with(binding) {
 
+        viewPager.isUserInputEnabled = true
+
         informationRegisterConstraintLayout.animate().alpha(1f).setDuration(500).start()
+        viewColor.animate().alpha(1f).setDuration(500).start()
 
         txtBienvenido.animate().translationX(-300f).setDuration(500).start()
         txtBienvenido.animate().alpha(0f).setDuration(600).start()
@@ -96,8 +101,8 @@ class WelcomeFragment : Fragment() {
         txtBienvenidoMsg.animate().translationX(-300f).setDuration(600).start()
         txtBienvenidoMsg.animate().alpha(0f).setDuration(700).start()
 
-        btnIniciarSesion.animate().translationX(-300f).setDuration(700).start()
-        btnRegistrarse.animate().translationX(-300f).setDuration(800).start()
+        btnIniciarSesion.animate().translationX(-600f).setDuration(700).start()
+        btnRegistrarse.animate().translationX(-600f).setDuration(800).start()
 
         btnIniciarSesion.animate().alpha(0f).setDuration(800).start()
         btnRegistrarse.animate().alpha(0f).setDuration(900).start()
@@ -105,6 +110,8 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun restoreWelcomeFragment() = with(binding) {
+
+        viewPager.isUserInputEnabled = false
 
         txtBienvenido.animate().translationX(0f).setDuration(500).start()
         txtBienvenido.animate().alpha(1f).setDuration(600).start()
@@ -119,12 +126,15 @@ class WelcomeFragment : Fragment() {
         btnRegistrarse.animate().alpha(1f).setDuration(900).start()
 
         informationRegisterConstraintLayout.animate().alpha(0f).setDuration(900).start()
+        viewColor.animate().alpha(0f).setDuration(900).start()
 
         Handler(Looper.getMainLooper()).postDelayed({
             viewPager.currentItem = 0
         }, 900)
 
         (requireActivity() as MainActivity).actionOnBackPressed = null
+
+
     }
 
 }

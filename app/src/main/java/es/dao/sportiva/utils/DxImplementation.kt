@@ -1,11 +1,11 @@
 package es.dao.sportiva.utils
 
+import DxCustom
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
-import com.example.dxcustomlibrary.DxCustom
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import es.dao.sportiva.R
@@ -17,8 +17,6 @@ import es.dao.sportiva.databinding.LoginLayoutBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.models.sesion.Sesion
-import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesRecyclerViewAdapter
-import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesViewHolder
 import es.dao.sportiva.ui.adapters.SeleccionarEntrenadoresRecyclerViewAdapter
 import es.dao.sportiva.ui.adapters.SeleccionarSesionRecyclerViewAdapter
 
