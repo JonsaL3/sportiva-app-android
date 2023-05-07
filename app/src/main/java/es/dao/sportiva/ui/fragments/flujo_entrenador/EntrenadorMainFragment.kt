@@ -1,24 +1,30 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.graphics.SurfaceTexture
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentEntrenadorMainBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.ui.MainViewModel
-import es.dao.sportiva.utils.DxImplementation
+import es.dao.sportiva.utils.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class EntrenadorMainFragment : Fragment() {
 
     private lateinit var binding: FragmentEntrenadorMainBinding
     private val mainViewModel: MainViewModel by activityViewModels()
+
+    @Inject lateinit var uiState: UiState
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,13 +48,34 @@ class EntrenadorMainFragment : Fragment() {
         setupListeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        uiState.setSuccess()
+    }
+
+
     private fun setupListeners() {
 
+        binding.llCrearSesion.enableOnTouchListenerAnimation()
         binding.llCrearSesion.setOnClickListener {
-            loadFragmentCrearSesion()
+            it.reduceScaleXY(
+                animationduration = Constantes.ANIMACION_DURATION,
+                lifecycleScope = viewLifecycleOwner.lifecycleScope,
+                onCompletedAnimation = {
+                    loadFragmentCrearSesion()
+                }
+            )
         }
 
-        binding.llComenzarSesion.setOnClickListener { loadFragmentComenzarSesion()
+        binding.llComenzarSesion.enableOnTouchListenerAnimation()
+        binding.llComenzarSesion.setOnClickListener {
+            it.reduceScaleXY(
+                animationduration = Constantes.ANIMACION_DURATION,
+                lifecycleScope = viewLifecycleOwner.lifecycleScope,
+                onCompletedAnimation = {
+                    loadFragmentComenzarSesion()
+                }
+            )
         }
 
     }

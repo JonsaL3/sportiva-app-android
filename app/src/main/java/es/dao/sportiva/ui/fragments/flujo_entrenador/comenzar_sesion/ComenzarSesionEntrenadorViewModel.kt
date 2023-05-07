@@ -1,9 +1,7 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador.comenzar_sesion
 
-import android.database.Observable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,20 +9,17 @@ import es.dao.sportiva.enum.PasoFormularioComenzarSesion
 import es.dao.sportiva.models.empleado.EmpleadoWrapper
 import es.dao.sportiva.models.empleado_inscribe_sesion.EmpleadoInscribeSesionWrapper
 import es.dao.sportiva.models.empleado_participa_sesion.ComenzarSesionRequest
-import es.dao.sportiva.models.empleado_participa_sesion.EmpleadoParticipaSesion
 import es.dao.sportiva.models.empleado_participa_sesion.EmpleadoParticipaSesionWrapper
-import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.sesion.Sesion
 import es.dao.sportiva.models.sesion.SesionWrapper
 import es.dao.sportiva.repository.EmpleadoInscribeSesionRepo
 import es.dao.sportiva.repository.EmpleadoParticipaSesionRepo
 import es.dao.sportiva.repository.SesionRepo
-import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.CrearSesionEntrenadorState
 import es.dao.sportiva.utils.UiState
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,6 +35,11 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
      */
     private var _state: MutableStateFlow<ComenzarSesionEntrenadorViewModelState> = MutableStateFlow(ComenzarSesionEntrenadorViewModelState.Neutral)
     val state = _state.asStateFlow()
+
+    /**
+     * Gestion de jobs
+     */
+    private var runningJobs: MutableSet<Job> = mutableSetOf()
 
     /**
      * Elementos del paso 1 del formulario
@@ -72,56 +72,51 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
      * Reseteo el viewmodel
      */
     fun resetViewModel() {
-        resetearPaso1()
-        resetearPaso2()
-    }
-
-    private fun resetearPaso1() {
         _listaDeSesionesDisponibles.value = SesionWrapper()
         _sesionSeleccionada.value = null
-    }
-
-    fun resetearPaso2() {
         _inscripciones.value = EmpleadoInscribeSesionWrapper()
+        // Me cargo los jobs que esten corriendo al volver a la pantalla anterior, para que no se setee la lista en segundo plano y haya discrepancias
+        // en la información
+        runningJobs.forEach { it.cancel() }
+        uiState.setSuccess()
     }
 
     /**
      * Métodos del paso 1 del formulario
      */
-    fun obtenerSesionesDisponibles(idEntrenador: Int) = viewModelScope.launch {
-        uiState.setLoading()
-        sesionRepo.findSesionesDisponiblesByEntrenador(idEntrenador)?.apply {
-            _listaDeSesionesDisponibles.value = this
-            uiState.setSuccess()
+    fun obtenerSesionesDisponibles(idEntrenador: Int) {
+
+        val job = viewModelScope.launch {
+            uiState.setLoading()
+            sesionRepo.findSesionesDisponiblesByEntrenador(idEntrenador)?.apply {
+                _listaDeSesionesDisponibles.value = this
+                uiState.setSuccess()
+            }
         }
+
+        runningJobs.add(job)
+        job.invokeOnCompletion { runningJobs.remove(job) }
+
     }
 
     fun setSesionSeleccionada(sesion: Sesion) {
-        _sesionSeleccionada.value = sesion
-        setState(
-            state = ComenzarSesionEntrenadorViewModelState.IrAPasoEspecifico(
-                paso = PasoFormularioComenzarSesion.CONFIRMAR_ASISTENCIA
-            )
-        )
-    }
 
-    /**
-     * Métodos del paso 2 del formulario
-     */
-    fun obtenerInscripcionesSesion() = viewModelScope.launch {
-
-        uiState.setLoading()
-
-        _sesionSeleccionada.value?.let {
-
-            empleadoInscribeSesionRepo.findInscripcionesByIdSesion(it.id).apply {
-                _inscripciones.value = this
-                uiState.setSuccess()
+        val job = viewModelScope.launch {
+            uiState.setLoading()
+            empleadoInscribeSesionRepo.findInscripcionesByIdSesion(sesion.id).apply {
+                if (!isNullOrEmpty()) {
+                    _sesionSeleccionada.value = sesion
+                    setState(
+                        state = ComenzarSesionEntrenadorViewModelState.IrAPasoEspecifico(
+                            paso = PasoFormularioComenzarSesion.CONFIRMAR_ASISTENCIA
+                        )
+                    )
+                }
             }
-
-        } ?: run {
-            uiState.setError("No se ha seleccionado ninguna sesión.")
         }
+
+        runningJobs.add(job)
+        job.invokeOnCompletion { runningJobs.remove(job) }
 
     }
 
@@ -166,50 +161,57 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
     /**
      * Finalmente, damos comienzo a la sesión
      */
-    fun comenzarSesion() = viewModelScope.launch {
+    fun comenzarSesion() {
 
-        uiState.setLoading()
+        val job = viewModelScope.launch {
 
-        _inscripciones.value?.let { mInscripciones ->
+            uiState.setLoading()
 
-            // Comprobaciones previas
-            if (_sesionSeleccionada.value == null) {
-                uiState.setError("Error con la sesión seleccionada.")
-                return@launch
-            }
+            _inscripciones.value?.let { mInscripciones ->
 
-            if (mInscripciones.all { !it.isConfirmado }) {
-                uiState.setError("Aún no has confirmado la asistencia de nadie a esta sesión, por lo que no se puede dar comienzo a la misma.")
-                return@launch
-            }
+                // Comprobaciones previas
+                if (_sesionSeleccionada.value == null) {
+                    uiState.setError("Error con la sesión seleccionada.")
+                    return@launch
+                }
 
-            if (mInscripciones.any { !it.isConfirmado }) {
-                // TODO MENSAJE DE FALTAN ALGUNOS POR CONFIRMAR
-            }
+                if (mInscripciones.all { !it.isConfirmado }) {
+                    uiState.setError("Aún no has confirmado la asistencia de nadie a esta sesión, por lo que no se puede dar comienzo a la misma.")
+                    return@launch
+                }
 
-            // La marco como llevada a cabo, aunque esto se seteará en el servidor también
-            _sesionSeleccionada.value!!.isLlevadaACabo = true
+                if (mInscripciones.any { !it.isConfirmado }) {
+                    // TODO MENSAJE DE FALTAN ALGUNOS POR CONFIRMAR
+                }
 
-            // Preparo la insercción en el servidor de los empleados que participan relacionandolos con esta sesión el dia de hoy
-            val request = ComenzarSesionRequest(
-                sesion = _sesionSeleccionada.value!!,
-                participaciones = EmpleadoWrapper(mInscripciones.map { it.empleadoInscrito }.toCollection(
-                    arrayListOf()
-                ))
-            )
+                // La marco como llevada a cabo, aunque esto se seteará en el servidor también
+                _sesionSeleccionada.value!!.isLlevadaACabo = true
 
-            empleadoParticipaSesion.comenzarSesion(request)?.apply {
-                uiState.setSuccess()
-                setState(
-                    state = ComenzarSesionEntrenadorViewModelState.SesionCreadaCorrectamente(
-                        sesion = this
-                    )
+                // Preparo la insercción en el servidor de los empleados que participan relacionandolos con esta sesión el dia de hoy
+                val request = ComenzarSesionRequest(
+                    sesion = _sesionSeleccionada.value!!,
+                    participaciones = EmpleadoWrapper(mInscripciones.map { it.empleadoInscrito }.toCollection(
+                        arrayListOf()
+                    ))
                 )
-            } ?: run { }// No comprendo porque si falla se me metía al run de abajo.
 
-        } ?: run {
-            uiState.setError("No puedes comenzar una sesión si nadie se ha inscrito a ella aún.")
+                empleadoParticipaSesion.comenzarSesion(request)?.apply {
+                    uiState.setSuccess()
+                    setState(
+                        state = ComenzarSesionEntrenadorViewModelState.SesionCreadaCorrectamente(
+                            sesion = this
+                        )
+                    )
+                } ?: run { }// No comprendo porque si falla se me metía al run de abajo.
+
+            } ?: run {
+                uiState.setError("No puedes comenzar una sesión si nadie se ha inscrito a ella aún.")
+            }
+
         }
+
+        runningJobs.add(job)
+        job.invokeOnCompletion { runningJobs.remove(job) }
 
     }
 

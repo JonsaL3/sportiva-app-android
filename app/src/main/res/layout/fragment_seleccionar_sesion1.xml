@@ -31,11 +31,46 @@
         android:layout_marginBottom="20dp"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_sesiones"
+    <FrameLayout
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_sesiones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tv_no_sesiones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_hay_ninguna_sesi_n_programada_para_el_d_a_de_hoy"
+            android:layout_marginTop="70dp"
+            android:layout_marginHorizontal="70dp"
+            android:textColor="@color/grisDivisor"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_not_sesiones"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/calendario_not_sesiones_lottie"
+            app:tint="@color/colorPrimary"
+            app:lottie_colorFilter="@color/colorPrimary"
+            app:lottie_loop="true"
+            android:visibility="gone"
+            />
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -17,10 +17,18 @@
         tools:layout="@layout/fragment_entrenador_main">
         <action
             android:id="@+id/action_entrenadorMainFragment_to_crearSesionFragment3"
-            app:destination="@id/crearSesionFragment" />
+            app:destination="@id/crearSesionFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_entrenadorMainFragment_to_comenzarSesionFragment3"
-            app:destination="@id/comenzarSesionFragment" />
+            app:destination="@id/comenzarSesionFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/crearSesionFragment"
@@ -42,6 +50,10 @@
             app:destination="@id/empleadoMainFragment" />
         <action
             android:id="@+id/action_loginFragment_to_entrenadorMainFragment3"
-            app:destination="@id/entrenadorMainFragment" />
+            app:destination="@id/entrenadorMainFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

@@ -75,6 +75,7 @@
                     tools:visibility="visible"
                     android:visibility="gone"
                     android:layout_marginEnd="10dp"
+                    android:textColor="@color/colorPrimary"
                     />
 
                 <com.google.android.material.button.MaterialButton
@@ -90,6 +91,7 @@
                     android:layout_weight="1"
                     tools:visibility="visible"
                     android:visibility="gone"
+                    android:textColor="@color/colorPrimary"
                     />
 
             </LinearLayout>
