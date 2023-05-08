@@ -236,6 +236,7 @@
 
                     <!-- Esto es para que se vea el efecto al clickear -->
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/mcv_mostrar_condiguracion_drawer"
                         android:backgroundTint="@color/transparent"
                         android:background="@color/transparent"
                         android:elevation="0dp"
@@ -269,6 +270,7 @@
 
                     <!-- Esto es para que se vea el efecto al clickear -->
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/mcv_mostrar_salir_drawer"
                         android:backgroundTint="@color/transparent"
                         android:background="@color/transparent"
                         android:elevation="0dp"

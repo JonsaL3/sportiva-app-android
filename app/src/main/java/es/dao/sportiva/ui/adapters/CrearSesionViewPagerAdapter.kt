@@ -4,12 +4,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import es.dao.sportiva.R
-import es.dao.sportiva.ui.MainActivity
-import es.dao.sportiva.ui.fragments.flujo_empleado.EntrenadoresFragment
-import es.dao.sportiva.ui.fragments.flujo_empleado.SesionesFragment
-import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.*
-import es.dao.sportiva.ui.fragments.login.InformationRegisterFragment
+import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.Aforo4Fragment
+import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.AnadirEntrenadores1Fragment
+import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.FechaYHora3Fragment
+import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.FotosPresentacion5Fragment
+import es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.InformacionGeneral2Fragment
 
 class CrearSesionViewPagerAdapter(
     fragmentManager: FragmentManager,

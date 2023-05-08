@@ -1,15 +1,12 @@
 package es.dao.sportiva.ui
 
 import android.os.Bundle
-import android.service.autofill.FillEventHistory
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +29,8 @@ class MainActivity : AppCompatActivity() {
     var actionOnBackPressed: (() -> Unit)? = null
 
     private lateinit var navHostFragment: NavHostFragment
+
+    private lateinit var navController: NavController
 
     // Inyecto el singleton que maneja los estados de la UI, por lo que desde aqui puedo observar cambios
     // que realize desde cualquier repo / viewmodel / servicio / etc en el cual inyecte esta misma clase
@@ -62,6 +61,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.downloadNewVersionIfAvaiable(this) {
             binding.llComprobandoVersiones.visibility = View.GONE
         }
+        setupListeners()
+
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
     }
 
     private fun setupObservers() {
@@ -71,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupNavigationListener() {
 
-        val navController = navHostFragment.findNavController()
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
@@ -150,6 +154,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun setupListeners() = with(binding){
+        mcvMostrarQrDrawer.setOnClickListener {
+            mostrarCodigoQr()
+        }
+        mcvMostrarCondiguracionDrawer.setOnClickListener {
+            //TODO
+        }
+        mcvMostrarSalirDrawer.setOnClickListener {
+            drawerLayout.close()
+            navController.navigateUp()
+        }
     }
 
     private fun mostrarCodigoQr() {
