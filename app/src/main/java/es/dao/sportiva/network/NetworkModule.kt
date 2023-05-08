@@ -50,4 +50,14 @@ class NetworkModule {
     fun provideEmpleadoInscribeSesionApiClient(retrofit: Retrofit): EmpleadoInscribeSesionApiClient =
         retrofit.create(EmpleadoInscribeSesionApiClient::class.java)
 
+    @Singleton
+    @Provides
+    fun provideEmpleadoParticipaSesionApiClient(retrofit: Retrofit): EmpleadoParticipaSesionApiClient =
+        retrofit.create(EmpleadoParticipaSesionApiClient::class.java)
+
+    @Singleton
+    @Provides
+    fun provideEmpleadoSolicitaSesionApiClient(retrofit: Retrofit): VersionApiClient =
+        retrofit.create(VersionApiClient::class.java)
+
 }

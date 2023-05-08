@@ -12,78 +12,86 @@
     </data>
 
 
-    <com.google.android.material.card.MaterialCardView
-        app:cardElevation="0dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:dividerColor="@color/colorPrimary"
+            />
+
         <LinearLayout
-            android:orientation="vertical"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:paddingVertical="10dp"
-                android:paddingHorizontal="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <FrameLayout
-                    android:layout_width="30dp"
-                    android:layout_height="30dp">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:src="@drawable/default_circle_shape"
-                        android:layout_height="match_parent"
-                        />
-
-                    <TextView
-                        android:id="@+id/tvInicial"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@{entrenador.nombre.substring(0,1)}"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="D"
-                        android:visibility="@{entrenador.imagen == null ? View.VISIBLE : View.GONE}"
-                        />
-
-                </FrameLayout>
-
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_marginHorizontal="10dp"
-                    android:gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    tools:text="David Lozano Neira"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@color/textos"
-                    android:textSize="15sp"
-                    android:text="@{entrenador.nombre + ' ' + entrenador.apellido1 + ' ' + entrenador.apellido2}"
-                    />
+            <FrameLayout
+                android:layout_width="30dp"
+                android:layout_height="30dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/siv_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{entrenador.currentSesion ? View.GONE : View.VISIBLE}"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_outline_delete_24"
-                    android:tint="@color/colorPrimary" />
+                    android:layout_width="match_parent"
+                    android:src="@drawable/default_circle_shape"
+                    android:layout_height="match_parent"
+                    />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/tvInicial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@{entrenador.inicialOrGuion()}"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:text="D"
+                    android:visibility="@{entrenador.imagen == null ? View.VISIBLE : View.GONE}"
+                    />
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
+            </FrameLayout>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                tools:text="David Lozano Neira"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:text="@{entrenador.nombre + ' ' + entrenador.apellido1 + ' ' + entrenador.apellido2}"
+                />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/siv_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{entrenador.currentSesion ? View.GONE : View.VISIBLE}"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_outline_delete_24"
+                android:tint="@color/colorPrimary" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:visibility="@{entrenador.currentSesion ? View.VISIBLE : View.GONE}"
+                android:text="@string/t"
                 />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </layout>

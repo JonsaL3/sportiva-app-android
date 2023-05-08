@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion.CrearSesionEntrenadorViewModel"
+            />
+
+        <import type="java.time.LocalDate" />
+        <import type="java.time.LocalTime" />
+        <import type="java.time.format.DateTimeFormatter" />
+
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        tools:background="@color/black"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        tools:context=".ui.fragments.flujo_entrenador.crear_sesion.pasos_formulario.FechaYHora3Fragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fecha_y_hora"
+            android:lines="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginVertical="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/selecciona_la_fecha_y_la_hora_en_la_que_tendr_lugar_la_sesi_n"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginBottom="20dp"
+            />
+
+        <com.google.android.material.card.MaterialCardView
+            app:strokeColor="@color/red_sportiva"
+            android:layout_width="match_parent"
+            app:strokeWidth="1dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent">
+
+            <LinearLayout
+                android:padding="10dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:gravity="start"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fecha"
+                    android:lines="1"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_fecha_seleccionada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="12/08/1969"
+                    android:lines="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="@{(viewModel.fecha != null ? viewModel.fecha.format(DateTimeFormatter.ofPattern(`dd/MM/yyyy`)) : `No seleccionada`)}"
+                    android:textSize="16sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_editar_fecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/red_sportiva"
+                    android:lines="1"
+                    android:text="Editar"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            app:strokeColor="@color/red_sportiva"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            app:strokeWidth="1dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparent">
+
+            <LinearLayout
+                android:padding="10dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:gravity="start"
+                    android:layout_height="wrap_content"
+                    android:text="Hora: "
+                    android:lines="1"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_hora_seleccionada"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="11:50"
+                    android:lines="1"
+                    android:gravity="center"
+                    android:text="@{(viewModel.hora != null ? viewModel.hora.toString() : `No seleccionada`)}"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_editar_hora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="@color/red_sportiva"
+                    android:lines="1"
+                    android:text="Editar"
+                    style="@style/Widget.MaterialComponents.Button.TextButton.Icon" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</layout>

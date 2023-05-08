@@ -1,30 +1,33 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.widget.doAfterTextChanged
+import android.widget.Toast
+import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.timepicker.MaterialTimePicker
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.viewpager2.widget.ViewPager2
 import dagger.hilt.android.AndroidEntryPoint
+import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentCrearSesionBinding
+import es.dao.sportiva.enum.PasoFormularioCrearSesion
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
-import es.dao.sportiva.ui.adapters.EntrenadoresParticipantesRecyclerViewAdapter
 import es.dao.sportiva.ui.MainViewModel
-import es.dao.sportiva.utils.*
+import es.dao.sportiva.ui.adapters.CrearSesionViewPagerAdapter
+import es.dao.sportiva.utils.DxImplementation
+import es.dao.sportiva.utils.UiState
+import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.LocalTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,53 +35,13 @@ class CrearSesionFragment : Fragment() {
 
     private lateinit var binding: FragmentCrearSesionBinding
 
-    private val viewModel: CrearSesionEntrenadorViewModel by viewModels()
+    private val viewModel: CrearSesionEntrenadorViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+
+    private lateinit var viewPager: ViewPager2
 
     @Inject
     lateinit var uiState: UiState
-
-    private val seleccionarArchivoResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val image = result.data?.data
-            val bitmap = image!!.getBitmap(requireContext())
-
-            with(binding) {
-                // Muestro la imagen que acabo de seleccionar
-                sivImagenSeleccionada.visibility = View.VISIBLE
-                sivSeleccioneImagen.visibility = View.GONE
-                sivImagenSeleccionada.setImageBitmap(bitmap)
-                tvFoto.visibility = View.GONE
-
-                // Establezco los valores por defecto del otro campo, ya que solo podré realizar / seleccionaruna imagen
-                sivFotoRealizada.visibility = View.GONE
-                sivCamara.visibility = View.VISIBLE
-                tvHacerFoto.visibility = View.VISIBLE
-            }
-
-        }
-    }
-
-    private val realizarFotografiaResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val image = result.data?.data
-            val bitmap = image!!.getBitmap(requireContext())
-
-            with(binding) {
-                // Muestro la imagen que acabo de realizar
-                sivFotoRealizada.visibility = View.VISIBLE
-                sivCamara.visibility = View.GONE
-                sivFotoRealizada.setImageBitmap(bitmap)
-                tvHacerFoto.visibility = View.GONE
-
-                // Establezco los valores por defecto del otro campo, ya que solo podré realizar / seleccionaruna imagen
-                sivImagenSeleccionada.visibility = View.GONE
-                sivSeleccioneImagen.visibility = View.VISIBLE
-                tvFoto.visibility = View.VISIBLE
-            }
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,124 +53,256 @@ class CrearSesionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainViewModel.usuario.value?.let {
-            it as Entrenador
-            viewModel.cargarDatosIniciales(it.empresaAsignada.id)
-        }
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+        setupStates()
         setupView()
     }
 
-    private fun setupView() {
-        setupObservers()
-        setupListeners()
-        setupDatosFormulario()
+    /**
+     * Máquina de estados del fragmento
+     */
+    private fun setupStates() = viewLifecycleOwner.lifecycleScope.launch() {
+
+        viewModel.state.flowWithLifecycle(
+            lifecycle = viewLifecycleOwner.lifecycle,
+            minActiveState = Lifecycle.State.CREATED
+        ).collect { state ->
+
+            Log.d("CrearSesionFragment;;;", "State: ${state.javaClass.simpleName}")
+
+            when (state) {
+
+                is CrearSesionEntrenadorState.Neutral -> { }
+
+                /**
+                 * Navegación de los distintos pasos del formulario
+                 */
+                is CrearSesionEntrenadorState.SolicitarInformacion -> {
+
+                    if (state.paso == PasoFormularioCrearSesion.SOLICITAR_FECHA_Y_HORA) {
+
+                        if (viewModel.camposDelPaso2Validos())
+                            viewPager.currentItem = state.paso.ordinal
+                        else
+                            uiState.setError("Debes rellenar todos los campos.")
+
+                    } else if (state.paso == PasoFormularioCrearSesion.SOLICITAR_AFORO) {
+
+                        when (viewModel.camposDelPaso3Validos()) {
+                            -1 -> uiState.setError("Debes rellenar todos los campos.")
+                            -2 -> uiState.setError("La fecha y la hora de inicio de la sesión debe ser posterior a la fecha actual.")
+                            else -> viewPager.currentItem = state.paso.ordinal
+                        }
+
+                    } else if (state.paso == PasoFormularioCrearSesion.SOLICITAR_IMAGENES) {
+
+                        if (viewModel.comprobarCamposDelPaso4())
+                            viewPager.currentItem = state.paso.ordinal
+                        else
+                            uiState.setError("Debes marcar la casilla de aforo ilimitado o establecer un aforo máximo, el cual debe ser superior a 0 (El aforo solo tiene en cuenta a los participantes no a los entrenadores).")
+
+                    } else {
+                        viewPager.currentItem = state.paso.ordinal
+                    }
+
+                }
+
+                /**
+                 * Cuando se descargan correctamente los entrenadores
+                 */
+                is CrearSesionEntrenadorState.SeleccionandoEntrenador -> {
+
+                    val onEntrenadoresSelected = { list: EntrenadorWrapper ->
+                        viewModel.addEntrenadores(list)
+                    }
+
+                    DxImplementation.mostrarDxSeleccionarEntrenador(
+                        context = requireContext(),
+                        onEntrenadoresSelected = onEntrenadoresSelected,
+                        entrenadoresEnMiMismaEmpresa = state.entrenadores,
+                        entrenadoresYaEnLaLista = viewModel.entrenadoresAnadidos.value ?: EntrenadorWrapper()
+                    )
+
+                }
+
+                /**
+                 * Tras un duro trabajo, finalmente enviamos la sesión al servidor pero pidiendo
+                 * confirmación al usuario.
+                 */
+                is CrearSesionEntrenadorState.CrearSesion -> {
+
+                    if (viewModel.camposDelPaso5Validos()) {
+
+                        val onAccept = {
+                            val entrenador = mainViewModel.usuario.value as Entrenador
+                            viewModel.crearSesion(
+                                context = requireContext(),
+                                empresa = entrenador.empresaAsignada,
+                                creador = entrenador,
+                            )
+                            Unit
+                        }
+
+                        DxImplementation.mostrarDxConfirmarCrearSesion(
+                            context = requireContext(),
+                            entrenadoresParticipantes = viewModel.entrenadoresAnadidos.value ?: EntrenadorWrapper(),
+                            titulo = viewModel.tituloSesion.value ?: "",
+                            fechaYHora = LocalDateTime.of(
+                                viewModel.fecha.value ?: LocalDate.now(),
+                                viewModel.hora.value ?: LocalTime.now()
+                            ),
+                            aforo = viewModel.aforo.value ?: 0,
+                            onAccept = onAccept
+                        )
+
+                    } else {
+                        uiState.setError("Debes realizar la imagen o seleccionar una existente de tu dispositivo.")
+                    }
+
+                }
+
+                /**
+                 * Si la sesión se crea correctamente...
+                 */
+                is CrearSesionEntrenadorState.SesionCreadaCorrectamente -> {
+
+                    val action = {
+                        viewModel.resetViewModel()
+                        Navigation.findNavController(requireView()).navigateUp()
+                        Unit
+                    }
+
+                    DxImplementation.mostrarDxLottie(
+                        context = requireContext(),
+                        titulo = "Éxito",
+                        mensaje = "La sesión se ha creado correctamente.",
+                        lottie = R.raw.sesion_creada_correctamente,
+                        onAccept = action
+                    )
+
+                }
+
+            }
+
+        }
+
     }
 
-    private fun setupDatosFormulario() {
-        binding.etNombreSesion.doAfterTextChanged { viewModel.setTituloSession(it.toString()) }
-        binding.etDescripcionSesion.doAfterTextChanged { viewModel.setDescripcionSession(it.toString()) }
-        binding.etSubtituloSesion.setOnClickListener { viewModel.setSubtituloSession(it.toString()) }
+    /**
+     * Inicialización del fragmento
+     */
+    private fun setupView() {
+        setupPopBackStack()
+        setupViewPager()
+        setupListeners()
+        setupObservers()
+    }
+
+    private fun setupObservers() { // Aqui me interesa añadir acciones al estado loading, solo en este fragmento
+
+        uiState.observableState.observe(viewLifecycleOwner) { uiState ->
+
+            if (uiState == UiState.State.LOADING) {
+                binding.btnContinuar.isEnabled = false
+                binding.btnAnadirEntrenador.isEnabled = false
+                binding.btnFinalizar.isEnabled = false
+            } else {
+                binding.btnContinuar.isEnabled = true
+                binding.btnAnadirEntrenador.isEnabled = true
+                binding.btnFinalizar.isEnabled = true
+            }
+
+        }
+
+    }
+
+    private fun setupPopBackStack() {
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+
+            if (viewPager.currentItem == 0) {
+
+                val onAccept = {
+                    viewModel.resetViewModel()
+                    Navigation.findNavController(requireView()).popBackStack()
+                    Unit
+                }
+
+                DxImplementation.mostrarDxConfirmacion(
+                    context = requireContext(),
+                    titulo = "Descartar cambios",
+                    mensaje = "Estás tratando de volver atrás y se descartarán los cambios realizados. ¿Estás seguro?",
+                    onAccept = onAccept
+                )
+
+            } else {
+                viewPager.currentItem = viewPager.currentItem - 1
+            }
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
     }
 
     private fun setupListeners() = with(binding) {
-        btnSeleccionarFecha.setOnClickListener { seleccionarFechaYHoraSesion() }
-        cvSeleccioneImagen.setOnClickListener { seleccionarArchivo() }
-        cvRealizarImagen.setOnClickListener { realizarImagen() }
-        btnAnadirEntrenador.setOnClickListener { agregarEntrenadores() }
-    }
 
-    private fun realizarImagen() {
-        val intent = Intent(requireContext(), CamaraActivity::class.java)
-        realizarFotografiaResult.launch(intent)
-    }
-
-    private fun seleccionarFechaYHoraSesion() {
-        // Fecha
-        val datePicker = MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Fecha de la sesión")
-                .build()
-        datePicker.show(parentFragmentManager, "datePicker")
-        datePicker.addOnPositiveButtonClickListener { date ->
-            // Una vez tengo la fecha, selecciono la hora
-            val timePicker = MaterialTimePicker.Builder()
-                    .setTitleText("Hora de la sesión")
-                    .build()
-            timePicker.show(parentFragmentManager, "timePicker")
-            timePicker.addOnPositiveButtonClickListener { viewTime -> // time is a view
-                // calculo el total del date mas el time
-                val mDate = date.toLocalDateTime()
-                val mTime = timePicker.hour to timePicker.minute
-                val mDateTime = mDate.withHour(mTime.first).withMinute(mTime.second)
-                viewModel.setFechaSession(mDateTime)
-            }
-
+        btnAnadirEntrenador.setOnClickListener {
+            this@CrearSesionFragment.viewModel.findEntrenadoresByIdEmpresa((mainViewModel.usuario.value!! as Entrenador).empresaAsignada.id)
         }
-    }
 
-    private fun setupObservers() {
-        setupRecyclerEntrenadores()
-        setupFechaSeleccionadaObserver()
-    }
-
-    private fun setupFechaSeleccionadaObserver() {
-        viewModel.fechaSesion.observe(viewLifecycleOwner) { fecha ->
-
-            if (fecha.isAfter(LocalDateTime.now())) {
-                if (fecha != Constantes.DEFAULT_DATE) {
-                    binding.tvFechaSesion.text = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-                    binding.tvFechaSesion.setTypeface(null, Typeface.BOLD)
-                }
-            } else {
-                uiState.setError("No puedes seleccionar una fecha anterior a la actual. Aún no se puede viajar al pasado...")
-            }
-
+        btnContinuar.setOnClickListener {
+            this@CrearSesionFragment.viewModel.setState(
+                CrearSesionEntrenadorState.SolicitarInformacion(
+                    PasoFormularioCrearSesion.fromInt(viewPager.currentItem + 1) // trabajar con el enumerado me complica aqui las cosas pero en otros sitios me lo simplifica.
+                )
+            )
         }
-    }
 
-    private fun setupRecyclerEntrenadores() {
-
-        val adapter = EntrenadoresParticipantesRecyclerViewAdapter()
-        viewModel.entrenadoresParticipantes.observe(viewLifecycleOwner) { entrenadores ->
-            entrenadores?.let { entrenadorWrapper ->
-                adapter.submitList(entrenadorWrapper.filter { it.isSeleccionadoParaSerParticipante }.map { it.copy() })
-            }
-        }
-        binding.rvEntrenadoresParticipantes.adapter = adapter
-
-        // añado a eso a mi mismo
-        val entrenador = mainViewModel.usuario.value
-        entrenador?.let {
-            if (it is Entrenador) {
-                it.isCurrentSesion = true
-                it.isSeleccionadoParaSerParticipante = true
-                viewModel.entrenadoresParticipantes.value = EntrenadorWrapper()
-                viewModel.entrenadoresParticipantes.value?.add(it)
-            }
+        btnFinalizar.setOnClickListener {
+            this@CrearSesionFragment.viewModel.setState(CrearSesionEntrenadorState.CrearSesion)
         }
 
     }
 
-    private fun agregarEntrenadores() {
-
-        val onEntrenadoresSelected = { entrenadores: EntrenadorWrapper ->
-            viewModel.addEntrenadoresParticipantes(entrenadores)
-        }
-
-        DxImplementation.mostrarDxSeleccionarEntrenador(
-            context = requireContext(),
-            entrenadores = viewModel.entrenadoresDisponibles.value,
-            idCreador = mainViewModel.usuario.value?.id ?: -1,
-            onEntrenadoresSelected = onEntrenadoresSelected
+    private fun setupViewPager() {
+        val dotsIndicator = binding.dotsIndicator
+        viewPager = binding.vpCrearSesion
+        val adapter = CrearSesionViewPagerAdapter(
+            fragmentManager = parentFragmentManager,
+            lifecycle = lifecycle
         )
 
-    }
+        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
 
-    private fun seleccionarArchivo() {
+            override fun onPageSelected(position: Int) {
 
-        seleccionarArchivoResult.launch(Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "image/*"
+                when (PasoFormularioCrearSesion.fromInt(position)) {
+
+                    PasoFormularioCrearSesion.SOLICITAR_ENTRENADORES -> {
+                        binding.btnAnadirEntrenador.visibility = View.VISIBLE
+                    }
+
+                    PasoFormularioCrearSesion.SOLICITAR_IMAGENES -> {
+                        binding.btnContinuar.visibility = View.GONE
+                        binding.btnFinalizar.visibility = View.VISIBLE
+                    }
+
+                    else -> {
+                        binding.btnContinuar.visibility = View.VISIBLE
+                        binding.btnAnadirEntrenador.visibility = View.GONE
+                        binding.btnFinalizar.visibility = View.GONE
+                    }
+                }
+
+            }
+
         })
 
+        viewPager.adapter = adapter
+        dotsIndicator.attachTo(viewPager)
+        viewPager.isUserInputEnabled = false
     }
 
 }

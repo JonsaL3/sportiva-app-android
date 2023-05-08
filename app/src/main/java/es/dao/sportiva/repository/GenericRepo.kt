@@ -33,7 +33,7 @@ open class GenericRepo {
                     200 -> {
                         Log.d(GENERIC_TAG, "-> Respuesta correcta obtenida.\n" +
                                 "-> Código ${response.code()}\n" +
-                                "-> Json ${response.body()}"
+                                "-> Json ${response.body().toString()}"
                         )
                         uiState.setSuccess()
                         cc.resume(response.body()) { } // TODO

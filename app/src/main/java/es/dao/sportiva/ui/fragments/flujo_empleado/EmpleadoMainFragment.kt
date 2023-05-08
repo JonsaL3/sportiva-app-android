@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentMainBinding
-import es.dao.sportiva.models.Empleado
+import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.ui.MainActivity
 import es.dao.sportiva.ui.adapters.EmpleadoPrincipalViewPagerAdapter
 import es.dao.sportiva.ui.MainViewModel
