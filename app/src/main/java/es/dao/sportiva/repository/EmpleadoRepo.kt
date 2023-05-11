@@ -15,7 +15,7 @@ class EmpleadoRepo @Inject constructor(
     private val empleadpApiClient: EmpleadoApiClient,
 ) : GenericRepo() {
 
-    suspend fun registrarEmpleado(empleado: Empleado): Boolean? {
+    suspend fun registerEmpleado(empleado: Empleado): Boolean? {
         val request = empleadpApiClient.registrarEmpleado(empleado)
         return genericRequest(request)
     }

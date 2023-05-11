@@ -14,7 +14,6 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentInformationRegisterBinding
-import es.dao.sportiva.models.Empleado
 import es.dao.sportiva.models.Empresa
 import es.dao.sportiva.ui.MainActivity
 
@@ -224,7 +223,7 @@ class RegisterFragment(
                             Toast.makeText(requireContext(), "Error al registrarse2", Toast.LENGTH_SHORT).show()
                         }
 
-                        viewModel.registerUser(onError, onSuccses, onFailure)
+                        viewModel.registerEmpleado(onError, onSuccses, onFailure)
                     } else{
                         Toast.makeText(requireContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show()
                     }
