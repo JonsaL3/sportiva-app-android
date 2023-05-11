@@ -28,7 +28,7 @@ class InscripcionesRecyclerViewAdapter : RecyclerView.Adapter<InscripcionesViewH
     }
 
     fun submitList(list: List<EmpleadoInscribeSesion>) {
-        differ.submitList(list)
+        differ.submitList(list.map { it.copy() })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InscripcionesViewHolder {

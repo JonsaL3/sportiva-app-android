@@ -1,35 +1,46 @@
 package es.dao.sportiva.ui
 
 import android.content.Context
+import android.media.MediaScannerConnection
+import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.dao.sportiva.models.Empleado
-import es.dao.sportiva.models.Empresa
+import es.dao.sportiva.BuildConfig
 import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.utils.runOnUiThread
 import es.dao.sportiva.models.usuario.IniciarSesionRequest
 import es.dao.sportiva.repository.UsuarioRepo
+import es.dao.sportiva.repository.VersionRepo
+import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.UiState
+import es.dao.sportiva.utils.download_tools.AndroidDownloader
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val usuarioRepo: UsuarioRepo,
+    private val versionRepo: VersionRepo,
     private val uiState: UiState
 ) : ViewModel() {
 
+    /**
+     * Variables de la sesión
+     */
     private var _usuario: MutableLiveData<Usuario?> = MutableLiveData(null)
     val usuario: LiveData<Usuario?> = _usuario
 
-    // Manejo del usuario que hizo login ############################################
+    /**
+     * Manejo de la sesión
+     */
     fun doLogin(
         correo: String,
         contrasena: String,
@@ -39,35 +50,9 @@ class MainViewModel @Inject constructor(
 
         uiState.setLoading()
 
-        val EMPRESA_EJEMPLO_1 = Empresa(
-            id = 1,
-            nombre = "PEPOTE SL",
-            isActivo = true
-        )
-
-        val EMPLEADO_EJEMPLO_1 = Empleado(
-            id = 1,
-            correo = "gonzalo@gonzalo.es",
-            contrasena = "1234",
-            nombre = "Gonzalo",
-            apellido1 = "Racero",
-            apellido2 = "Galán",
-            fechaNacimiento = LocalDateTime.of(2000, 5, 8, 0, 0),
-            fechaInserccion = LocalDateTime.now(),
-            isActivo = true,
-            imagen = null,
-            cargo = "Programador full stack android",
-            peso = 60.0f,
-            altura = 1.70f,
-            isDeporteFrecuente = false,
-            isFumador = false,
-            empresa = EMPRESA_EJEMPLO_1
-        )
-
         CoroutineScope(Dispatchers.IO).launch {
             launch {
-//                _usuario.postValue(usuarioRepo.iniciarSesion(correo, contrasena))
-                _usuario.postValue(EMPLEADO_EJEMPLO_1)
+                _usuario.postValue(usuarioRepo.iniciarSesion(correo, contrasena))
             }.join()
             _usuario.value?.let { usuario ->
                 runOnUiThread {
@@ -76,10 +61,56 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+
     }
 
     fun doLogout() {
         _usuario.postValue(null)
+    }
+
+    /**
+     * Manejo de la descarga de nuevas versiones de la aplicación
+     */
+    fun downloadNewVersionIfAvaiable(
+        context: Context,
+        noNewVersionAction : () -> Unit
+        // Actualmente crearía un estado para esto pero este
+        // proyecto lo empecé cuando no sabia de la existencia de nada de eso
+        // y esta main activity es lo primero que cree
+    ) = viewModelScope.launch {
+
+        delay(500)
+
+        versionRepo.getLatestVersion()?.apply {
+            if (this.versionInt > BuildConfig.VERSION_CODE) {
+                downloadNewApk(context)
+                return@launch
+            } else {
+                noNewVersionAction.invoke()
+            }
+        }
+
+    }
+    private fun downloadNewApk(context: Context) {
+
+        // Antes de descargarme una nueva versión borro los apks por si hay alguno de antes
+        val downloadDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path)
+        downloadDir.listFiles()?.forEach {
+            Log.d(":::DownloadCompletedReciverPRE", it.name)
+            if (it.name.contains("sportiva")) {
+                if (it.delete()) {
+                    Log.d(":::DownloadCompletedReciverPRE", "Borrado apk viejo: ${it.name}")
+                    MediaScannerConnection.scanFile(
+                        context, arrayOf(it.path), null, null
+                    )
+                }
+                else
+                    Log.e(":::DownloadCompletedReciverPRE", "No se pudo borrar apk viejo: ${it.name}")
+            }
+        }
+
+        val downloader = AndroidDownloader(context)
+        downloader.donwloadApkFile(Constantes.BASE_URL + "version/downloadCurrentApk")
     }
 
 }

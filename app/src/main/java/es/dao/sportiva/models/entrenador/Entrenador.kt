@@ -53,6 +53,14 @@ data class Entrenador(
         return super.toString() + "Entrenador(estudios='$estudios', sueldo=$sueldo, fechaAlta=$fechaAlta)"
     }
 
+    override fun equals(other: Any?): Boolean {
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+
     fun copy(): Entrenador = Entrenador(
         this.id,
         this.correo,

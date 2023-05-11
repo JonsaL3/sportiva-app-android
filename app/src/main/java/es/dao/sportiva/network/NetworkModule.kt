@@ -5,7 +5,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import es.dao.sportiva.models.Empleado
 import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.LocalDateTimeTypeAdapter
 import retrofit2.Retrofit
@@ -53,7 +52,12 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideEMpleadoApiClient(retrofit: Retrofit): EmpleadoApiClient =
-        retrofit.create(EmpleadoApiClient::class.java)
+    fun provideEmpleadoParticipaSesionApiClient(retrofit: Retrofit): EmpleadoParticipaSesionApiClient =
+        retrofit.create(EmpleadoParticipaSesionApiClient::class.java)
+
+    @Singleton
+    @Provides
+    fun provideEmpleadoSolicitaSesionApiClient(retrofit: Retrofit): VersionApiClient =
+        retrofit.create(VersionApiClient::class.java)
 
 }
