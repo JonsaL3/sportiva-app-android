@@ -109,4 +109,26 @@
     <string name="configuraci_n">Configuración</string>
     <string name="salir">Salir</string>
     <string name="no_hay_ninguna_sesi_n_programada_para_el_d_a_de_hoy">No hay ninguna sesión programada para el día de hoy.</string>
+    <string name="nombre">Nombre</string>
+    <string name="primer_apellido">Primer apellido</string>
+    <string name="segundo_apellido">Segundo apellido</string>
+    <string name="empresa">Empresa</string>
+    <string name="peso">Peso</string>
+    <string name="altura">Altura</string>
+    <string name="fumador">Fumo.</string>
+    <string name="hago_deporte_frecuentemente">Hago deporte frecuentemente.</string>
+    <string name="cargo">Cargo</string>
+    <string name="grito_registrarme">¡Registrarme!</string>
+    <string name="cargando">Cargando...</string>
+    <string name="error_al_registrarse">Error al registrarse</string>
+    <string name="registrando_empleado">Registrando empleado</string>
+    <string name="registrando_entrenador">Registrando entrenador</string>
+    <string name="estamos_registrando_tu_cuenta_por_favor_espera_un_momento">Estamos registrando tu cuenta, por favor, espera un momento</string>
+    <string name="descargando_nueva_versi_n_de_la_aplicaci_n">Descargando nueva versión de la aplicación</string>
+    <string name="por_favor_espere">Por favor, espere</string>
+    <string name="comprobando_versiones">Comprobando versiones</string>
+    <string name="estamos_comprobando_si_hay_nuevas_versiones_disponibles">Estamos comprobando si hay nuevas versiones disponibles</string>
+    <string name="registro_de_entrenadores">Registro de entrenadores.</string>
+    <string name="estudios">Estudios</string>
+    <string name="sueldo">Sueldo</string>
 </resources>

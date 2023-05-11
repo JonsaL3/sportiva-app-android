@@ -17,6 +17,19 @@ import java.time.format.DateTimeFormatter
 
 object DxImplementation {
 
+    fun mostrarLoader(context: Context, titulo: String? = null, mensaje: String? = null){
+        DxCustom(context)
+            .createLoading(
+                lottie = R.raw.loader,
+                titulo = titulo?: context.getString(R.string.cargando),
+                mensaje = mensaje?: context.getString(R.string.cargando),
+            )
+    }
+
+    fun quitarLoader(){
+        DxCustom().dimissLoader()
+    }
+
     // Implementaciones primarias
     fun mostrarDxError(
         context: Context,

@@ -47,7 +47,11 @@
         tools:layout="@layout/fragment_welcome">
         <action
             android:id="@+id/action_loginFragment_to_empleadoMainFragment"
-            app:destination="@id/empleadoMainFragment" />
+            app:destination="@id/empleadoMainFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_loginFragment_to_entrenadorMainFragment3"
             app:destination="@id/entrenadorMainFragment"

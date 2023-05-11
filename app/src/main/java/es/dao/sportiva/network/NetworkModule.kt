@@ -47,6 +47,11 @@ class NetworkModule {
 
     @Singleton
     @Provides
+    fun provideEmpleadoApiClient(retrofit: Retrofit): EmpleadoApiClient =
+        retrofit.create(EmpleadoApiClient::class.java)
+
+    @Singleton
+    @Provides
     fun provideEmpleadoInscribeSesionApiClient(retrofit: Retrofit): EmpleadoInscribeSesionApiClient =
         retrofit.create(EmpleadoInscribeSesionApiClient::class.java)
 

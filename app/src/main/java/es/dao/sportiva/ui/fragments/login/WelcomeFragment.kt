@@ -6,9 +6,14 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.dxcustomlibrary.visible
+import dagger.hilt.android.AndroidEntryPoint
+import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentWelcomeBinding
 import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
@@ -16,11 +21,25 @@ import es.dao.sportiva.ui.MainActivity
 import es.dao.sportiva.ui.MainViewModel
 import es.dao.sportiva.ui.adapters.RegisterViewPagerAdapter
 import es.dao.sportiva.utils.DxImplementation
+import es.dao.sportiva.utils.UiState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class WelcomeFragment : Fragment() {
 
     private lateinit var binding: FragmentWelcomeBinding
     private val viewModel: MainViewModel by activityViewModels()
+    private val registroViewModel: RegisterViewModel by viewModels()
+
+    @Inject
+    lateinit var uiState: UiState
+
+    private var countRegisterEntrenador: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,6 +52,7 @@ class WelcomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupAnimations()
         setupView()
+        setupInclude()
     }
 
     private fun setupView() = with(binding) {
@@ -63,6 +83,13 @@ class WelcomeFragment : Fragment() {
         btnRegistrarse.setOnClickListener {
             startRegistrationProcess()
             (requireActivity() as MainActivity).actionOnBackPressed = { restoreWelcomeFragment() }
+        }
+        binding.logoSportiva.setOnClickListener {
+            countRegisterEntrenador++
+            if(countRegisterEntrenador == 5){
+                countRegisterEntrenador = 0
+                registroEntrenadorLinearLayout.visible()
+            }
         }
         viewPager.adapter = adapter
         dotsIndicator.attachTo(viewPager)
@@ -136,5 +163,55 @@ class WelcomeFragment : Fragment() {
 
 
     }
+
+    private fun setupInclude() = with(binding.includeRegistroEntrenador){
+
+        btnVolverRegistroEntrenador.setOnClickListener {
+            this@WelcomeFragment.binding.registroEntrenadorLinearLayout.visibility = View.GONE
+        }
+
+        btnRegistrarse.setOnClickListener {
+            if(checkDataIdEmpty()){
+                Toast.makeText(requireContext(), "Rellene todos los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }else{
+
+                val onError = {
+                    uiState.setError(requireContext().getString(R.string.error_al_registrarse))
+                }
+
+                val onSuccses = {
+                    uiState.setSuccess()
+                    //TODO
+                    val action =
+                        WelcomeFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
+                    findNavController().navigate(action)
+                }
+
+                val onFailure = {
+                    uiState.setError(requireContext().getString(R.string.error_al_registrarse))
+                }
+
+                uiState.setLoadingFullScreen(
+                    requireContext().getString(R.string.registrando_entrenador),
+                    requireContext().getString(R.string.estamos_registrando_tu_cuenta_por_favor_espera_un_momento)
+                )
+
+                registroViewModel.registerEntrenador(onError, onSuccses, onFailure)
+            }
+        }
+    }
+
+    private fun checkDataIdEmpty(): Boolean = with(binding.includeRegistroEntrenador){
+        return@with etNombre.text.toString().isEmpty() ||
+                etApellido1.text.toString().isEmpty() ||
+                etCorreo.text.toString().isEmpty() ||
+                etContrasenia.text.toString().isEmpty() ||
+                etApellido2.text.toString().isEmpty() ||
+                etEstudios.text.toString().isEmpty() ||
+                etSueldo.text.toString().isEmpty() ||
+                etEmpresa.text.toString().isEmpty()
+    }
+
 
 }

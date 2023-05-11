@@ -3,7 +3,7 @@ package es.dao.sportiva.ui.fragments.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import es.dao.sportiva.models.Empleado
+import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.repository.EmpleadoRepo
 import es.dao.sportiva.repository.EntrenadorRepo

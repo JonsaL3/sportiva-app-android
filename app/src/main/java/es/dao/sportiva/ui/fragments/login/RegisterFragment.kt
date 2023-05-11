@@ -16,6 +16,8 @@ import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentInformationRegisterBinding
 import es.dao.sportiva.models.Empresa
 import es.dao.sportiva.ui.MainActivity
+import es.dao.sportiva.utils.UiState
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RegisterFragment(
@@ -25,6 +27,9 @@ class RegisterFragment(
 
     lateinit var binding: FragmentInformationRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
+
+    @Inject
+    lateinit var uiState: UiState
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -211,18 +216,23 @@ class RegisterFragment(
                         viewModel.empleado.isDeporteFrecuente = chbDeporte.isChecked
 
                         val onError = {
-                            Toast.makeText(requireContext(), "Error al registrarse", Toast.LENGTH_SHORT).show()
+                            uiState.setError(context.getString(R.string.error_al_registrarse))
                         }
 
                         val onSuccses = {
-                            Toast.makeText(requireContext(), "Registrado correctamente", Toast.LENGTH_SHORT).show()
+                            uiState.setSuccess()
+                            //TODO
 //                            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                         }
 
                         val onFailure = {
-                            Toast.makeText(requireContext(), "Error al registrarse2", Toast.LENGTH_SHORT).show()
+                            uiState.setError(context.getString(R.string.error_al_registrarse))
                         }
 
+                        uiState.setLoadingFullScreen(
+                            context.getString(R.string.registrando_empleado),
+                            context.getString(R.string.estamos_registrando_tu_cuenta_por_favor_espera_un_momento)
+                        )
                         viewModel.registerEmpleado(onError, onSuccses, onFailure)
                     } else{
                         Toast.makeText(requireContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show()

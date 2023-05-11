@@ -1,6 +1,5 @@
 package es.dao.sportiva.repository
 
-import es.dao.sportiva.models.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.network.EntrenadorApiClient

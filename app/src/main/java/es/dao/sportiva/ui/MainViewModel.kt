@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.dao.sportiva.BuildConfig
+import es.dao.sportiva.R
 import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.utils.runOnUiThread
 import es.dao.sportiva.models.usuario.IniciarSesionRequest
@@ -83,15 +84,39 @@ class MainViewModel @Inject constructor(
 
         versionRepo.getLatestVersion()?.apply {
             if (this.versionInt > BuildConfig.VERSION_CODE) {
+                uiState.setSuccess()
+                uiState.setLoadingFullScreen(
+                    context.getString(R.string.descargando_nueva_versi_n_de_la_aplicaci_n),
+                    context.getString(R.string.por_favor_espere)
+                )
                 downloadNewApk(context)
                 return@launch
             } else {
                 noNewVersionAction.invoke()
             }
+        }?:run{
+            noNewVersionAction.invoke()
         }
 
     }
     private fun downloadNewApk(context: Context) {
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
+        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
+        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
+        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
+        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
+        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
+        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
 
         // Antes de descargarme una nueva versión borro los apks por si hay alguno de antes
         val downloadDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path)
