@@ -20,17 +20,68 @@
         tools:openDrawer="start"
         android:background="@color/black"
         android:layout_height="wrap_content">
-        
-        <LinearLayout
-            android:id="@+id/ll_container_main"
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
-                tools:visibility="gone"
-                android:visibility="gone"
+                android:id="@+id/ll_container_main"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:orientation="vertical">
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appBarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible"
+                    android:visibility="gone">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.appbar.MaterialToolbar
+                            android:id="@+id/topAppBar"
+                            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                            android:layout_width="match_parent"
+                            android:layout_height="?attr/actionBarSize"
+                            android:background="@color/black"
+                            tools:title="Pues aqui va el titulo de lo que estás haciendo"
+                            android:elevation="0dp"
+                            />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/pi_main_activity"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:indeterminate="true"
+                            tools:visibility="visible"
+                            android:visibility="visible"
+                            app:indicatorColor="@color/red_sportiva"
+                            app:trackColor="@color/black"
+                            android:layout_gravity="bottom"
+                            />
+
+                    </FrameLayout>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/nav_host_fragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/main_nav_graph" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                tools:visibility="visible"
+                android:visibility="visible"
                 android:padding="10dp"
                 android:orientation="vertical"
                 android:id="@+id/ll_comprobando_versiones"
@@ -55,7 +106,7 @@
                     android:text="LO SE ESTE CUADRADO ROJO ES FEO DE PELOTAS PERO ES TEMPORAL."
                     />
 
-                
+
                 <com.airbnb.lottie.LottieAnimationView
                     android:layout_gravity="center"
                     app:lottie_autoPlay="true"
@@ -72,47 +123,10 @@
                     android:textSize="20dp"
                     android:text="ES OBLIGATIORIO ACTUALIZAR SI NO ESTA COSA NO SE TE VA A QUITAR"
                     />
-                
+
             </LinearLayout>
-            
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:visibility="visible"
-                android:visibility="gone">
 
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
-                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/black"
-                    tools:title="Pues aqui va el titulo de lo que estás haciendo"
-                    />
-
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/pi_main_activity"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:indeterminate="true"
-                    tools:visibility="visible"
-                    android:visibility="gone"
-                    app:indicatorColor="@color/red_sportiva"
-                    app:trackColor="@color/black"
-                    />
-
-            </com.google.android.material.appbar.AppBarLayout>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/nav_host_fragment"
-                android:name="androidx.navigation.fragment.NavHostFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:defaultNavHost="true"
-                app:navGraph="@navigation/main_nav_graph" />
-
-        </LinearLayout>
+        </FrameLayout>
 
         <!-- AQUI COMIENZA EL DRAWER -->
         <LinearLayout
@@ -121,6 +135,7 @@
             android:background="@color/black"
             android:clickable="true"
             android:orientation="horizontal"
+            tools:visibility="gone"
             android:layout_gravity="start">
 
             <LinearLayout

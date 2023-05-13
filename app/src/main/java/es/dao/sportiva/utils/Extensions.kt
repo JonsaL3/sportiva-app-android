@@ -53,6 +53,25 @@ fun Uri.getBitmap(context: Context): Bitmap? {
     return null
 }
 
+fun Uri.getFile(context: Context): File {
+    val parcelFileDescriptor: ParcelFileDescriptor? =
+        context.contentResolver.openFileDescriptor(this, "r")
+    val fileDescriptor: FileDescriptor = parcelFileDescriptor!!.fileDescriptor
+    val file = File(context.cacheDir, "cacheFileAppeal.srl")
+    val fos = FileOutputStream(file)
+    val inputStream = FileInputStream(fileDescriptor)
+    fos.use { output ->
+        val buffer = ByteArray(4 * 1024) // or other buffer size
+        var read: Int
+        while (inputStream.read(buffer).also { read = it } != -1) {
+            output.write(buffer, 0, read)
+        }
+        output.flush()
+    }
+    inputStream.close()
+    return file
+}
+
 fun Bitmap.toBase64(): String {
     val baos = ByteArrayOutputStream()
     this.compress(Bitmap.CompressFormat.JPEG, 100, baos)

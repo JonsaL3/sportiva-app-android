@@ -90,8 +90,26 @@ class ComenzarSesionFragment : Fragment() {
                     DxImplementation.mostrarDxLottie(
                         context = requireContext(),
                         titulo = "Éxito",
-                        mensaje = "La sesión ha dado comienzo correctamente.",
+                        mensaje = "Se ha registrado el comienzo de la sesión correctamente.",
                         lottie = R.raw.sesion_creada_correctamente,
+                        onAccept = action
+                    )
+
+                }
+
+                /**
+                 * En caso de que haya gente ausente a la sesión.
+                 */
+                is ComenzarSesionEntrenadorViewModelState.FaltaGentePorConfirmar -> {
+
+                    val action = {
+                        viewModel.comenzarSesion(true)
+                    }
+
+                    DxImplementation.mostrarDxConfirmacion(
+                        context = requireContext(),
+                        mensaje = "Los usuarios " + state.ausentes.joinToString(", ") { it.nombre } + " no han confirmado su asistencia. ¿Deseas continuar de todas formas?",
+                        titulo = "Atención",
                         onAccept = action
                     )
 
@@ -107,9 +125,26 @@ class ComenzarSesionFragment : Fragment() {
      * Elementos agenos a la máquina de estados del fragmento.
      */
     private fun setupFragment() {
-        setupPopBackStack() // TODO POP BACK A TODO DIRECTAMENTE SIN VOLVER A PASAR POR EL PASO 1, QUE EMPIECEN DE 0 SI VAN ATRAS
+        setupPopBackStack()
         setupViewPager()
         setupListeners()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+
+        uiState.observableState.observe(viewLifecycleOwner) { state ->
+
+            if (state == UiState.State.LOADING) {
+                binding.btnFinalizar.isEnabled = false
+                binding.btnScanner.isEnabled = false
+            } else {
+                binding.btnFinalizar.isEnabled = true
+                binding.btnScanner.isEnabled = true
+            }
+
+        }
+
     }
 
     private fun setupPopBackStack() {
@@ -178,8 +213,16 @@ class ComenzarSesionFragment : Fragment() {
     private fun setupListeners() = with(binding) {
 
         btnFinalizar.setOnClickListener {
-            // TODO DX CONFIRMACIÓN
-            this@ComenzarSesionFragment.viewModel.comenzarSesion()
+
+            DxImplementation.mostrarDxConfirmacion(
+                context = requireContext(),
+                titulo = "Comenzar sesión",
+                mensaje = "¿Estás seguro de que deseas marcar la sesión como comenzada y prodecer a impartirla?",
+                onAccept = {
+                    this@ComenzarSesionFragment.viewModel.comenzarSesion(false)
+                }
+            )
+
         }
 
         btnScanner.setOnClickListener {
@@ -199,9 +242,6 @@ class ComenzarSesionFragment : Fragment() {
             viewModel.marcarInscripcionDesdeQrIfCoincide(qr)
         }
 
-        // TODO MUY IMPORTANTE, CREO QUE LA CÁMARA SE ME QUEDA
-        // TODO EN SEGUNDO PLANO PORQUE CONSTANTE MENTE
-        // TODO SALTA EN LOS WARNINGS UNA EXCEPCION
         DxImplementation.mostrarDxLectorQr(
             context = requireContext(),
             onQrScanned = onQrScanned

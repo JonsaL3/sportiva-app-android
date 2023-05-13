@@ -14,7 +14,7 @@ android {
         applicationId "es.dao.sportiva"
         minSdk 26
         targetSdk 33
-        versionCode 2
+        versionCode 3
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -85,4 +85,8 @@ dependencies {
     implementation 'androidx.camera:camera-video:1.2.1'
     //Dots indicator
     implementation("com.tbuonomo:dotsindicator:4.3")
+
+    // Compresor de imagenes
+    implementation 'id.zelory:compressor:3.0.1'
+
 }

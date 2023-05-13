@@ -47,8 +47,16 @@ class FechaYHora3Fragment : Fragment() {
     }
 
     private fun setupListeners() = with(binding) {
-        btnEditarFecha.setOnClickListener { solicitarFecha() }
-        btnEditarHora.setOnClickListener { solicitarHora() }
+        btnEditarFecha.setOnClickListener {
+            btnEditarFecha.isEnabled = false
+            btnEditarHora.isEnabled = false
+            solicitarFecha()
+        }
+        btnEditarHora.setOnClickListener {
+            btnEditarFecha.isEnabled = false
+            btnEditarHora.isEnabled = false
+            solicitarHora()
+        }
     }
 
     private fun solicitarFecha() {
@@ -61,6 +69,12 @@ class FechaYHora3Fragment : Fragment() {
         datePicker.addOnPositiveButtonClickListener { date ->
             val localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate()
             viewModel.setFecha(localDate)
+            binding.btnEditarFecha.isEnabled = true
+            binding.btnEditarHora.isEnabled = true
+        }
+        datePicker.addOnDismissListener {
+            binding.btnEditarFecha.isEnabled = true
+            binding.btnEditarHora.isEnabled = true
         }
 
     }
@@ -77,6 +91,12 @@ class FechaYHora3Fragment : Fragment() {
             val minuto = timePicker.minute
             val localTime = LocalTime.of(hora, minuto)
             viewModel.setHora(localTime)
+            binding.btnEditarFecha.isEnabled = true
+            binding.btnEditarHora.isEnabled = true
+        }
+        timePicker.addOnDismissListener {
+            binding.btnEditarFecha.isEnabled = true
+            binding.btnEditarHora.isEnabled = true
         }
 
     }
