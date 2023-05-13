@@ -5,6 +5,7 @@ import android.service.autofill.FillEventHistory
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -26,7 +27,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
 
     var actionOnBackPressed: (() -> Unit)? = null
@@ -56,11 +57,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupView() {
+
+        uiState.setLoadingFullScreen(
+            getString(R.string.comprobando_versiones),
+            getString(R.string.estamos_comprobando_si_hay_nuevas_versiones_disponibles),
+        )
+
         setupObservers()
         setupDrawer()
         setupNavigationListener()
         viewModel.downloadNewVersionIfAvaiable(this) {
-            binding.llComprobandoVersiones.visibility = View.GONE
+            DxImplementation.quitarLoader()
         }
     }
 
@@ -145,12 +152,21 @@ class MainActivity : AppCompatActivity() {
                 UiState.State.LOADING -> {
                     binding.piMainActivity.visibility = View.VISIBLE
                 }
+                UiState.State.LOADING_FULL_SCREEN -> {
+                    DxImplementation.mostrarLoader(
+                        this,
+                        uiState.tituloLoader,
+                        uiState.mensajeLoader
+                    )
+                }
                 UiState.State.SUCCESS -> {
                     binding.piMainActivity.visibility = View.GONE
+                    DxImplementation.quitarLoader()
                 }
                 UiState.State.ERROR -> {
 //
                     binding.piMainActivity.visibility = View.GONE
+                    DxImplementation.quitarLoader()
 
                     if (uiState.errorMessage.isNotEmpty()) {
                         DxImplementation.mostrarDxWarning(this, uiState.errorMessage)

@@ -64,7 +64,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
 
     // Dx de José Julio Landázuri Diaz
-    implementation 'com.github.jujo0922:DxCustom:2.4'
+    implementation 'com.github.jujo0922:DxCustom:2.6'
 
     // Lector de QR
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'

@@ -1,5 +1,6 @@
 package es.dao.sportiva.repository
 
+import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.network.EntrenadorApiClient
 import javax.inject.Inject
@@ -12,6 +13,11 @@ class EntrenadorRepo @Inject constructor(
 
     suspend fun findEntrenadoresByIdEmpresa(idEmpresa: Int): EntrenadorWrapper? {
         val request = entrenadorApiClient.findEntrenadoresByIdEmpresa(idEmpresa)
+        return genericRequest(request)
+    }
+
+    suspend fun registerEntrenador(entrenador: Entrenador): Boolean? {
+        val request = entrenadorApiClient.registrarEmpleado(entrenador)
         return genericRequest(request)
     }
 

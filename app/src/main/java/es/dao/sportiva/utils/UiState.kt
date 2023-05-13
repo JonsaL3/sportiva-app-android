@@ -21,6 +21,9 @@ class UiState @Inject constructor() {
     var observableState: MutableLiveData<State> = MutableLiveData(State.SUCCESS)
     var errorMessage = ""
 
+    var tituloLoader: String? = null
+    var mensajeLoader: String? = null
+
     fun setSuccess() {
         observableState.postValue(State.SUCCESS)
     }
@@ -29,13 +32,19 @@ class UiState @Inject constructor() {
         observableState.postValue(State.LOADING)
     }
 
+    fun setLoadingFullScreen(tituloLoader: String, mensajeLoader: String) {
+        this.tituloLoader = tituloLoader
+        this.mensajeLoader = mensajeLoader
+        observableState.postValue(State.LOADING_FULL_SCREEN)
+    }
+
     fun setError(errorMessage: String) {
         this.errorMessage = errorMessage
         observableState.postValue(State.ERROR)
     }
 
     enum class State {
-        LOADING, ERROR, SUCCESS
+        LOADING, LOADING_FULL_SCREEN, ERROR, SUCCESS
     }
 
 }

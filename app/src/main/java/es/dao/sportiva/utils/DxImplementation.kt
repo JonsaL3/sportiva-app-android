@@ -1,11 +1,11 @@
 package es.dao.sportiva.utils
 
+import DxCustom
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
-import com.example.dxcustomlibrary.DxCustom
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import es.dao.sportiva.R
@@ -17,6 +17,19 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object DxImplementation {
+
+    fun mostrarLoader(context: Context, titulo: String? = null, mensaje: String? = null){
+        DxCustom(context)
+            .createLoading(
+                lottie = R.raw.loader,
+                titulo = titulo?: context.getString(R.string.cargando),
+                mensaje = mensaje?: context.getString(R.string.cargando),
+            )
+    }
+
+    fun quitarLoader(){
+        DxCustom().dimissLoader()
+    }
 
     // Implementaciones primarias
     fun mostrarDxError(
