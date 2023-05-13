@@ -43,7 +43,7 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="16sp"
-        android:translationX="500dp"
+        android:translationX="1000dp"
         tools:translationX="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,8 @@
         app:endIconTint="@color/colorPrimary"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
@@ -76,6 +77,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_email"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" />
@@ -90,7 +92,8 @@
         android:layout_marginHorizontal="50dp"
         android:hint="@string/contrase_a"
         android:textColorHint="@color/colorPrimary"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -103,6 +106,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_password"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword" />
@@ -125,7 +129,8 @@
         app:endIconTint="@color/colorPrimary"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
@@ -133,6 +138,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_nombre"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -149,7 +155,8 @@
         android:hint="@string/primer_apellido"
         android:textColorHint="@color/colorPrimary"
         app:endIconTint="@color/colorPrimary"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -159,6 +166,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_apellido1"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -175,7 +183,8 @@
         android:hint="@string/segundo_apellido"
         android:textColorHint="@color/colorPrimary"
         app:endIconTint="@color/colorPrimary"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -185,6 +194,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_apellido2"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -201,7 +211,8 @@
         android:hint="@string/empresa"
         android:textColorHint="@color/colorPrimary"
         app:endIconTint="@color/colorPrimary"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -211,6 +222,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_empresa"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -229,7 +241,8 @@
         android:hint="@string/cargo"
         android:textColorHint="@color/colorPrimary"
         app:endIconTint="@color/colorPrimary"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         tools:translationX="0dp"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
@@ -240,6 +253,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_cargo"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text" />
@@ -256,7 +270,8 @@
         android:hint="@string/altura"
         android:textColorHint="@color/colorPrimary"
         app:endIconTint="@color/colorPrimary"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         tools:translationX="0dp"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
@@ -267,6 +282,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_altura"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal" />
@@ -285,7 +301,8 @@
         app:endIconTint="@color/colorPrimary"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         tools:translationX="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -294,6 +311,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_peso"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal" />
@@ -307,7 +325,8 @@
         android:layout_marginTop="340dp"
         android:text="@string/fumador"
         android:textColor="@color/white"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
@@ -322,7 +341,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         tools:translationX="0dp"
         android:layout_marginTop="390dp"
         android:textColor="@color/white"
@@ -337,7 +357,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="70dp"
         android:text="@string/continuar"
-        android:translationX="500dp"
+        android:translationX="1000dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

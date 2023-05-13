@@ -119,7 +119,7 @@
     <string name="hago_deporte_frecuentemente">Hago deporte frecuentemente.</string>
     <string name="cargo">Cargo</string>
     <string name="grito_registrarme">¡Registrarme!</string>
-    <string name="cargando">Cargando...</string>
+    <string name="cargando">Cargando…</string>
     <string name="error_al_registrarse">Error al registrarse</string>
     <string name="registrando_empleado">Registrando empleado</string>
     <string name="registrando_entrenador">Registrando entrenador</string>
@@ -131,4 +131,5 @@
     <string name="registro_de_entrenadores">Registro de entrenadores.</string>
     <string name="estudios">Estudios</string>
     <string name="sueldo">Sueldo</string>
+    <string name="rellena_todos_loas_campos">Rellena todos loas campos.</string>
 </resources>
