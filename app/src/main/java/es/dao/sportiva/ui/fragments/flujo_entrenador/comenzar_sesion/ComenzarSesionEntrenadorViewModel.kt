@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.dao.sportiva.enum.PasoFormularioComenzarSesion
+import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.empleado.EmpleadoWrapper
 import es.dao.sportiva.models.empleado_inscribe_sesion.EmpleadoInscribeSesionWrapper
 import es.dao.sportiva.models.empleado_participa_sesion.ComenzarSesionRequest
@@ -78,6 +79,7 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
         // Me cargo los jobs que esten corriendo al volver a la pantalla anterior, para que no se setee la lista en segundo plano y haya discrepancias
         // en la información
         runningJobs.forEach { it.cancel() }
+        runningJobs.clear()
         uiState.setSuccess()
     }
 
@@ -106,6 +108,7 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
             empleadoInscribeSesionRepo.findInscripcionesByIdSesion(sesion.id).apply {
                 if (!isNullOrEmpty()) {
                     _sesionSeleccionada.value = sesion
+                    _inscripciones.value = this
                     setState(
                         state = ComenzarSesionEntrenadorViewModelState.IrAPasoEspecifico(
                             paso = PasoFormularioComenzarSesion.CONFIRMAR_ASISTENCIA
@@ -161,7 +164,9 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
     /**
      * Finalmente, damos comienzo a la sesión
      */
-    fun comenzarSesion() {
+    fun comenzarSesion(
+        ignorePendientesPorConfirmar: Boolean = false,
+    ) {
 
         val job = viewModelScope.launch {
 
@@ -180,8 +185,16 @@ class ComenzarSesionEntrenadorViewModel @Inject constructor(
                     return@launch
                 }
 
-                if (mInscripciones.any { !it.isConfirmado }) {
-                    // TODO MENSAJE DE FALTAN ALGUNOS POR CONFIRMAR
+                if (!ignorePendientesPorConfirmar && mInscripciones.any { !it.isConfirmado }) {
+                    uiState.setSuccess()
+                    setState(
+                        state = ComenzarSesionEntrenadorViewModelState.FaltaGentePorConfirmar(
+                            ausentes = EmpleadoWrapper(mInscripciones.filter { !it.isConfirmado }.map { it.empleadoInscrito }.toCollection(
+                                arrayListOf()
+                            ))
+                        )
+                    )
+                    return@launch
                 }
 
                 // La marco como llevada a cabo, aunque esto se seteará en el servidor también
@@ -226,6 +239,10 @@ sealed class ComenzarSesionEntrenadorViewModelState {
 
     data class SesionCreadaCorrectamente(
         val sesion: EmpleadoParticipaSesionWrapper
+    ) : ComenzarSesionEntrenadorViewModelState()
+
+    data class FaltaGentePorConfirmar(
+        val ausentes: EmpleadoWrapper
     ) : ComenzarSesionEntrenadorViewModelState()
 
 }

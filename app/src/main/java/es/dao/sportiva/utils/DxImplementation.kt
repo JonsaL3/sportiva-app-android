@@ -10,6 +10,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.*
+import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.entrenador.EntrenadorWrapper
 import es.dao.sportiva.ui.adapters.SeleccionarEntrenadoresRecyclerViewAdapter
 import java.time.LocalDateTime
@@ -36,7 +37,7 @@ object DxImplementation {
 
     fun mostrarDxWarning(
         context: Context,
-        mensaje: String
+        mensaje: String,
     ) {
 
         runOnUiThread {
@@ -113,6 +114,8 @@ object DxImplementation {
         onEntrenadoresSelected: (EntrenadorWrapper) -> Unit
     ) = runOnUiThread {
 
+        val entrenadoresSeleccionados = EntrenadorWrapper()
+
         val entrenadoresSeleccionables = entrenadoresEnMiMismaEmpresa.filter { entrenador ->
             !entrenadoresYaEnLaLista.any { it.id == entrenador.id }
         }
@@ -134,14 +137,21 @@ object DxImplementation {
                 .setIcono(ContextCompat.getDrawable(context, R.drawable.baseline_edit_24))
                 .noPermitirSalirSinBotones()
                 .showAceptarButton {
-                    val wrapper = EntrenadorWrapper()
-                    wrapper.addAll(entrenadoresSeleccionables.filter { !it.isSeleccionadoParaSerParticipante })
-                    onEntrenadoresSelected(wrapper)
+                    onEntrenadoresSelected(entrenadoresSeleccionados)
                 }
                 .showCancelarButton { }
                 .showDialogReturnDxCustom()
 
-            val adapter = SeleccionarEntrenadoresRecyclerViewAdapter()
+            val onCheckedUsuario = { entrenador: Entrenador, isChecked: Boolean ->
+                entrenador.isSeleccionadoParaSerParticipante = isChecked
+                if (isChecked)
+                    entrenadoresSeleccionados.add(entrenador)
+                else
+                    entrenadoresSeleccionados.remove(entrenador)
+                Unit
+            }
+
+            val adapter = SeleccionarEntrenadoresRecyclerViewAdapter(onCheckedUsuario)
             customLayoutBinding.rvEntrenadoresParticipantes.adapter = adapter
             adapter.submitList(entrenadoresSeleccionables)
 
@@ -247,13 +257,15 @@ object DxImplementation {
             .addCustomView(binding.root)
             .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
             .noPermitirSalirSinBotones()
-            .showCancelarButton { }
+            .showCancelarButton {
+                binding.bvBarcodeBarcodeview.pause()
+            }
             .showDialogReturnDialog()
 
         binding.bvBarcodeBarcodeview.apply {
 
             decodeContinuous {
-                stopDecoding()
+                pause()
                 onQrScanned(it.text)
                 dx.hide()
             }

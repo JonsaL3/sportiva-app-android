@@ -46,18 +46,7 @@ class ConfirmarAsistencia2Fragment : Fragment() {
         val adapter = InscripcionesRecyclerViewAdapter()
 
         viewModel.inscripciones.observe(viewLifecycleOwner) { inscripciones ->
-
-            if (inscripciones.isNullOrEmpty()) {
-                binding.rvInscripciones.visibility = View.GONE
-                adapter.submitList(emptyList())
-                // TODO MOSTRAR MENSAJE VACIO
-                // TODO HACER QUE CUANDO SE PASE DEL PASO 2 AL 1 DIRECTAMENTE LE TIRE AL MENU PRINCIPAL PREGUNTANDO BORRANDO EL VIERWMODEL
-            } else {
-                binding.rvInscripciones.visibility = View.VISIBLE
-                adapter.submitList(inscripciones)
-                // TODO OCULTAR MENSAJE VACIO
-            }
-
+            adapter.submitList(inscripciones)
         }
 
         binding.rvInscripciones.adapter = adapter

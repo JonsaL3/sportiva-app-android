@@ -36,7 +36,7 @@ data class Empleado(
     }
 
     fun isScannedQrEqualsToThisUserToday(qr: String): Boolean {
-        return getStringForQR() == qr
+        return getStringForQR().lowercase() == qr.lowercase()
     }
 
     companion object {

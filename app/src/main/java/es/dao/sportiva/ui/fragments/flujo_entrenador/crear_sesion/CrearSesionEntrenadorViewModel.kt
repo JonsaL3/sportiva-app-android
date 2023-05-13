@@ -1,7 +1,9 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador.crear_sesion
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,10 +18,18 @@ import es.dao.sportiva.repository.EntrenadorRepo
 import es.dao.sportiva.repository.SesionRepo
 import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.UiState
+import es.dao.sportiva.utils.getFile
 import es.dao.sportiva.utils.toBase64
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.quality
+import id.zelory.compressor.constraint.resolution
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileNotFoundException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -37,6 +47,11 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
      */
     private var _state: MutableStateFlow<CrearSesionEntrenadorState> = MutableStateFlow(CrearSesionEntrenadorState.Neutral)
     val state = _state.asStateFlow()
+
+    /**
+     * Gestion de jobs
+     */
+    private var runningJobs: MutableSet<Job> = mutableSetOf()
 
     /**
      * Datos del paso 1 del formulario (Añadir entrenadores participantes)
@@ -113,6 +128,8 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
         _aforo.value = Constantes.AFORO_ILIMITADO
         _uriFromDispositivo.value = ""
         _uriRecienRealizada.value = ""
+        runningJobs.forEach { it.cancel() }
+        runningJobs.clear()
     }
 
     /**
@@ -129,13 +146,18 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
     }
     fun findEntrenadoresByIdEmpresa(
         idEmpresa: Int
-    ) = viewModelScope.launch {
+    ) {
 
-        uiState.setLoading()
-        entrenadorRepo.findEntrenadoresByIdEmpresa(idEmpresa)?.apply {
-            uiState.setSuccess()
-            setState(CrearSesionEntrenadorState.SeleccionandoEntrenador(this))
+        val job = viewModelScope.launch {
+            uiState.setLoading()
+            entrenadorRepo.findEntrenadoresByIdEmpresa(idEmpresa)?.apply {
+                uiState.setSuccess()
+                setState(CrearSesionEntrenadorState.SeleccionandoEntrenador(this))
+            }
         }
+
+        runningJobs.add(job)
+        job.invokeOnCompletion { runningJobs.remove(job) }
 
     }
 
@@ -226,26 +248,53 @@ class CrearSesionEntrenadorViewModel @Inject constructor(
     /**
      * Creación de la sesión y subida de la misma al servidor
      */
-    fun crearSesion(context: Context, empresa: Empresa, creador: Entrenador) = viewModelScope.launch {
+    fun crearSesion(context: Context, empresa: Empresa, creador: Entrenador) {
 
-        uiState.setLoading()
+        val job = viewModelScope.launch {
 
-        val sesion = Sesion(
-            titulo = _tituloSesion.value!!,
-            subtitulo = _subtituloSesion.value!!,
-            descripcion = resumenSesion.value!!,
-            fechaInserccion = LocalDateTime.now(),
-            fechaSesion = LocalDateTime.of(_fecha.value!!, _hora.value!!),
-            aforoMaximo = _aforo.value!!,
-            imagen = Uri.parse(_uriRecienRealizada.value!!.ifEmpty { _uriFromDispositivo.value!! }).toBase64(context),
-            empresa = empresa,
-            creador = creador
-        )
+            uiState.setLoading()
 
-        sesionRepo.crearSesion(sesion)?.apply {
-            uiState.setSuccess()
-            setState(CrearSesionEntrenadorState.SesionCreadaCorrectamente(this))
+            try {
+
+                val uriImagen = Uri.parse(if (_uriFromDispositivo.value!!.isNotEmpty()) _uriFromDispositivo.value else _uriRecienRealizada.value)
+                val file = uriImagen.getFile(context)
+                val compressedFile = Compressor.compress(context, file) {
+                    resolution(1280, 720)
+                    quality(50)
+                    format(Bitmap.CompressFormat.JPEG)
+                }
+
+                // Creo la sesión
+                val sesion = Sesion(
+                    titulo = _tituloSesion.value!!,
+                    subtitulo = _subtituloSesion.value!!,
+                    descripcion = resumenSesion.value!!,
+                    fechaInserccion = LocalDateTime.now(),
+                    fechaSesion = LocalDateTime.of(_fecha.value!!, _hora.value!!),
+                    aforoMaximo = _aforo.value!!,
+                    imagen = compressedFile.toUri().toBase64(context),
+                    empresa = empresa,
+                    creador = creador
+                )
+
+                _entrenadoresAnadidos.value?.removeIf { it.id == creador.id }
+                sesion.entrenadores.addAll(_entrenadoresAnadidos.value?: emptyList())
+
+                // La subo al servidor
+                sesionRepo.crearSesion(sesion)?.apply {
+                    uiState.setSuccess()
+                    setState(CrearSesionEntrenadorState.SesionCreadaCorrectamente(this))
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                uiState.setError("Error al crear la sesión.")
+            }
+
         }
+
+        runningJobs.add(job)
+        job.invokeOnCompletion { runningJobs.remove(job) }
 
     }
 
