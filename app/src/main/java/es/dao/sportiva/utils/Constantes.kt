@@ -26,4 +26,4 @@ object Constantes { // ArrebolEnterprise1024
     const val AFORO_ILIMITADO = -1
     const val AFORO_NO_DEFINIDO = -2
 
-}
+} // TODO EL AUTOUPDATE DE LOS COJONES DA PUTO CANCER

@@ -29,6 +29,7 @@
             />
 
         <LinearLayout
+            android:animateLayoutChanges="true"
             android:layout_gravity="center"
             android:padding="10dp"
             android:orientation="vertical"
@@ -58,6 +59,7 @@
                 />
 
             <LinearLayout
+                android:animateLayoutChanges="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

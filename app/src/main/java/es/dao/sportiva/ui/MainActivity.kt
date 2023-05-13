@@ -93,6 +93,18 @@ class MainActivity : AppCompatActivity() {
                     binding.appBarLayout.visibility = View.VISIBLE
                 }
 
+                R.id.crearSesionFragment -> {
+                    // set label
+                    binding.topAppBar.title = getString(R.string.crear_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.appBarLayout.visibility = View.VISIBLE
+                }
+
+                R.id.comenzarSesionFragment -> {
+                    // set label
+                    binding.topAppBar.title = getString(R.string.comenzar_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.appBarLayout.visibility = View.VISIBLE
+                }
+
             }
 
         }

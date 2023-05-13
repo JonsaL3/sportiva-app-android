@@ -132,4 +132,8 @@
     <string name="estudios">Estudios</string>
     <string name="sueldo">Sueldo</string>
     <string name="rellena_todos_loas_campos">Rellena todos loas campos.</string>
+    <string name="crear_sesion">Crear sesión</string>
+    <string name="comenzar_sesion">Comenzar sesión</string>
+    <string name="editar">Editar</string>
+    <string name="hora">Hora:</string>
 </resources>

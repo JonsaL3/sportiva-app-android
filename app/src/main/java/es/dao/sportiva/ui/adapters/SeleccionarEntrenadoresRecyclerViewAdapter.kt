@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import es.dao.sportiva.databinding.ItemSeleccionarEntrenadorBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 
-class SeleccionarEntrenadoresRecyclerViewAdapter : RecyclerView.Adapter<SeleccionarEntrenadoresViewHolder>() {
+class SeleccionarEntrenadoresRecyclerViewAdapter(
+    private val onCheckedChanged: (Entrenador, Boolean) -> Unit
+) : RecyclerView.Adapter<SeleccionarEntrenadoresViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<Entrenador>() {
         override fun areItemsTheSame(oldItem: Entrenador, newItem: Entrenador): Boolean {
@@ -38,7 +40,7 @@ class SeleccionarEntrenadoresRecyclerViewAdapter : RecyclerView.Adapter<Seleccio
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SeleccionarEntrenadoresViewHolder {
         val binding =
             ItemSeleccionarEntrenadorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SeleccionarEntrenadoresViewHolder(binding)
+        return SeleccionarEntrenadoresViewHolder(binding, onCheckedChanged)
     }
 
     override fun onBindViewHolder(holder: SeleccionarEntrenadoresViewHolder, position: Int) {
@@ -49,7 +51,8 @@ class SeleccionarEntrenadoresRecyclerViewAdapter : RecyclerView.Adapter<Seleccio
 }
 
 class SeleccionarEntrenadoresViewHolder(
-    private val binding: ItemSeleccionarEntrenadorBinding
+    private val binding: ItemSeleccionarEntrenadorBinding,
+    private val onCheckedChanged: (Entrenador, Boolean) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(entrenador: Entrenador) {
@@ -62,7 +65,7 @@ class SeleccionarEntrenadoresViewHolder(
 
         // Cuando presiono la checkbox
         binding.chckBox.addOnCheckedStateChangedListener { checkBox, state ->
-            entrenador.isSeleccionadoParaSerParticipante = checkBox.isSelected
+            onCheckedChanged(entrenador, checkBox.isChecked)
         }
 
     }
