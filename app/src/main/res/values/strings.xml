@@ -136,4 +136,10 @@
     <string name="comenzar_sesion">Comenzar sesión</string>
     <string name="editar">Editar</string>
     <string name="hora">Hora:</string>
+    <string name="apuntarse_a_sesion">Apuntarse a sesión</string>
+    <string name="empleado_registrado">Empleado registrado en </string>
+    <string name="apuntarme">Apuntarme</string>
+    <string name="descartar">Descartar</string>
+    <string name="cancelar">cancelar</string>
+    <string name="en_estos_momentos_no_hay_entrenadores_asignados_a_tu_empresa">En estos momentos no hay entrenadores asignados a tu empresa.</string>
 </resources>

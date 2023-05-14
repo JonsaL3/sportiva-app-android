@@ -10,8 +10,11 @@ import retrofit2.http.Path
 
 interface SesionApiClient {
 
-    @GET("sesion/findSesionesDisponibles/{idEmpresa}")
-    fun findSesionesDisponibles(@Path("idEmpresa") idEmpresa: Int): Call<SesionWrapper>
+    @GET("sesion/findSesionesDisponibles/{idEmpresa}/{idEmpleado}")
+    fun findSesionesDisponibles(
+        @Path("idEmpresa") idEmpresa: Int,
+        @Path("idEmpleado") idEmpleado: Int
+    ): Call<SesionWrapper>
 
     @GET("sesion/findSesionesDisponiblesByEntrenador/{idEntrenador}")
     fun findSesionesDisponiblesByEntrenador(@Path("idEntrenador") idEntrenador: Int): Call<SesionWrapper>

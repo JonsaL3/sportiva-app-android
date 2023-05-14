@@ -12,8 +12,8 @@ class SesionRepo @Inject constructor(
     private val sesionApiClient: SesionApiClient
 ) : GenericRepo() {
 
-    suspend fun findSesionesDisponibles(idEmpresa: Int): SesionWrapper? {
-        val request = sesionApiClient.findSesionesDisponibles(idEmpresa)
+    suspend fun findSesionesDisponibles(idEmpresa: Int, idEmpleado: Int): SesionWrapper? {
+        val request = sesionApiClient.findSesionesDisponibles(idEmpresa, idEmpleado)
         return genericRequest(request)
     }
 

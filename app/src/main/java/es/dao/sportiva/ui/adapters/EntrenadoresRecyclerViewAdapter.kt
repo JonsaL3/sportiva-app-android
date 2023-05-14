@@ -3,13 +3,18 @@ package es.dao.sportiva.ui.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dxcustomlibrary.gone
+import com.example.dxcustomlibrary.visible
+import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ItemEntrenadorBinding
 import es.dao.sportiva.databinding.ItemSesionBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.sesion.Sesion
+import es.dao.sportiva.utils.fromBase64
 
 class EntrenadoresRecyclerViewAdapter : RecyclerView.Adapter<EntrenadoresViewHolder>() {
 
@@ -55,6 +60,32 @@ class EntrenadoresViewHolder(
     fun bind(entrenador: Entrenador) {
         binding.entrenador = entrenador
         "Entrenador asignado a: ${entrenador.empresaAsignada.nombre}".also { binding.tvEntrenadorEmpresa.text = it }
+
+        entrenador.imagen?.let {
+            try {
+                binding.sivFoto.setImageBitmap(it.fromBase64())
+                binding.tvInicial.gone()
+            } catch (e: Exception) {
+                binding.sivFoto.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        binding.root.resources,
+                        R.drawable.default_circle_shape,
+                        null
+                    )
+                )
+                binding.tvInicial.visible()
+            }
+        } ?: run {
+            binding.sivFoto.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    binding.root.resources,
+                    R.drawable.default_circle_shape,
+                    null
+                )
+            )
+            binding.tvInicial.visible()
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 package es.dao.sportiva.models.sesion
 
+import com.google.gson.annotations.SerializedName
 import es.dao.sportiva.models.Empresa
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.utils.Constantes
@@ -23,7 +24,11 @@ data class Sesion(
 
     var empresa: Empresa? = Empresa(),
     var creador: Entrenador = Entrenador(),
-    var entrenadores: MutableList<Entrenador> = mutableListOf()
+    var entrenadores: MutableList<Entrenador> = mutableListOf(),
+
+    // Depende del empleado este campo me viene del servidor.
+    @SerializedName("currentEmpleadoInscrito")
+    var isCurrentEmpleadoInscrito: Boolean = false,
 
 ) : Serializable {
 

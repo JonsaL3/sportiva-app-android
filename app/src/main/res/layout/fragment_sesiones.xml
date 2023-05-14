@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
+    android:background="@color/transparent"
+    tools:background="@color/black"
+    android:animateLayoutChanges="true"
     tools:context=".ui.fragments.flujo_empleado.SesionesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,47 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_sesion"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
         />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_not_sesiones"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_no_sesiones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="70dp"
+            android:gravity="center"
+            android:text="@string/no_hay_ninguna_sesi_n_programada_para_el_d_a_de_hoy"
+            android:textColor="@color/grisDivisor"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/lav_not_sesiones"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lav_not_sesiones"
+            app:layout_constraintVertical_bias="0.19"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_not_sesiones"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_colorFilter="@color/colorPrimary"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/calendario_not_sesiones_lottie"
+            app:tint="@color/colorPrimary"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

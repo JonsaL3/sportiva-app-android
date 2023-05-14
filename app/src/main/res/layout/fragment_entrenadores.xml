@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/transparent"
+    tools:background="@color/black"
     tools:context=".ui.fragments.flujo_empleado.EntrenadoresFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,40 @@
         tools:listitem="@layout/item_entrenador"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_marginTop="5dp"
+        tools:visibility="gone"
+        android:visibility="gone"
         />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/cl_not_trainers"
+        android:layout_width="match_parent"
+        android:visibility="visible"
+        tools:visibility="visible"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="70dp"
+            android:gravity="center"
+            android:text="@string/en_estos_momentos_no_hay_entrenadores_asignados_a_tu_empresa"
+            android:textColor="@color/grisDivisor"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/empty_trainers_anim"
+            app:tint="@color/colorPrimary"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

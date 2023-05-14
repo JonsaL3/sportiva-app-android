@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.example.dxcustomlibrary.gone
+import com.example.dxcustomlibrary.visible
 import es.dao.sportiva.databinding.FragmentEntrenadoresBinding
 import es.dao.sportiva.ui.adapters.EntrenadoresRecyclerViewAdapter
 
@@ -39,7 +41,21 @@ class EntrenadoresFragment : Fragment() {
         val adapter = EntrenadoresRecyclerViewAdapter()
         viewModel.entrenadores.observe(viewLifecycleOwner) { entrenadoresWrapper ->
             entrenadoresWrapper?.let {
+
                 adapter.submitList(it)
+
+                if (it.isEmpty()) {
+                    binding.clNotTrainers.visible()
+                    binding.recyclerEntenadores.gone()
+                } else {
+                    binding.clNotTrainers.gone()
+                    binding.recyclerEntenadores.visible()
+                }
+
+            } ?: run {
+                binding.clNotTrainers.visible()
+                binding.recyclerEntenadores.gone()
+                adapter.submitList(listOf())
             }
         }
         binding.recyclerEntenadores.adapter = adapter

@@ -10,39 +10,90 @@
 
         <variable
             name="viewModel"
-            type="es.dao.sportiva.ui.fragments.flujo_empleado.EmpleadoViewModel" />
+            type="es.dao.sportiva.ui.fragments.flujo_empleado.EmpleadoViewModel"
+            />
+
+        <variable
+            name="empleado"
+            type="es.dao.sportiva.models.empleado.Empleado"
+            />
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <FrameLayout
+        android:background="@color/black"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:orientation="vertical"
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_marginTop="140dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:src="@drawable/negraco_piernas_2"
+            android:scaleType="centerCrop"
+            />
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:elevation="0dp"
+                app:strokeColor="@color/red_sportiva"
+                android:backgroundTint="@color/colorTransparent"
+                app:strokeWidth="1dp"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:padding="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:tint="@color/white"
+                        android:src="@drawable/enterprise_svgrepo_com"
+                        app:tint="@color/red_sportiva"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/empleado_registrado + ` ` + empleado.empresa.nombre}"
+                        android:lines="1"
+                        android:layout_weight="1"
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/red_sportiva"
+                        tools:text="@string/empleado_registrado"
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewpager_empleado"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                />
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:menu="@menu/bottombar_main_menu"
-                android:background="@color/colorPrimary"
-                app:itemTextColor="@color/white"
-                app:itemRippleColor="@color/white"
-                app:itemIconTint="@color/white"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 />
 
         </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </FrameLayout>
 
 </layout>

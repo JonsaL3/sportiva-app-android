@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentMainBinding
 import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.ui.MainActivity
 import es.dao.sportiva.ui.adapters.EmpleadoPrincipalViewPagerAdapter
 import es.dao.sportiva.ui.MainViewModel
+import es.dao.sportiva.utils.DxImplementation
+import kotlinx.coroutines.launch
 
 class EmpleadoMainFragment : Fragment() {
 
@@ -24,49 +29,82 @@ class EmpleadoMainFragment : Fragment() {
         binding = FragmentMainBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.empleado = mainViewModel.usuario.value as Empleado
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupView()
+        setupStateMachine()
+        setupFragment()
     }
 
-    private fun setupView() {
-        cargarDatos()
-        setupBottomBar()
-        setupViewPager()
+    override fun onPause() {
+        super.onPause()
+        viewModel.resetViewModel()
     }
 
-    private fun cargarDatos() {
-
+    override fun onResume() {
+        super.onResume()
         viewModel.obtenerDatos(
-            idEmpresa = (mainViewModel.usuario.value as Empleado).empresa.id
+            idEmpresa = (mainViewModel.usuario.value as Empleado).empresa.id,
+            idEmpleado = (mainViewModel.usuario.value as Empleado).id
         )
-
     }
 
-    private fun setupBottomBar() = with(binding) {
+    /**
+     * Máquina de estados del fragmento.
+     */
+    private fun setupStateMachine() = viewLifecycleOwner.lifecycleScope.launch() {
 
-        bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.sesiones_menu -> {
-                    viewpagerEmpleado.currentItem = 0
-                    true
+        viewModel.state.flowWithLifecycle(
+            lifecycle = viewLifecycleOwner.lifecycle,
+            minActiveState = Lifecycle.State.CREATED
+        ).collect { state ->
+
+            when (state) {
+
+                is EmpleadoViewModelState.Neutral -> { }
+
+                is EmpleadoViewModelState.ApuntadoCorrectamente -> {
+
+                    DxImplementation.mostrarDxLottieCentro(
+                        context = requireContext(),
+                        mensaje = "¡Inscrito correctamente a la sesión: '${state.sesion.titulo.trim()}'!",
+                        titulo = "Se ha inscrito correctamente a la sesión.",
+                        lottie = R.raw.sesion_creada_correctamente,
+                        onAccept = { }
+                    )
+
                 }
-                R.id.trainers_menu -> {
-                    viewpagerEmpleado.currentItem = 1
-                    true
+
+                is EmpleadoViewModelState.DesapuntadoCorrectamente -> {
+
+                    DxImplementation.mostrarDxLottieCentro(
+                        context = requireContext(),
+                        mensaje = "Usted acaba de retirar su inscripción a la sesión: '${state.sesion.titulo.trim()}'",
+                        titulo = "Se ha desinscrito correctamente.",
+                        lottie = R.raw.uninscritto_lottie_anim,
+                        onAccept = { }
+                    )
+
                 }
-                else -> false
+
             }
+
         }
 
     }
 
+    /**
+     * Elementos agenos a la máquina de estados del fragmento.
+     */
+    private fun setupFragment() {
+        setupViewPager()
+    }
+
     private fun setupViewPager() = with(binding) {
         viewpagerEmpleado.adapter = EmpleadoPrincipalViewPagerAdapter(requireActivity() as MainActivity)
-        //  TODO que cambie el icono de la bottombar al cambiar de pagina
     }
 
 }

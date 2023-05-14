@@ -13,10 +13,12 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="5dp"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="3dp"
+        app:cardElevation="0dp"
+        android:elevation="0dp"
+        android:backgroundTint="@color/transparentBlack"
+        app:strokeColor="@color/red_sportiva"
+        app:strokeWidth="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -30,6 +32,7 @@
                 android:layout_height="50dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/siv_foto"
                     android:layout_width="match_parent"
                     android:src="@drawable/default_circle_shape"
                     android:layout_height="match_parent"
@@ -60,7 +63,7 @@
                     android:layout_height="wrap_content"
                     tools:text="David Lozano Neira"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="18sp"
                     android:text="@{entrenador.nombre + ' ' + entrenador.apellido1 + ' ' + entrenador.apellido2}"
                     android:textStyle="bold"
@@ -71,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Entrenador asignado a Microsoft"
-                    android:textColor="@color/textos"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     />
 
