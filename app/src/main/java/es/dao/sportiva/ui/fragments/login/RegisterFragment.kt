@@ -76,23 +76,55 @@ class RegisterFragment(
 
         if (resourceUndraw == R.drawable.undraw_fitness_tracker_3033) {
 
-            imgvUndraw.animate().translationX(0f).setDuration(0).start()
-            txtDescription.animate().translationX(-0f).setDuration(0).start()
-            txtDescriptionRegistro.animate().translationX(1000f).setDuration(0).start()
-            textInputLayoutEmail.animate().translationX(1000f).setDuration(0).start()
-            textInputLayoutPassword.animate().translationX(1000f).setDuration(0).start()
-            btnContinuar.animate().translationX(1000f).setDuration(0).start()
-
-            textInputLayoutNombre.animate().translationX(1000f).setDuration(0).start()
-            textInputLayoutApellido1.animate().translationX(1000f).setDuration(0).start()
-            textInputLayoutApellido2.animate().translationX(1000f).setDuration(0).start()
-            textInputLayoutEmpresa.animate().translationX(1000f).setDuration(0).start()
-
-            textInputLayoutCargo.animate().translationX(1000f).setDuration(0).start()
-            textInputLayoutAltura.animate().translationX(1000f).setDuration(0).start()
-            textInputLayoutPeso.animate().translationX(1000f).setDuration(0).start()
-            chbFumador.animate().translationX(1000f).setDuration(0).start()
-            chbDeporte.animate().translationX(1000f).setDuration(0).start()
+            imgvUndraw.apply {
+                animate().translationX(0f).setDuration(0).start()
+                alpha = 1f
+                visibility = View.VISIBLE
+            }
+            txtDescription.apply {
+                animate().translationX(-0f).setDuration(0).start()
+                alpha = 1f
+                visibility = View.VISIBLE
+            }
+            txtDescriptionRegistro.animate().translationX(1000f).setDuration(0).start().also {
+                txtDescriptionRegistro.visibility = View.GONE
+            }
+            textInputLayoutEmail.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutEmail.visibility = View.GONE
+            }
+            textInputLayoutPassword.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutPassword.visibility = View.GONE
+            }
+            btnContinuar.animate().translationX(1000f).setDuration(0).start().also {
+                btnContinuar.visibility = View.GONE
+            }
+            textInputLayoutNombre.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutNombre.visibility = View.GONE
+            }
+            textInputLayoutApellido1.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutApellido1.visibility = View.GONE
+            }
+            textInputLayoutApellido2.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutApellido2.visibility = View.GONE
+            }
+            textInputLayoutEmpresa.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutEmpresa.visibility = View.GONE
+            }
+            textInputLayoutCargo.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutCargo.visibility = View.GONE
+            }
+            textInputLayoutAltura.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutAltura.visibility = View.GONE
+            }
+            textInputLayoutPeso.animate().translationX(1000f).setDuration(0).start().also {
+                textInputLayoutPeso.visibility = View.GONE
+            }
+            chbFumador.animate().translationX(1000f).setDuration(0).start().also {
+                chbFumador.visibility = View.GONE
+            }
+            chbDeporte.animate().translationX(1000f).setDuration(0).start().also {
+                chbDeporte.visibility = View.GONE
+            }
             btnContinuar.text = getString(R.string.continuar)
 
         }
@@ -120,25 +152,61 @@ class RegisterFragment(
                 secondStep()
 
             } else {
-                if (etEmail.text.toString().isEmpty()) Toast.makeText(
+                Toast.makeText(
                     requireContext(),
-                    "Introduce un email",
-                    Toast.LENGTH_SHORT
-                ).show()
-                if (etPassword.text.toString().isEmpty()) Toast.makeText(
-                    requireContext(),
-                    "Introduce una contraseña",
+                    getString(R.string.rellena_todos_loas_campos),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
 
-        imgvUndraw.animate().translationX(-1100f).setDuration(500).start()
-        txtDescription.animate().translationX(-1000f).setDuration(600).start()
-        txtDescriptionRegistro.animate().translationX(0f).setDuration(600).start()
-        textInputLayoutEmail.animate().translationX(0f).setDuration(700).start()
-        textInputLayoutPassword.animate().translationX(0f).setDuration(800).start()
-        btnContinuar.animate().translationX(0f).setDuration(900).start()
+        imgvUndraw.apply {
+            animate().translationX(-1100f).setDuration(500).start()
+            animate().alpha(0f).setDuration(500).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 500)
+        }
+
+        txtDescription.apply {
+            animate().translationX(-1000f).setDuration(600).start()
+            animate().alpha(0f).setDuration(600).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 600)
+        }
+
+        txtDescriptionRegistro.apply {
+            animate().translationX(0f).setDuration(600).start()
+            animate().alpha(1f).setDuration(300).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 300)
+        }
+
+        textInputLayoutEmail.apply {
+            animate().translationX(0f).setDuration(700).start()
+            animate().alpha(1f).setDuration(350).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 350)
+        }
+
+        textInputLayoutPassword.apply {
+            animate().translationX(0f).setDuration(800).start()
+            animate().alpha(1f).setDuration(400).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 400)
+        }
+
+        btnContinuar.apply {
+            animate().translationX(0f).setDuration(900).start()
+            animate().alpha(1f).setDuration(450).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 450)
+        }
     }
 
     private fun secondStep() = with(binding){
@@ -170,17 +238,57 @@ class RegisterFragment(
                 thirdStep()
 
             }else{
-                Toast.makeText(requireContext(), "Rellena todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.rellena_todos_loas_campos), Toast.LENGTH_SHORT).show()
             }
         }
 
-        textInputLayoutEmail.animate().translationX(-1000f).setDuration(700).start()
-        textInputLayoutPassword.animate().translationX(-1000f).setDuration(800).start()
+        textInputLayoutEmail.apply {
+            animate().translationX(-1000f).setDuration(700).start()
+            animate().alpha(0f).setDuration(350).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 350)
+        }
 
-        textInputLayoutNombre.animate().translationX(0f).setDuration(700).start()
-        textInputLayoutApellido1.animate().translationX(0f).setDuration(800).start()
-        textInputLayoutApellido2.animate().translationX(0f).setDuration(900).start()
-        textInputLayoutEmpresa.animate().translationX(0f).setDuration(1000).start()
+        textInputLayoutPassword.apply {
+            animate().translationX(-1000f).setDuration(800).start()
+            animate().alpha(0f).setDuration(400).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 400)
+        }
+
+        textInputLayoutNombre.apply {
+            animate().translationX(0f).setDuration(700).start()
+            animate().alpha(1f).setDuration(350).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 350)
+        }
+
+        textInputLayoutApellido1.apply {
+            animate().translationX(0f).setDuration(800).start()
+            animate().alpha(1f).setDuration(400).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 400)
+        }
+
+        textInputLayoutApellido2.apply {
+            animate().translationX(0f).setDuration(900).start()
+            animate().alpha(1f).setDuration(450).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 450)
+        }
+
+        textInputLayoutEmpresa.apply {
+            animate().translationX(0f).setDuration(1000).start()
+            animate().alpha(1f).setDuration(500).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 500)
+        }
 
     }
 
@@ -243,16 +351,76 @@ class RegisterFragment(
             }, 250)
         }
 
-        textInputLayoutNombre.animate().translationX(-1000f).setDuration(700).start()
-        textInputLayoutApellido1.animate().translationX(-1000f).setDuration(800).start()
-        textInputLayoutApellido2.animate().translationX(-1000f).setDuration(900).start()
-        textInputLayoutEmpresa.animate().translationX(-1000f).setDuration(1000).start()
+        textInputLayoutNombre.apply {
+            animate().translationX(-1000f).setDuration(700).start()
+            animate().alpha(0f).setDuration(350).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 350)
+        }
 
-        textInputLayoutCargo.animate().translationX(0f).setDuration(700).start()
-        textInputLayoutAltura.animate().translationX(0f).setDuration(800).start()
-        textInputLayoutPeso.animate().translationX(0f).setDuration(900).start()
-        chbFumador.animate().translationX(0f).setDuration(1000).start()
-        chbDeporte.animate().translationX(0f).setDuration(1100).start()
+        textInputLayoutApellido1.apply {
+            animate().translationX(-1000f).setDuration(800).start()
+            animate().alpha(0f).setDuration(400).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 400)
+        }
 
+        textInputLayoutApellido2.apply {
+            animate().translationX(-1000f).setDuration(900).start()
+            animate().alpha(0f).setDuration(450).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 450)
+        }
+
+        textInputLayoutEmpresa.apply {
+            animate().translationX(-1000f).setDuration(1000).start()
+            animate().alpha(0f).setDuration(500).start()
+            postDelayed({
+                visibility = View.GONE
+            }, 500)
+        }
+
+        textInputLayoutCargo.apply {
+            animate().translationX(0f).setDuration(700).start()
+            animate().alpha(1f).setDuration(350).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 350)
+        }
+
+        textInputLayoutAltura.apply {
+            animate().translationX(0f).setDuration(800).start()
+            animate().alpha(1f).setDuration(400).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 400)
+        }
+
+        textInputLayoutPeso.apply {
+            animate().translationX(0f).setDuration(900).start()
+            animate().alpha(1f).setDuration(450).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 450)
+        }
+
+        chbFumador.apply {
+            animate().translationX(0f).setDuration(1000).start()
+            animate().alpha(1f).setDuration(500).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 500)
+        }
+
+        chbDeporte.apply {
+            animate().translationX(0f).setDuration(1100).start()
+            animate().alpha(1f).setDuration(550).start()
+            postDelayed({
+                visibility = View.VISIBLE
+            }, 550)
+        }
     }
 }
