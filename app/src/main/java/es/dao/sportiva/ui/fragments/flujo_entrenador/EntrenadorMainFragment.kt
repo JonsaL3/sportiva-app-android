@@ -1,9 +1,5 @@
 package es.dao.sportiva.ui.fragments.flujo_entrenador
 
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.graphics.SurfaceTexture
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -11,7 +7,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentEntrenadorMainBinding
 import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.ui.MainViewModel

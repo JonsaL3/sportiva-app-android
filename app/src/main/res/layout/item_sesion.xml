@@ -13,15 +13,22 @@
 
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcv_sesion"
         app:cardElevation="3dp"
-        android:layout_margin="10dp"
-
-        app:cardCornerRadius="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
+        android:background="@color/transparent"
+        tools:background="@color/black"
+        android:backgroundTint="@color/transparent"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/red_sportiva"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
+            android:background="@color/transparentBlack"
+            android:backgroundTint="@color/transparentBlack"
+            tools:background="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -35,21 +42,24 @@
                     android:layout_height="50dp">
 
                     <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/siv_foto_creador"
                         android:layout_width="match_parent"
-                        android:src="@drawable/default_circle_shape"
+                        tools:src="@drawable/example_image"
+                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                         />
 
                     <TextView
                         android:id="@+id/tvInicial"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        tools:visibility="gone"
                         android:gravity="center"
                         android:text="@{sesion.creador.nombre.substring(0,1)}"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         tools:text="D"
-                        android:visibility="@{sesion.creador.imagen == null ? View.VISIBLE : View.GONE}"
                         />
 
                 </FrameLayout>
@@ -66,7 +76,7 @@
                         android:layout_height="wrap_content"
                         tools:text="David Lozano Neira"
                         android:layout_marginBottom="5dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         android:textSize="18sp"
                         android:text="@{sesion.creador.nombre + ' ' + sesion.creador.apellido1 + ' ' + sesion.creador.apellido2}"
                         android:textStyle="bold"
@@ -76,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/entrenador"
-                        android:textColor="@color/textos"
+                        android:textColor="@color/white"
                         android:textSize="15sp"
                         />
 
@@ -86,12 +96,13 @@
             </LinearLayout>
 
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/siv_sesion"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/example_image"
-                android:scaleType="centerCrop"
                 android:layout_marginTop="10dp"
-                />
+                android:scaleType="centerCrop"
+                tools:visibility="visible"
+                tools:src="@drawable/baseline_warning_amber_24" />
 
             <LinearLayout
                 android:padding="15dp"
@@ -105,7 +116,7 @@
                     tools:text="¡Apuntate a la sesión de aerobic!"
                     android:text="@{sesion.titulo}"
                     android:layout_marginBottom="10dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     />
 
@@ -113,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Nunca viene mal hacer un poco de deporte"
-                    android:textColor="@color/textos"
+                    android:textColor="@color/white"
                     android:text="@{sesion.subtitulo}"
                     android:textSize="17sp"
                     />
@@ -124,9 +135,20 @@
                     android:layout_height="wrap_content"
                     tools:text="@string/texto_ejemplo"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/textos"
+                    android:textColor="@color/white"
                     android:text="@{sesion.descripcion}"
                     android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="12/02/2021 18:00"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_gravity="end"
+                    android:text="@{sesion.fechaHoraFancyString}"
                     />
 
                 <LinearLayout
@@ -135,20 +157,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <Button
-                        android:id="@+id/btn_descartar"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_apuntarse"
+                        android:layout_marginStart="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Descartar"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/red_sportiva"
+                        android:text="@string/apuntarme"
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                        android:lines="1"
+                        android:layout_marginEnd="10dp"
+                        tools:visibility="visible"
+                        android:textColor="@color/colorPrimary"
                         />
 
-                    <Button
-                        android:id="@+id/btn_apuntarme"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_desapuntarse"
+                        android:layout_marginStart="10dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:text="Apuntarme"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/green_sportiva"
+                        android:text="@string/cancelar"
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                        android:lines="1"
+                        android:layout_marginEnd="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:textColor="@color/green_sportiva"
                         />
 
                 </LinearLayout>

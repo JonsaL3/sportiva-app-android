@@ -79,6 +79,34 @@ fun Bitmap.toBase64(): String {
     return Base64.getEncoder().encodeToString(b)
 }
 
+fun String.fromBase64(): Bitmap {
+    val imageBytes = Base64.getDecoder().decode(this)
+    return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+}
+
+fun Bitmap.setCircledForm(): Bitmap {
+    val output = Bitmap.createBitmap(
+        this.width,
+        this.height, Bitmap.Config.ARGB_8888
+    )
+    val canvas = android.graphics.Canvas(output)
+    val color = -0xbdbdbe
+    val paint = android.graphics.Paint()
+    val rect = android.graphics.Rect(
+        0, 0, this.width,
+        this.height
+    )
+    val rectF = android.graphics.RectF(rect)
+    val roundPx = this.width.toFloat() / 2
+    paint.isAntiAlias = true
+    canvas.drawARGB(0, 0, 0, 0)
+    paint.color = color
+    canvas.drawRoundRect(rectF, roundPx, roundPx, paint)
+    paint.xfermode = android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN)
+    canvas.drawBitmap(this, rect, rect, paint)
+    return output
+}
+
 fun Uri.toBase64(context: Context): String? {
     val bitmap = this.getBitmap(context)
     return bitmap?.toBase64()

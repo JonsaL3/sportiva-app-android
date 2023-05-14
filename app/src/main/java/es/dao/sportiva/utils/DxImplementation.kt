@@ -4,6 +4,7 @@ import DxCustom
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
@@ -176,7 +177,8 @@ object DxImplementation {
 
         val binding = LoginLayoutBinding.inflate(LayoutInflater.from(context))
 
-        binding.etCorreoElectronico.setText("david@david.es")
+        // TODO ELIMINAR ESTO
+        binding.etCorreoElectronico.setText("gonzalo@gonzalo.es")
         binding.etContrasena.setText("1234")
 
         DxCustom(context)
@@ -244,6 +246,32 @@ object DxImplementation {
 
         DxCustom(context)
             .createDialog(fullScreen = true)
+            .setTitulo(titulo)
+            .setMensaje(mensaje)
+            .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
+            .noPermitirSalirSinBotones()
+            .addCustomView(binding.root)
+            .showAceptarButton {
+                onAccept.invoke()
+            }
+            .showDialogReturnDialog()
+
+    }
+
+    fun mostrarDxLottieCentro(
+        context: Context,
+        titulo: String,
+        mensaje: String,
+        lottie: Int,
+        onAccept: () -> Unit
+    ) {
+
+        val binding = DxMostrarLottieBinding.inflate(LayoutInflater.from(context))
+
+        binding.lottieAnimationView.setAnimation(lottie)
+
+        DxCustom(context)
+            .createDialog(fullScreen = true, gravity = Gravity.CENTER)
             .setTitulo(titulo)
             .setMensaje(mensaje)
             .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))

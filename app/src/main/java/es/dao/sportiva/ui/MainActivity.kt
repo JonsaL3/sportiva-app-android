@@ -1,16 +1,11 @@
 package es.dao.sportiva.ui
 
 import android.os.Bundle
-import android.service.autofill.FillEventHistory
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,23 +80,26 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.welcomeFragment -> { // TODO al ponerlo en gone se oculta el loader porque está dentro.
                     binding.appBarLayout.visibility = View.GONE
+                    viewModel.doLogout()
                 }
 
                 R.id.entrenadorMainFragment -> {
-                    // set label
                     binding.topAppBar.title = getString(R.string.seleccionar_accion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
                     binding.appBarLayout.visibility = View.VISIBLE
                 }
 
                 R.id.crearSesionFragment -> {
-                    // set label
                     binding.topAppBar.title = getString(R.string.crear_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
                     binding.appBarLayout.visibility = View.VISIBLE
                 }
 
                 R.id.comenzarSesionFragment -> {
-                    // set label
                     binding.topAppBar.title = getString(R.string.comenzar_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.appBarLayout.visibility = View.VISIBLE
+                }
+
+                R.id.empleadoMainFragment -> {
+                    binding.topAppBar.title = getString(R.string.apuntarse_a_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
                     binding.appBarLayout.visibility = View.VISIBLE
                 }
 
@@ -138,6 +136,8 @@ class MainActivity : AppCompatActivity() {
                     binding.mcvMostrarQrDrawer.visibility = View.VISIBLE
                 }
 
+            } ?: run {
+                binding.mcvMostrarQrDrawer.visibility = View.GONE
             }
 
         }
@@ -181,9 +181,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun mostrarCodigoQr() {
+        binding.drawerLayout.close()
         DxImplementation.mostarDxGeneararBarcode(
             context = this,
-            barcode =  viewModel.usuario.value?.id.toString() + " ; " + LocalDate.now() + " ; " + viewModel.usuario.value?.javaClass?.simpleName,
+            barcode =  (viewModel.usuario.value as Empleado?)?.getStringForQR() ?: "Error al generar el código QR"
         )
     }
 
@@ -200,6 +201,20 @@ class MainActivity : AppCompatActivity() {
         )
         drawer.addDrawerListener(toggle)
         toggle.syncState()
+
+        binding.mcvConfiguracion.setOnClickListener {
+
+        }
+
+        binding.mcvMostrarQrDrawer.setOnClickListener {
+            mostrarCodigoQr()
+        }
+
+        binding.mcvSalir.setOnClickListener {
+            binding.drawerLayout.close()
+            viewModel.doLogout()
+            navHostFragment.navController.navigateUp()
+        }
 
     }
 
