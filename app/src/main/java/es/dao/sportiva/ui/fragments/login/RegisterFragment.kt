@@ -162,18 +162,12 @@ class RegisterFragment(
 
         imgvUndraw.apply {
             animate().translationX(-1100f).setDuration(500).start()
-            animate().alpha(0f).setDuration(500).start()
-            postDelayed({
-                visibility = View.GONE
-            }, 500)
+            animate().alpha(0f).setDuration(500) .start()
         }
 
         txtDescription.apply {
             animate().translationX(-1000f).setDuration(600).start()
             animate().alpha(0f).setDuration(600).start()
-            postDelayed({
-                visibility = View.GONE
-            }, 600)
         }
 
         txtDescriptionRegistro.apply {

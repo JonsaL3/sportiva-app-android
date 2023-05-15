@@ -25,6 +25,11 @@ object DxImplementation {
                 lottie = R.raw.loader,
                 titulo = titulo?: context.getString(R.string.cargando),
                 mensaje = mensaje?: context.getString(R.string.cargando),
+                lottieMarginTop = -40,
+                backgroundColor = context.getColor(R.color.textos),
+                tituloColor = context.getColor(R.color.white),
+                mensajeColor = context.getColor(R.color.white),
+                dividerColor = context.getColor(R.color.white)
             )
     }
 
@@ -39,9 +44,13 @@ object DxImplementation {
     ) {
         runOnUiThread {
             DxCustom(context)
-                .createDialog(fullScreen = true)
-                .setTitulo(context.getString(R.string.error))
-                .setMensaje(mensaje)
+                .createDialog(
+                    fullScreen = true,
+                    backgroundColor = context.getColor(R.color.textos),
+                    dividerColor = context.getColor(R.color.white)
+                )
+                .setTitulo(context.getString(R.string.error), color = context.getColor(R.color.white))
+                .setMensaje(mensaje, color = context.getColor(R.color.white))
                 .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_error_outline_24))
                 .noPermitirSalirSinBotones()
                 .showAceptarButton { }
@@ -56,9 +65,13 @@ object DxImplementation {
 
         runOnUiThread {
             DxCustom(context)
-                .createDialog(fullScreen = true)
-                .setTitulo(context.getString(R.string.atencion))
-                .setMensaje(mensaje)
+                .createDialog(
+                    fullScreen = true,
+                    backgroundColor = context.getColor(R.color.textos),
+                    dividerColor = context.getColor(R.color.white)
+                )
+                .setTitulo(context.getString(R.string.atencion), color = context.getColor(R.color.white))
+                .setMensaje(mensaje, color = context.getColor(R.color.white))
                 .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
                 .noPermitirSalirSinBotones()
                 .showAceptarButton { }
@@ -74,9 +87,13 @@ object DxImplementation {
     ) = runOnUiThread {
 
         DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo(titulo)
-            .setMensaje(mensaje)
+            .createDialog(
+                fullScreen = true,
+                backgroundColor = context.getColor(R.color.textos),
+                dividerColor = context.getColor(R.color.white)
+            )
+            .setTitulo(titulo, color = context.getColor(R.color.white))
+            .setMensaje(mensaje, color = context.getColor(R.color.white))
             .setIcono(
                 ContextCompat.getDrawable(
                     context,
@@ -97,9 +114,13 @@ object DxImplementation {
         val binding = DxMostrarQrBinding.inflate(LayoutInflater.from(context))
 
         DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo(context.getString(R.string.qr))
-            .setMensaje(context.getString(R.string.este_qr_es_unico))
+            .createDialog(
+                fullScreen = true,
+                backgroundColor = context.getColor(R.color.textos),
+                dividerColor = context.getColor(R.color.white)
+            )
+            .setTitulo(context.getString(R.string.qr), color = context.getColor(R.color.white))
+            .setMensaje(context.getString(R.string.este_qr_es_unico), color = context.getColor(R.color.white))
             .addCustomView(binding.root)
             .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_qr_code_24))
             .noPermitirSalirSinBotones()
@@ -144,10 +165,14 @@ object DxImplementation {
             val customLayoutBinding = DxListaEntrenadoresParticipantesBinding.inflate(LayoutInflater.from(context))
 
             DxCustom(context)
-                .createDialog(fullScreen = true)
+                .createDialog(
+                    fullScreen = true,
+                    backgroundColor = context.getColor(R.color.textos),
+                    dividerColor = context.getColor(R.color.white)
+                )
                 .addCustomView(customLayoutBinding.root)
-                .setTitulo("Seleccionar entrenadores.")
-                .setMensaje("Seleccione los entrenadores disponibles asignados a la misma empresa que tu que participarán en la sesión.")
+                .setTitulo("Seleccionar entrenadores.", color = context.getColor(R.color.white))
+                .setMensaje("Seleccione los entrenadores disponibles asignados a la misma empresa que tu que participarán en la sesión.", color = context.getColor(R.color.white))
                 .setIcono(ContextCompat.getDrawable(context, R.drawable.baseline_edit_24))
                 .noPermitirSalirSinBotones()
                 .showAceptarButton {
@@ -178,20 +203,24 @@ object DxImplementation {
         val binding = LoginLayoutBinding.inflate(LayoutInflater.from(context))
 
         // TODO ELIMINAR ESTO
-        binding.etCorreoElectronico.setText("gonzalo@gonzalo.es")
-        binding.etContrasena.setText("1234")
+        binding.tieEmail.setText("gonzalo@gonzalo.es")
+        binding.tieContrasena.setText("1234")
 
         DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo(context.getString(R.string.iniciar_sesi_n))
-            .setMensaje(context.getString(R.string.nos_alegramos_de_verte))
+            .createDialog(
+                fullScreen = true,
+                backgroundColor = context.getColor(R.color.textos),
+                dividerColor = context.getColor(R.color.white)
+            )
+            .setTitulo(context.getString(R.string.iniciar_sesi_n), color = context.getColor(R.color.white))
+            .setMensaje(context.getString(R.string.nos_alegramos_de_verte), color = context.getColor(R.color.white))
             .setIcono(ContextCompat.getDrawable(context, R.drawable.confetti_svgrepo_com), ContextCompat.getColor(context, R.color.red_sportiva))
             .noPermitirSalirSinBotones()
             .addCustomView(binding.root)
             .showAceptarButton(
                 color = ContextCompat.getColor(context, R.color.red_sportiva),
             ) {
-                actionOnAccept.invoke(binding.etCorreoElectronico.text.toString(),binding.etContrasena.text.toString())
+                actionOnAccept.invoke(binding.tieEmail.text.toString(),binding.tieContrasena.text.toString())
             }
             .showCancelarButton(
                 texto = context.getString(R.string.volver_atras),
@@ -219,9 +248,13 @@ object DxImplementation {
                 "¿Estás seguro de que quieres crear la sesión?"
 
         DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo("Crear sesión")
-            .setMensaje(resumenSesionACrear)
+            .createDialog(
+                fullScreen = true,
+                backgroundColor = context.getColor(R.color.textos),
+                dividerColor = context.getColor(R.color.white)
+            )
+            .setTitulo("Crear sesión", color = context.getColor(R.color.white))
+            .setMensaje(resumenSesionACrear, color = context.getColor(R.color.white))
             .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
             .noPermitirSalirSinBotones()
             .showAceptarButton {
@@ -245,9 +278,13 @@ object DxImplementation {
         binding.lottieAnimationView.setAnimation(lottie)
 
         DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo(titulo)
-            .setMensaje(mensaje)
+            .createDialog(
+                fullScreen = true,
+                backgroundColor = context.getColor(R.color.textos),
+                dividerColor = context.getColor(R.color.white)
+            )
+            .setTitulo(titulo, color = context.getColor(R.color.white))
+            .setMensaje(mensaje, color = context.getColor(R.color.white))
             .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
             .noPermitirSalirSinBotones()
             .addCustomView(binding.root)
@@ -271,9 +308,14 @@ object DxImplementation {
         binding.lottieAnimationView.setAnimation(lottie)
 
         DxCustom(context)
-            .createDialog(fullScreen = true, gravity = Gravity.CENTER)
-            .setTitulo(titulo)
-            .setMensaje(mensaje)
+            .createDialog(
+                fullScreen = true,
+                gravity = Gravity.CENTER,
+                backgroundColor = context.getColor(R.color.textos),
+                dividerColor = context.getColor(R.color.white)
+            )
+            .setTitulo(titulo, color = context.getColor(R.color.white))
+            .setMensaje(mensaje, color = context.getColor(R.color.white))
             .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
             .noPermitirSalirSinBotones()
             .addCustomView(binding.root)
@@ -292,9 +334,13 @@ object DxImplementation {
         val binding = DxLectorQrBinding.inflate(LayoutInflater.from(context))
 
         val dx = DxCustom(context)
-            .createDialog(fullScreen = true)
-            .setTitulo(context.getString(R.string.atencion))
-            .setMensaje(context.getString(R.string.escanea_qr))
+            .createDialog(
+                fullScreen = true,
+                backgroundColor = context.getColor(R.color.textos),
+                dividerColor = context.getColor(R.color.white)
+            )
+            .setTitulo(context.getString(R.string.atencion), color = context.getColor(R.color.white))
+            .setMensaje(context.getString(R.string.escanea_qr), color = context.getColor(R.color.white))
             .addCustomView(binding.root)
             .setIcono(ContextCompat.getDrawable(context, R.drawable.ic_baseline_warning_amber_24))
             .noPermitirSalirSinBotones()
