@@ -167,8 +167,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="100dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <include
             android:id="@+id/include_registro_entrenador"
