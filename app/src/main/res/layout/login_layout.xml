@@ -7,45 +7,42 @@
     android:paddingHorizontal="20dp">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_correo_electronico"
+        style="@style/LoginTextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/correo_electr_nico"
-        android:layout_marginTop="20dp"
-        app:errorEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="@color/colorPrimary"
-        android:textColorHint="@color/textos"
-        >
+        android:textColorHint="@color/white"
+        app:endIconTint="@color/colorPrimary"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_correo_electronico"
+            android:id="@+id/tie_email"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/black"
-            app:strokeColor="@color/colorPrimary"
-            />
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_contrasena"
+        style="@style/LoginTextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/contrase_a"
-        app:errorEnabled="true"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxStrokeColor="@color/colorPrimary"
-        android:textColorHint="@color/textos"
-        app:passwordToggleEnabled="true"
-        >
+        android:textColorHint="@color/white"
+        app:endIconTint="@color/colorPrimary"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_contrasena"
+            android:id="@+id/tie_contrasena"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textColor="@color/black"
-            />
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
