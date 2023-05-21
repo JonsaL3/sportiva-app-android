@@ -45,7 +45,6 @@ class RegisterViewModel @Inject constructor(
         onFailure: () -> Unit
     ) = viewModelScope.launch{
         val response = entrenadorRepo.registerEntrenador(entrenador)
-
         response?.let{
             if(it){
                 onSuccess()
@@ -56,7 +55,5 @@ class RegisterViewModel @Inject constructor(
         }?:run{
             onFailure()
         }
-
     }
-
 }
