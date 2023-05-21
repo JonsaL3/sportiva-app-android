@@ -30,6 +30,8 @@ data class Sesion(
     @SerializedName("currentEmpleadoInscrito")
     var isCurrentEmpleadoInscrito: Boolean = false,
 
+    var numeroDeInscripciones: Int = 0,
+
 ) : Serializable {
 
     constructor(

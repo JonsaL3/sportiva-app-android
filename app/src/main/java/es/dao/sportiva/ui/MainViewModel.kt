@@ -51,16 +51,15 @@ class MainViewModel @Inject constructor(
 
         uiState.setLoading()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            launch {
-                _usuario.postValue(usuarioRepo.iniciarSesion(correo, contrasena))
-            }.join()
-            _usuario.value?.let { usuario ->
-                runOnUiThread {
-                    uiState.setSuccess()
-                    onSuccess.invoke(usuario)
-                }
+        usuarioRepo.iniciarSesion(correo, contrasena)?.apply {
+            Log.w(";;;", "usuario existente en viewmodel")
+            runOnUiThread {
+                uiState.setSuccess()
+                _usuario.value = this
+                onSuccess.invoke(this)
             }
+        } ?: run {
+            Log.w(";;;", "usuario nulo en viewmodel")
         }
 
     }

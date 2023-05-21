@@ -212,6 +212,7 @@
                         app:cardElevation="0dp"
                         android:layout_margin="20dp"
                         app:cardCornerRadius="0dp"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 

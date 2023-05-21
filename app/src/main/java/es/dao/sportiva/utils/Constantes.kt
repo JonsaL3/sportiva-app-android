@@ -13,7 +13,7 @@ object Constantes { // ArrebolEnterprise1024
     const val ANIMACION_DURATION = 200L
 
     // Llamadas a la api
-    private const val IS_DEBUG = true
+    const val IS_DEBUG = true
     private const val BASE_URL_DEBUG = "http://192.168.1.138:8080/api/"
     private const val BASE_URL_RELEASE = "http://arrebol.eu:7290/api/"
     val BASE_URL = if (IS_DEBUG) BASE_URL_DEBUG else BASE_URL_RELEASE
@@ -26,4 +26,4 @@ object Constantes { // ArrebolEnterprise1024
     const val AFORO_ILIMITADO = -1
     const val AFORO_NO_DEFINIDO = -2
 
-} // TODO EL AUTOUPDATE DE LOS COJONES DA PUTO CANCER
+}

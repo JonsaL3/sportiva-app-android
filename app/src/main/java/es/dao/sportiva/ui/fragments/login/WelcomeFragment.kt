@@ -3,6 +3,7 @@ package es.dao.sportiva.ui.fragments.login
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,16 +61,22 @@ class WelcomeFragment : Fragment() {
         btnIniciarSesion.setOnClickListener {
             DxImplementation.mostrarDxLogin(requireContext()) { correo, contrasena ->
 
+                Log.d(";;;", "Click del login recibido")
+
                 viewModel.doLogin(correo, contrasena, requireContext()) { usuario ->
 
                     if (usuario is Empleado) {
+                        Log.w(";;;", "Iniciando como empleado")
                         val action =
                             WelcomeFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
                         findNavController().navigate(action)
                     } else if (usuario is Entrenador) {
+                        Log.w(";;;", "Iniciando como entrenador")
                         val action =
                             WelcomeFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
                         findNavController().navigate(action)
+                    } else {
+                        Log.w(";;;", "Error chungo")
                     }
 
                 }

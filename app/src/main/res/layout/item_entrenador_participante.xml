@@ -35,21 +35,24 @@
                 android:layout_height="30dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/siv_foto_creador"
                     android:layout_width="match_parent"
-                    android:src="@drawable/default_circle_shape"
+                    tools:src="@drawable/example_image"
+                    android:scaleType="centerCrop"
                     android:layout_height="match_parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                     />
 
                 <TextView
                     android:id="@+id/tvInicial"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    tools:visibility="gone"
                     android:gravity="center"
-                    android:text="@{entrenador.inicialOrGuion()}"
+                    android:text="@{entrenador.nombre.substring(0,1)}"
                     android:textColor="@color/white"
                     android:textSize="15sp"
                     tools:text="D"
-                    android:visibility="@{entrenador.imagen == null ? View.VISIBLE : View.GONE}"
                     />
 
             </FrameLayout>
