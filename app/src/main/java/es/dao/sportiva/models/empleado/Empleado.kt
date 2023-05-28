@@ -1,9 +1,11 @@
 package es.dao.sportiva.models.empleado
 
 import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
 import es.dao.sportiva.models.Empresa
 import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.utils.LocalDateTimeTypeAdapter
+import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -12,10 +14,12 @@ data class Empleado(
     var cargo: String = "",
     var peso: Float? = -1.0f,
     var altura: Float? = -1.0f,
+    @SerializedName("deporteFrecuente")
     var isDeporteFrecuente: Boolean? = false,
+    @SerializedName("fumador")
     var isFumador: Boolean? = false,
     var empresa: Empresa = Empresa(),
-) : Usuario() {
+) : Usuario(), Serializable {
 
     constructor(
         id: Int,
