@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.dxcustomlibrary.gone
 import com.example.dxcustomlibrary.visible
 import es.dao.sportiva.databinding.FragmentSesionesBinding
@@ -14,6 +15,8 @@ import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.sesion.Sesion
 import es.dao.sportiva.ui.MainViewModel
 import es.dao.sportiva.ui.adapters.SesionesRecyclerViewAdapter
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SesionesFragment : Fragment() {
 
@@ -49,6 +52,12 @@ class SesionesFragment : Fragment() {
         val onApuntarse = { binding: ItemSesionBinding, sesion: Sesion ->
 
             binding.btnApuntarse.isClickable = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                launch {
+                    delay(5000)
+                    binding.btnApuntarse.isClickable = true
+                }
+            }
 
             viewModel.inscribirEmpleadoASesion(
                 empleado = currentEmpleado,
@@ -60,6 +69,12 @@ class SesionesFragment : Fragment() {
         val onDesapuntarse = { binding: ItemSesionBinding, sesion: Sesion ->
 
             binding.btnDesapuntarse.isClickable = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                launch {
+                    delay(5000)
+                    binding.btnDesapuntarse.isClickable = true
+                }
+            }
 
             viewModel.desinscribirEmpleadoASesion(
                 idEmpleado = currentEmpleado.id,

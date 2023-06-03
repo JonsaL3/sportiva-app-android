@@ -1,32 +1,29 @@
 package es.dao.sportiva.ui.fragments.login
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.FragmentInformationRegisterBinding
 import es.dao.sportiva.models.Empresa
+import es.dao.sportiva.models.empleado.Empleado
+import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.ui.MainActivity
 import es.dao.sportiva.ui.MainViewModel
-import es.dao.sportiva.utils.CamaraActivity
 import es.dao.sportiva.utils.UiState
 import java.time.Instant
 import java.time.LocalDateTime
@@ -416,10 +413,22 @@ class RegisterFragment(
 
                         val onSuccses = {
                             uiState.setSuccess()
-                            viewModelMain.setUsuerRegister(viewModel.empleado){
-                                val action =
-                                    WelcomeFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
-                                findNavController().navigate(action)
+                            viewModelMain.doLogin(viewModel.empleado.correo, viewModel.empleado.contrasena, requireContext()) {
+
+                                if (it is Empleado) {
+                                    Log.w(";;;", "Iniciando como empleado")
+                                    val action =
+                                        WelcomeFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
+                                    findNavController().navigate(action)
+                                } else if (it is Entrenador) {
+                                    Log.w(";;;", "Iniciando como entrenador")
+                                    val action =
+                                        WelcomeFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
+                                    findNavController().navigate(action)
+                                } else {
+                                    Log.w(";;;", "Error chungo")
+                                }
+
                             }
 
                             Unit

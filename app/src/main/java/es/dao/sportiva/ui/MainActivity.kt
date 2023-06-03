@@ -10,22 +10,23 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
+import androidx.core.content.res.ResourcesCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import com.example.dxcustomlibrary.gone
+import com.example.dxcustomlibrary.visible
 import dagger.hilt.android.AndroidEntryPoint
 import es.dao.sportiva.MainNavGraphXmlDirections
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ActivityMainBinding
 import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
-import es.dao.sportiva.ui.fragments.login.WelcomeFragmentDirections
 import es.dao.sportiva.utils.CamaraActivity
 import es.dao.sportiva.utils.DxImplementation
 import es.dao.sportiva.utils.UiState
 import es.dao.sportiva.utils.fromBase64
-import java.time.LocalDate
+import es.dao.sportiva.utils.toBase64
 import javax.inject.Inject
 
 
@@ -47,8 +48,36 @@ class MainActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
 
             val onSuccsess: () -> Unit = {
-                Glide.with(this).load(result.data?.data.toString()).circleCrop().into(binding.ivFotoPerfil)
-                binding.tvInicial.visibility = View.GONE
+
+                result.data?.let { data ->
+
+                    try {
+                        binding.sivFotoCreador.setImageBitmap(data.data!!.toBase64(this)!!.fromBase64())
+                        binding.tvInicial.gone()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        binding.sivFotoCreador.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                binding.root.resources,
+                                R.drawable.default_circle_shape,
+                                null
+                            )
+                        )
+                        binding.tvInicial.visible()
+                    }
+
+
+                } ?: run {
+                    binding.sivFotoCreador.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            binding.root.resources,
+                            R.drawable.default_circle_shape,
+                            null
+                        )
+                    )
+                    binding.tvInicial.visible()
+                }
+
             }
 
             viewModel.updatePrifilePicture(this, result.data?.data.toString(), onSuccsess)
@@ -103,26 +132,41 @@ class MainActivity : AppCompatActivity() {
                 R.id.welcomeFragment -> {
                     binding.appBarLayout.visibility = View.GONE
                     viewModel.doLogout()
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+                    )
                 }
 
                 R.id.entrenadorMainFragment -> {
                     binding.topAppBar.title = getString(R.string.seleccionar_accion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
                 R.id.crearSesionFragment -> {
                     binding.topAppBar.title = getString(R.string.crear_sesion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
                 R.id.comenzarSesionFragment -> {
                     binding.topAppBar.title = getString(R.string.comenzar_sesion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
                 R.id.empleadoMainFragment -> {
                     binding.topAppBar.title = getString(R.string.apuntarse_a_sesion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
             }
@@ -139,15 +183,30 @@ class MainActivity : AppCompatActivity() {
 
                 binding.tvNombreUsuario.text = mUsuario.nombre + " " + mUsuario.apellido1 + " " + mUsuario.apellido2
 
-                mUsuario.imagen.takeIf { !it.isNullOrBlank() }?.let { imagen ->
-                    binding.ivFotoPerfil.visibility = View.VISIBLE
-                    Glide.with(this).load(imagen.fromBase64()).circleCrop().into(binding.ivFotoPerfil)
-                    binding.tvInicial.visibility = View.GONE
+                mUsuario.imagen?.let {
+                    try {
+                        binding.sivFotoCreador.setImageBitmap(it.fromBase64())
+                        binding.tvInicial.gone()
+                    } catch (e: Exception) {
+                        binding.sivFotoCreador.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                binding.root.resources,
+                                R.drawable.default_circle_shape,
+                                null
+                            )
+                        )
+                        binding.tvInicial.visible()
+                    }
                 } ?: run {
-                    binding.flNoHayFoto.visibility = View.VISIBLE
-                    binding.tvInicial.text = mUsuario.nombre.firstOrNull()?.toString() ?: "-"
+                    binding.sivFotoCreador.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            binding.root.resources,
+                            R.drawable.default_circle_shape,
+                            null
+                        )
+                    )
+                    binding.tvInicial.visible()
                 }
-
 
                 try {
                     mUsuario as Entrenador
@@ -228,7 +287,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.mcvConfiguracion.visibility = View.GONE
 
-        binding.ivFotoPerfil.setOnClickListener {
+        binding.flFotoCreador.setOnClickListener {
             realizarImagen()
         }
 

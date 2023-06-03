@@ -46,7 +46,6 @@
                 android:id="@+id/et_correo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +67,6 @@
                 android:id="@+id/et_contrasenia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -89,7 +87,6 @@
                 android:id="@+id/et_nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -110,7 +107,6 @@
                 android:id="@+id/et_apellido1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -131,7 +127,6 @@
                 android:id="@+id/et_apellido2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -152,7 +147,6 @@
                 android:id="@+id/et_estudios"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -174,7 +168,6 @@
                 android:id="@+id/et_sueldo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -197,7 +190,6 @@
                 android:layout_height="match_parent"
                 android:dropDownSelector="@color/colorPrimary"
                 android:inputType="none"
-                android:textColor="@color/white"
                 android:paddingHorizontal="13dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -227,7 +219,6 @@
                 android:clickable="true"
                 android:cursorVisible="false"
                 android:focusable="false"
-                android:textColor="@color/white"
                 android:focusableInTouchMode="false"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -246,33 +237,32 @@
             android:orientation="horizontal">
 
             <FrameLayout
-                android:id="@+id/fl_no_hay_foto"
-                android:layout_marginHorizontal="10dp"
+                android:id="@+id/fl_foto_creador"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_foto"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginHorizontal="20dp"
-                    android:src="@drawable/default_circle_shape"
+                    android:id="@+id/siv_foto_creador"
+                    android:layout_width="match_parent"
+                    tools:src="@drawable/example_image"
+                    android:scaleType="centerCrop"
+                    android:layout_height="match_parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                     />
 
                 <TextView
                     android:id="@+id/tvInicial"
-                    android:layout_width="50dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal|center_vertical"
+                    tools:visibility="gone"
                     android:gravity="center"
                     android:textColor="@color/white"
+                    android:text="-"
                     android:textSize="30sp"
-                    android:textAllCaps="true"
-                    android:textAlignment="center"
-                    android:layout_marginHorizontal="25dp"
-                    android:text="@string/guion" />
+                    tools:text="D"
+                    />
 
             </FrameLayout>
 

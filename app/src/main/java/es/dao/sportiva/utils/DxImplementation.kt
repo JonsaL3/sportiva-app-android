@@ -203,8 +203,10 @@ object DxImplementation {
         val binding = LoginLayoutBinding.inflate(LayoutInflater.from(context))
 
         // TODO ELIMINAR ESTO
-        binding.tieEmail.setText("gonzalo@gonzalo.es")
-        binding.tieContrasena.setText("1234")
+        if (Constantes.IS_DEBUG) {
+            binding.tieEmail.setText("gonzalo@gonzalo.es")
+            binding.tieContrasena.setText("1234")
+        }
 
         DxCustom(context)
             .createDialog(

@@ -17,13 +17,14 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import com.example.dxcustomlibrary.gone
 import com.example.dxcustomlibrary.visible
 import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,6 +38,7 @@ import es.dao.sportiva.ui.adapters.RegisterViewPagerAdapter
 import es.dao.sportiva.utils.CamaraActivity
 import es.dao.sportiva.utils.DxImplementation
 import es.dao.sportiva.utils.UiState
+import es.dao.sportiva.utils.fromBase64
 import es.dao.sportiva.utils.getFile
 import es.dao.sportiva.utils.toBase64
 import id.zelory.compressor.Compressor
@@ -45,7 +47,6 @@ import id.zelory.compressor.constraint.quality
 import id.zelory.compressor.constraint.resolution
 import kotlinx.coroutines.launch
 import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import javax.inject.Inject
@@ -71,9 +72,37 @@ class WelcomeFragment : Fragment() {
 
     private val realizarFotografiaResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
-            registroViewModel.profliePictureUri = result.data?.data.toString()
-            Glide.with(requireContext()).load(registroViewModel.profliePictureUri).circleCrop().into(binding.includeRegistroEntrenador.ivFoto)
-            binding.includeRegistroEntrenador.tvInicial.visibility = View.GONE
+
+            result.data?.let { data ->
+
+                try {
+                    binding.includeRegistroEntrenador.sivFotoCreador.setImageBitmap(data.data!!.toBase64(requireContext())!!.fromBase64())
+                    binding.includeRegistroEntrenador.tvInicial.gone()
+                    registroViewModel.profliePictureUri = result.data?.data.toString()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    binding.includeRegistroEntrenador.sivFotoCreador.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            binding.root.resources,
+                            R.drawable.default_circle_shape,
+                            null
+                        )
+                    )
+                    binding.includeRegistroEntrenador.tvInicial.visible()
+                }
+
+
+            } ?: run {
+                binding.includeRegistroEntrenador.sivFotoCreador.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        binding.root.resources,
+                        R.drawable.default_circle_shape,
+                        null
+                    )
+                )
+                binding.includeRegistroEntrenador.tvInicial.visible()
+            }
+
         }
     }
 
@@ -82,6 +111,21 @@ class WelcomeFragment : Fragment() {
         setupAnimations()
         setupView()
         setupInclude()
+        setupFotoRegistroEntrenador()
+    }
+
+    private fun setupFotoRegistroEntrenador() = with(binding) {
+
+        includeRegistroEntrenador.sivFotoCreador.setImageDrawable(
+            ResourcesCompat.getDrawable(
+                binding.root.resources,
+                R.drawable.default_circle_shape,
+                null
+            )
+        )
+        includeRegistroEntrenador.tvInicial.visible()
+        includeRegistroEntrenador.tvInicial.text = "-"
+
     }
 
     private fun setupView() = with(binding) {
@@ -89,16 +133,22 @@ class WelcomeFragment : Fragment() {
         btnIniciarSesion.setOnClickListener {
             DxImplementation.mostrarDxLogin(requireContext()) { correo, contrasena ->
 
+                Log.d(";;;", "Click del login recibido")
+
                 viewModel.doLogin(correo, contrasena, requireContext()) { usuario ->
 
                     if (usuario is Empleado) {
+                        Log.w(";;;", "Iniciando como empleado")
                         val action =
                             WelcomeFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
                         findNavController().navigate(action)
                     } else if (usuario is Entrenador) {
+                        Log.w(";;;", "Iniciando como entrenador")
                         val action =
                             WelcomeFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
                         findNavController().navigate(action)
+                    } else {
+                        Log.w(";;;", "Error chungo")
                     }
 
                 }
@@ -195,8 +245,7 @@ class WelcomeFragment : Fragment() {
 
     private fun setupInclude() = with(binding.includeRegistroEntrenador) {
 
-        etNombre.addTextChangedListener(object :
-            TextWatcher {
+        etNombre.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence?,
                 start: Int,
@@ -214,13 +263,14 @@ class WelcomeFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                tvInicial.visibility = View.VISIBLE
-                tvInicial.text = s?.let{
-                    if(it.isEmpty())
-                        "-"
-                    else
-                        it[0].uppercase()
-                }?:run{"-"}
+                if (binding.includeRegistroEntrenador.tvInicial.visibility == View.VISIBLE) {
+                    tvInicial.text = s?.let{
+                        if(it.isEmpty())
+                            "-"
+                        else
+                            it[0].uppercase().trim()
+                    }?:run{"-"}
+                }
             }
         })
 
@@ -264,6 +314,7 @@ class WelcomeFragment : Fragment() {
 
         btnVolverRegistroEntrenador.setOnClickListener {
             this@WelcomeFragment.binding.registroEntrenadorLinearLayout.visibility = View.GONE
+            resetRegistroEntrenadorForm()
         }
 
         btnRegistrarse.setOnClickListener {
@@ -279,22 +330,26 @@ class WelcomeFragment : Fragment() {
 
                 val onSuccses = {
                     uiState.setSuccess()
-                    viewModel.setUsuerRegister(registroViewModel.entrenador) {
-                        val action =
-                            WelcomeFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
-                        findNavController().navigate(action)
+                    viewModel.doLogin(registroViewModel.entrenador.correo, registroViewModel.entrenador.contrasena, requireContext()) {
+
+                        if (it is Empleado) {
+                            Log.w(";;;", "Iniciando como empleado")
+                            val action =
+                                WelcomeFragmentDirections.actionLoginFragmentToEmpleadoMainFragment()
+                            findNavController().navigate(action)
+                        } else if (it is Entrenador) {
+                            Log.w(";;;", "Iniciando como entrenador")
+                            val action =
+                                WelcomeFragmentDirections.actionLoginFragmentToEntrenadorMainFragment3()
+                            findNavController().navigate(action)
+                        } else {
+                            Log.w(";;;", "Error chungo")
+                        }
+
                     }
 
                     //reset UI
-                    etCorreo.setText("")
-                    etContrasenia.setText("")
-                    etNombre.setText("")
-                    etApellido1.setText("")
-                    etApellido2.setText("")
-                    etEstudios.setText("")
-                    etSueldo.setText("")
-                    etautoEmpresa.setText("")
-
+                    resetRegistroEntrenadorForm()
                     Unit
                 }
 
@@ -344,6 +399,22 @@ class WelcomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+
+    private fun resetRegistroEntrenadorForm() = with(binding.includeRegistroEntrenador) {
+
+        etCorreo.setText("")
+        etContrasenia.setText("")
+        etNombre.setText("")
+        etApellido1.setText("")
+        etApellido2.setText("")
+        etEstudios.setText("")
+        etSueldo.setText("")
+        etautoEmpresa.setText("")
+
+        setupFotoRegistroEntrenador()
+
     }
 
     private fun checkDataIdEmpty(): Boolean = with(binding.includeRegistroEntrenador) {

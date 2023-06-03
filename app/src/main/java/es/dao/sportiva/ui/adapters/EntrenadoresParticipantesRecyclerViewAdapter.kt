@@ -3,11 +3,16 @@ package es.dao.sportiva.ui.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dxcustomlibrary.gone
+import com.example.dxcustomlibrary.visible
+import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ItemEntrenadorParticipanteBinding
 import es.dao.sportiva.models.entrenador.Entrenador
+import es.dao.sportiva.utils.fromBase64
 
 class EntrenadoresParticipantesRecyclerViewAdapter(
     private val onRemoveClicked: (Entrenador, ItemEntrenadorParticipanteBinding) -> Unit
@@ -60,6 +65,32 @@ class EntrenadoresParticipantesViewHolder(
 
     fun bind(entrenador: Entrenador) {
         mEntrenador = entrenador
+
+        entrenador.imagen?.let {
+            try {
+                binding.sivFotoCreador.setImageBitmap(it.fromBase64())
+                binding.tvInicial.gone()
+            } catch (e: Exception) {
+                binding.sivFotoCreador.setImageDrawable(
+                    ResourcesCompat.getDrawable(
+                        binding.root.resources,
+                        R.drawable.default_circle_shape,
+                        null
+                    )
+                )
+                binding.tvInicial.visible()
+            }
+        } ?: run {
+            binding.sivFotoCreador.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    binding.root.resources,
+                    R.drawable.default_circle_shape,
+                    null
+                )
+            )
+            binding.tvInicial.visible()
+        }
+
         binding.entrenador = entrenador
         setupListeners()
     }

@@ -145,7 +145,6 @@
             android:inputType="none"
             android:clickable="true"
             android:cursorVisible="false"
-            android:textColor="@color/white"
             android:focusable="false"
             android:focusableInTouchMode="false"
             />
@@ -264,7 +263,6 @@
             android:layout_height="match_parent"
             android:inputType="none"
             android:id="@+id/et_empresa"
-            android:textColor="@color/white"
             android:paddingHorizontal="13dp"
             android:dropDownSelector="@color/colorPrimary"
             />

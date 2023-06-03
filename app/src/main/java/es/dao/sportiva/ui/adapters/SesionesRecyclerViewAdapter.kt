@@ -13,6 +13,7 @@ import com.example.dxcustomlibrary.visible
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ItemSesionBinding
 import es.dao.sportiva.models.sesion.Sesion
+import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.fromBase64
 
 class SesionesRecyclerViewAdapter(
@@ -63,6 +64,13 @@ class SesionesViewHolder(
 
     fun bind(sesion: Sesion) {
         binding.sesion = sesion
+
+        // Pinto el aforo en caso de que no sea ilimitado
+        if (sesion.aforoMaximo == Constantes.AFORO_ILIMITADO) {
+            binding.tvAforo.text = binding.root.context.getString(R.string.aforo_ilimitado)
+        } else {
+            binding.tvAforo.text = "Aforo: ${sesion.numeroDeInscripciones} / ${sesion.aforoMaximo}"
+        }
 
         // Pinto las imagenes, la del entrenador y la de la sesión
         sesion.imagen?.let {

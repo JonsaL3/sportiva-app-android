@@ -39,25 +39,28 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp">
 
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:layout_width="match_parent"
-                        android:src="@drawable/default_circle_shape"
-                        android:layout_height="match_parent"
-                        />
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/siv_foto_creador"
+                    android:layout_width="match_parent"
+                    tools:src="@drawable/example_image"
+                    android:scaleType="centerCrop"
+                    android:layout_height="match_parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
+                    />
 
-                    <TextView
-                        android:id="@+id/tvInicial"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="@{inscripcion.empleadoInscrito.inicialOrGuion()}"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="D"
-                        android:visibility="@{inscripcion.empleadoInscrito.imagen == null ? View.VISIBLE : View.GONE}"
-                        />
+                <TextView
+                    android:id="@+id/tvInicial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:visibility="gone"
+                    android:gravity="center"
+                    android:text="@{inscripcion.empleadoInscrito.nombre.substring(0,1)}"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    tools:text="D"
+                />
 
-                </FrameLayout>
+            </FrameLayout>
 
                 <TextView
                     android:layout_marginTop="5dp"

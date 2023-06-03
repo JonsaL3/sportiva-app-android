@@ -15,11 +15,15 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mcv_entrenador"
         app:cardElevation="0dp"
+        android:background="@color/transparent"
         android:layout_width="match_parent"
+        android:backgroundTint="@color/transparent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:orientation="vertical"
+            android:backgroundTint="@color/transparent"
+            android:background="@color/transparent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -35,21 +39,24 @@
                     android:layout_height="30dp">
 
                     <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/siv_foto_creador"
                         android:layout_width="match_parent"
-                        android:src="@drawable/default_circle_shape"
+                        tools:src="@drawable/example_image"
+                        android:scaleType="centerCrop"
                         android:layout_height="match_parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                         />
 
                     <TextView
                         android:id="@+id/tvInicial"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        tools:visibility="gone"
                         android:gravity="center"
                         android:text="@{entrenador.nombre.substring(0,1)}"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         tools:text="D"
-                        android:visibility="@{entrenador.imagen == null ? View.VISIBLE : View.GONE}"
                         />
 
                 </FrameLayout>
@@ -63,7 +70,7 @@
                     android:layout_height="match_parent"
                     tools:text="David Lozano Neira"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/textos"
+                    android:textColor="@color/white"
                     android:textSize="15sp"
                     android:text="@{entrenador.nombre + ' ' + entrenador.apellido1 + ' ' + entrenador.apellido2}"
                     />

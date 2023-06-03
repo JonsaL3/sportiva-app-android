@@ -13,6 +13,7 @@ import es.dao.sportiva.models.sesion.SesionWrapper
 import es.dao.sportiva.repository.EmpleadoInscribeSesionRepo
 import es.dao.sportiva.repository.EntrenadorRepo
 import es.dao.sportiva.repository.SesionRepo
+import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -129,6 +130,15 @@ class EmpleadoViewModel @Inject constructor(
                 // en la lista de sesiones
                 _sesionesDisponibles.value?.find { it.id == sesion.id }?.isCurrentEmpleadoInscrito =
                     true
+
+                // Sumo 1 unidad en el numero de inscripciones si el aforo no es ilimitado
+                if (this.sesionALaQueSeInscribe.aforoMaximo != Constantes.AFORO_ILIMITADO) {
+                    sesionesDisponibles.value?.find { it.id == sesion.id }?.let {
+                        val inscripcionesActuales = it.numeroDeInscripciones + 1
+                        it.numeroDeInscripciones = inscripcionesActuales
+                    }
+                }
+
                 // hago un post value para que el recycler se actualice
                 _sesionesDisponibles.postValue(_sesionesDisponibles.value)
 
@@ -164,6 +174,15 @@ class EmpleadoViewModel @Inject constructor(
                 // en la lista de sesiones
                 _sesionesDisponibles.value?.find { it.id == idSesion }?.isCurrentEmpleadoInscrito =
                     false
+
+                // Resto 1 unidad en el numero de inscripciones si el aforo no es ilimitado
+                if (this.sesionALaQueSeInscribe.aforoMaximo != Constantes.AFORO_ILIMITADO) {
+                    sesionesDisponibles.value?.find { it.id == idSesion }?.let {
+                        val inscripcionesActuales = it.numeroDeInscripciones - 1
+                        it.numeroDeInscripciones = inscripcionesActuales
+                    }
+                }
+
                 // hago un post value para que el recycler se actualice
                 _sesionesDisponibles.postValue(_sesionesDisponibles.value)
 
