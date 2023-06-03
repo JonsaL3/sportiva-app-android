@@ -17,7 +17,7 @@ class EntrenadorRepo @Inject constructor(
     }
 
     suspend fun registerEntrenador(entrenador: Entrenador): Boolean? {
-        val request = entrenadorApiClient.registrarEmpleado(entrenador)
+        val request = entrenadorApiClient.registrarEntrenador(entrenador)
         return genericRequest(request)
     }
 

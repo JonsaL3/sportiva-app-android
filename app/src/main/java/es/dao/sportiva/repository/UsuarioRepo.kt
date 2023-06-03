@@ -1,6 +1,8 @@
 package es.dao.sportiva.repository
 
 import es.dao.sportiva.models.usuario.IniciarSesionRequest
+import es.dao.sportiva.models.usuario.RegistroRequest
+import es.dao.sportiva.models.usuario.UpdateProfilePictureRequest
 import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.network.UsuarioApiClient
 import es.dao.sportiva.utils.UiState
@@ -21,5 +23,14 @@ class UsuarioRepo @Inject constructor(
         val request = usuarioApiClient.iniciarSesion(iniciarSesionRequest)
         return genericRequest(request)?.getInstance()
     }
+
+    suspend fun registerUsuario(request: RegistroRequest): Boolean? {
+        val request = usuarioApiClient.registrarUsuario(request)
+        return genericRequest(request)
+    }
+
+    suspend fun updateProfilePicture(request: UpdateProfilePictureRequest): Boolean? =
+        genericRequest(usuarioApiClient.updateProfilePicture(request))
+
 
 }

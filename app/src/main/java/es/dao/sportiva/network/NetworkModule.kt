@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import es.dao.sportiva.models.Empresa
 import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.LocalDateTimeTypeAdapter
 import retrofit2.Retrofit
@@ -44,6 +45,11 @@ class NetworkModule {
     @Provides
     fun provideEntrenadorApiClient(retrofit: Retrofit): EntrenadorApiClient =
         retrofit.create(EntrenadorApiClient::class.java)
+
+    @Singleton
+    @Provides
+    fun provideEmpresaApiClient(retrofit: Retrofit): EmpresaApiClient =
+        retrofit.create(EmpresaApiClient::class.java)
 
     @Singleton
     @Provides

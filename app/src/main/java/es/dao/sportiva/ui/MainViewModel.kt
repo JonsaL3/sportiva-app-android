@@ -1,9 +1,12 @@
 package es.dao.sportiva.ui
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,14 +14,22 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import es.dao.sportiva.BuildConfig
 import es.dao.sportiva.R
+import es.dao.sportiva.models.entrenador.Entrenador
 import es.dao.sportiva.models.usuario.Usuario
 import es.dao.sportiva.utils.runOnUiThread
 import es.dao.sportiva.models.usuario.IniciarSesionRequest
+import es.dao.sportiva.models.usuario.UpdateProfilePictureRequest
 import es.dao.sportiva.repository.UsuarioRepo
 import es.dao.sportiva.repository.VersionRepo
 import es.dao.sportiva.utils.Constantes
 import es.dao.sportiva.utils.UiState
 import es.dao.sportiva.utils.download_tools.AndroidDownloader
+import es.dao.sportiva.utils.getFile
+import es.dao.sportiva.utils.toBase64
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.quality
+import id.zelory.compressor.constraint.resolution
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -65,6 +76,22 @@ class MainViewModel @Inject constructor(
 
     }
 
+    fun setUsuerRegister(
+        usuario: Usuario,
+        onSuccess: () -> Unit,
+    ) = viewModelScope.launch{
+
+        launch {
+            _usuario.value = usuario
+        }.join()
+        _usuario.value?.let { usuario ->
+            runOnUiThread {
+                onSuccess.invoke()
+            }
+        }
+
+    }
+
     fun doLogout() {
         _usuario.postValue(null)
     }
@@ -100,23 +127,6 @@ class MainViewModel @Inject constructor(
 
     }
     private fun downloadNewApk(context: Context) {
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //TODO GONZALO NO SE COMO ESTO, NO SE SI EL LOADER SE QUEDARÁ INFINITO...
-        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
-        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
-        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
-        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
-        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
-        //EL LOADER ES EL DE LA LINEA 88 DE ESTE ARCHIVO
 
         // Antes de descargarme una nueva versión borro los apks por si hay alguno de antes
         val downloadDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path)
@@ -136,6 +146,36 @@ class MainViewModel @Inject constructor(
 
         val downloader = AndroidDownloader(context)
         downloader.donwloadApkFile(Constantes.BASE_URL + "version/downloadCurrentApk")
+    }
+    
+    fun updatePrifilePicture(context: Context, data: String, onSuccess: () -> Unit){
+        viewModelScope.launch {
+            try{
+                val uriImagen = Uri.parse(data)
+                val file = uriImagen.getFile(context)
+                val compressedFile = Compressor.compress(context, file) {
+                    resolution(1280, 720)
+                    quality(50)
+                    format(Bitmap.CompressFormat.JPEG)
+                }
+                
+                if(usuarioRepo.updateProfilePicture(
+                        UpdateProfilePictureRequest(
+                            usuario.value is Entrenador,
+                            _usuario.value?.id ?: 0,
+                            compressedFile.toUri().toBase64(context)?:""
+                        )
+                    ) == true){
+                    onSuccess.invoke()
+                }else{
+                    uiState.setError(context.getString(R.string.no_se_pudo_actualizar_la_imagen))
+                }
+                
+            }catch (e: Exception) {
+                e.printStackTrace()
+                uiState.setError(context.getString(R.string.no_se_pudo_actualizar_la_imagen))
+            }
+        }
     }
 
 }

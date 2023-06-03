@@ -110,14 +110,17 @@
                         android:layout_marginHorizontal="10dp"
                         android:layout_gravity="center"
                         android:layout_width="70dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         tools:visibility="visible"
                         android:layout_height="70dp">
 
                         <com.google.android.material.imageview.ShapeableImageView
-                            android:layout_width="match_parent"
+                            android:id="@+id/iv_foto_perfil"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginHorizontal="20dp"
                             android:src="@drawable/default_circle_shape"
-                            android:layout_height="match_parent"
                             />
 
                         <TextView
