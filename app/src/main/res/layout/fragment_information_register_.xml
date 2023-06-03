@@ -113,6 +113,44 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_fecha_nacimiento"
+        style="@style/LoginTextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:hint="@string/fecha_de_naciniento"
+        android:textColorHint="@color/white"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/outline_calendar_month_24"
+        app:endIconTint="@color/colorPrimary"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:errorEnabled="true"
+        android:translationX="1000dp"
+        android:visibility="gone"
+        tools:translationX="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_password"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_fecha_nacimiento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
     <!-- FIN REGISTRO PRIMER PASO  -->
 
     <!--  REGISTRO SEGUNDO PASO  -->
@@ -213,19 +251,21 @@
         app:endIconTint="@color/colorPrimary"
         android:translationX="1000dp"
         android:visibility="gone"
-        app:endIconMode="clear_text"
+        app:endIconMode="dropdown_menu"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_empresa"
-            android:textColor="@color/white"
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:layout_height="match_parent"
+            android:inputType="none"
+            android:id="@+id/et_empresa"
+            android:paddingHorizontal="13dp"
+            android:dropDownSelector="@color/colorPrimary"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
     <!-- FIN SEGUNDO PASO  -->

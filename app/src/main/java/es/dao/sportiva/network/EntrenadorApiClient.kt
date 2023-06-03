@@ -13,8 +13,8 @@ interface EntrenadorApiClient {
     @GET("entrenador/findByEmpresaAsignada/{idEmpresa}")
     fun findEntrenadoresByIdEmpresa(@Path("idEmpresa") idEmpresa: Int): Call<EntrenadorWrapper>
 
-    @POST("empleado/registrarEmpleado")
-    fun registrarEmpleado(
+    @POST("empleado/registrarEntrenador")
+    fun registrarEntrenador(
         @Body entrenador: Entrenador
     ): Call<Boolean>
 }

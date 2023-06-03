@@ -14,7 +14,7 @@ object Constantes { // ArrebolEnterprise1024
 
     // Llamadas a la api
     const val IS_DEBUG = true
-    private const val BASE_URL_DEBUG = "http://192.168.1.138:8080/api/"
+    private const val BASE_URL_DEBUG = "http://192.168.1.137:8080/api/"
     private const val BASE_URL_RELEASE = "http://arrebol.eu:7290/api/"
     val BASE_URL = if (IS_DEBUG) BASE_URL_DEBUG else BASE_URL_RELEASE
 

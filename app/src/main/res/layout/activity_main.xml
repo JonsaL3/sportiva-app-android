@@ -89,7 +89,7 @@
             android:background="@color/black"
             android:clickable="true"
             android:orientation="horizontal"
-            tools:visibility="gone"
+            tools:visibility="visible"
             android:layout_gravity="start">
 
             <LinearLayout
@@ -106,28 +106,32 @@
                     android:layout_height="wrap_content">
 
                     <FrameLayout
-                        android:id="@+id/fl_no_hay_foto"
-                        android:layout_marginHorizontal="10dp"
+                        android:id="@+id/fl_foto_creador"
                         android:layout_gravity="center"
+                        android:layout_marginHorizontal="10dp"
                         android:layout_width="70dp"
-                        android:visibility="gone"
-                        tools:visibility="visible"
                         android:layout_height="70dp">
 
                         <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/siv_foto_creador"
                             android:layout_width="match_parent"
-                            android:src="@drawable/default_circle_shape"
+                            tools:src="@drawable/example_image"
+                            android:scaleType="centerCrop"
                             android:layout_height="match_parent"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                             />
 
                         <TextView
                             android:id="@+id/tvInicial"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            tools:visibility="gone"
                             android:gravity="center"
+                            android:text="@{viewModel.usuario.nombre.substring(0,1)}"
                             android:textColor="@color/white"
                             android:textSize="30sp"
-                            tools:text="D" />
+                            tools:text="D"
+                            />
 
                     </FrameLayout>
 

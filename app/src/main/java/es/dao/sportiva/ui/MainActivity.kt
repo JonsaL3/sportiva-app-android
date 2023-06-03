@@ -1,21 +1,32 @@
 package es.dao.sportiva.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.example.dxcustomlibrary.gone
+import com.example.dxcustomlibrary.visible
 import dagger.hilt.android.AndroidEntryPoint
+import es.dao.sportiva.MainNavGraphXmlDirections
 import es.dao.sportiva.R
 import es.dao.sportiva.databinding.ActivityMainBinding
 import es.dao.sportiva.models.empleado.Empleado
 import es.dao.sportiva.models.entrenador.Entrenador
+import es.dao.sportiva.utils.CamaraActivity
 import es.dao.sportiva.utils.DxImplementation
 import es.dao.sportiva.utils.UiState
-import java.time.LocalDate
+import es.dao.sportiva.utils.fromBase64
+import es.dao.sportiva.utils.toBase64
 import javax.inject.Inject
 
 
@@ -32,6 +43,46 @@ class MainActivity : AppCompatActivity() {
     // Inyecto el singleton que maneja los estados de la UI, por lo que desde aqui puedo observar cambios
     // que realize desde cualquier repo / viewmodel / servicio / etc en el cual inyecte esta misma clase
     @Inject lateinit var uiState: UiState
+
+    private val realizarFotografiaResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+
+            val onSuccsess: () -> Unit = {
+
+                result.data?.let { data ->
+
+                    try {
+                        binding.sivFotoCreador.setImageBitmap(data.data!!.toBase64(this)!!.fromBase64())
+                        binding.tvInicial.gone()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        binding.sivFotoCreador.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                binding.root.resources,
+                                R.drawable.default_circle_shape,
+                                null
+                            )
+                        )
+                        binding.tvInicial.visible()
+                    }
+
+
+                } ?: run {
+                    binding.sivFotoCreador.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            binding.root.resources,
+                            R.drawable.default_circle_shape,
+                            null
+                        )
+                    )
+                    binding.tvInicial.visible()
+                }
+
+            }
+
+            viewModel.updatePrifilePicture(this, result.data?.data.toString(), onSuccsess)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,29 +129,44 @@ class MainActivity : AppCompatActivity() {
 
             when (destination.id) {
 
-                R.id.welcomeFragment -> { // TODO al ponerlo en gone se oculta el loader porque está dentro.
+                R.id.welcomeFragment -> {
                     binding.appBarLayout.visibility = View.GONE
                     viewModel.doLogout()
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+                    )
                 }
 
                 R.id.entrenadorMainFragment -> {
-                    binding.topAppBar.title = getString(R.string.seleccionar_accion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.topAppBar.title = getString(R.string.seleccionar_accion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
                 R.id.crearSesionFragment -> {
-                    binding.topAppBar.title = getString(R.string.crear_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.topAppBar.title = getString(R.string.crear_sesion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
                 R.id.comenzarSesionFragment -> {
-                    binding.topAppBar.title = getString(R.string.comenzar_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.topAppBar.title = getString(R.string.comenzar_sesion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
                 R.id.empleadoMainFragment -> {
-                    binding.topAppBar.title = getString(R.string.apuntarse_a_sesion) // TODO ESTO PUEDE HACERSE AUTOMATICAMENTE
+                    binding.topAppBar.title = getString(R.string.apuntarse_a_sesion)
                     binding.appBarLayout.visibility = View.VISIBLE
+                    binding.drawerLayout.setDrawerLockMode(
+                        DrawerLayout.LOCK_MODE_UNLOCKED
+                    )
                 }
 
             }
@@ -117,13 +183,30 @@ class MainActivity : AppCompatActivity() {
 
                 binding.tvNombreUsuario.text = mUsuario.nombre + " " + mUsuario.apellido1 + " " + mUsuario.apellido2
 
-                mUsuario.imagen.takeIf { !it.isNullOrBlank() }?.let { imagen ->
-                    // TODO
+                mUsuario.imagen?.let {
+                    try {
+                        binding.sivFotoCreador.setImageBitmap(it.fromBase64())
+                        binding.tvInicial.gone()
+                    } catch (e: Exception) {
+                        binding.sivFotoCreador.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                binding.root.resources,
+                                R.drawable.default_circle_shape,
+                                null
+                            )
+                        )
+                        binding.tvInicial.visible()
+                    }
                 } ?: run {
-                    binding.flNoHayFoto.visibility = View.VISIBLE
-                    binding.tvInicial.text = mUsuario.nombre.firstOrNull()?.toString() ?: "-"
+                    binding.sivFotoCreador.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            binding.root.resources,
+                            R.drawable.default_circle_shape,
+                            null
+                        )
+                    )
+                    binding.tvInicial.visible()
                 }
-
 
                 try {
                     mUsuario as Entrenador
@@ -202,8 +285,10 @@ class MainActivity : AppCompatActivity() {
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
-        binding.mcvConfiguracion.setOnClickListener {
+        binding.mcvConfiguracion.visibility = View.GONE
 
+        binding.flFotoCreador.setOnClickListener {
+            realizarImagen()
         }
 
         binding.mcvMostrarQrDrawer.setOnClickListener {
@@ -213,9 +298,17 @@ class MainActivity : AppCompatActivity() {
         binding.mcvSalir.setOnClickListener {
             binding.drawerLayout.close()
             viewModel.doLogout()
-            navHostFragment.navController.navigateUp()
+            val action =
+                MainNavGraphXmlDirections.actionGlobalWelcomeFragment()
+            navHostFragment.navController.navigate(action)
         }
 
     }
+
+    private fun realizarImagen() {
+        val intent = Intent(this, CamaraActivity::class.java)
+        realizarFotografiaResult.launch(intent)
+    }
+
 
 }

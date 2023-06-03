@@ -1,12 +1,13 @@
 package es.dao.sportiva.models.usuario
 
+import com.google.gson.annotations.SerializedName
 import es.dao.sportiva.utils.Constantes
 import java.io.Serializable
 import java.time.LocalDateTime
 
 abstract class Usuario(
 
-    open var id: Int = -1,
+    open var id: Int = 0,
     open var correo: String = "",
     open var contrasena: String = "",
     open var nombre: String = "",
@@ -14,6 +15,7 @@ abstract class Usuario(
     open var apellido2: String = "",
     open var fechaNacimiento: LocalDateTime = Constantes.DEFAULT_DATE,
     open var fechaInserccion: LocalDateTime? = Constantes.DEFAULT_DATE,
+    @SerializedName("activo")
     open var isActivo: Boolean = false,
     open var imagen: String? = null
 

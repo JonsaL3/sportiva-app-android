@@ -142,4 +142,8 @@
     <string name="descartar">Descartar</string>
     <string name="cancelar">cancelar</string>
     <string name="en_estos_momentos_no_hay_entrenadores_asignados_a_tu_empresa">En estos momentos no hay entrenadores asignados a tu empresa.</string>
+    <string name="foto_de_perfil">Foto de perfil</string>
+    <string name="guion">-</string>
+    <string name="fecha_de_naciniento">Fecha de naciniento</string>
+    <string name="no_se_pudo_actualizar_la_imagen">No se pudo actualizar la imagen.</string>
 </resources>
