@@ -45,6 +45,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_correo"
                 android:layout_width="match_parent"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
 
@@ -67,6 +68,7 @@
                 android:id="@+id/et_contrasenia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -87,6 +89,7 @@
                 android:id="@+id/et_nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -107,6 +110,7 @@
                 android:id="@+id/et_apellido1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -126,6 +130,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_apellido2"
                 android:layout_width="match_parent"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
 
@@ -147,6 +152,7 @@
                 android:id="@+id/et_estudios"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -168,6 +174,7 @@
                 android:id="@+id/et_sueldo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -190,6 +197,7 @@
                 android:layout_height="match_parent"
                 android:dropDownSelector="@color/colorPrimary"
                 android:inputType="none"
+                android:textColor="@color/white"
                 android:paddingHorizontal="13dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -220,6 +228,7 @@
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
+                android:textColor="@color/white"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
